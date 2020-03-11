@@ -1,0 +1,23 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+
+register:
+  path: /api/register
+  controller: App\Controller\UserController::registerUser
+
+login:
+  path: /api/login
+  controller: App\Controller\UserController::login
+
+getMyAssets:
+  path: /api/assets/getMyAsset
+  controller: App\Controller\AssetController::getMyAssets
+
+edditAsset:
+  path: /api/assets/editAsset
+  controller: App\Controller\AssetController::editAsset
+
+addAsset:
+  path: /api/assets/addAsset
+  controller: App\Controller\AssetController::addAsset
