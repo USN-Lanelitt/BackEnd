@@ -21,3 +21,43 @@ edditAsset:
 addAsset:
   path: /api/assets/addAsset
   controller: App\Controller\AssetController::addAsset
+  
+get_all_users:
+  path: /getAll
+  controller: App\Controller\UserConnectionsController::getAllUsers
+  methods:    GET
+
+get_friend:
+  path: /getFriend
+  controller: App\Controller\UserConnectionsController::getFriend
+  methods:    GET
+
+get_all_friends:
+  path: /getAllFriends
+  controller: App\Controller\UserConnectionsController::getAllFriends
+  methods:    GET
+
+get_all_friend_request:
+  path: /getAllFriendRequest
+  controller: App\Controller\UserConnectionsController::getAllFriendRequest
+  methods:    GET
+
+send_friend_request:
+  path: /sendFriendRequest
+  controller: App\Controller\UserConnectionsController::sendFriendRequest
+  methods:    POST
+
+new_friendship:
+  path: /newFriendship
+  controller: App\Controller\UserConnectionsController::newFriendship
+  methods:    POST
+
+get_user_search:
+  path: /getUserSearch
+  controller: App\Controller\UserConnectionsController::getUserSearch
+  methods:    GET
+
+delete_friendship:
+  path: /deleteFriendship
+  controller: App\Controller\UserConnectionsController::deleteFriendship
+  methods:    DELETE
