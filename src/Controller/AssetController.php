@@ -70,6 +70,10 @@ class AssetController extends AbstractController{
         $entityManager->persist($asset);
         $entityManager->flush();
 
+        $asset->setDescription("TESTING");
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($asset);
+        $entityManager->flush();
 
         $this->logger->info($ut);
 

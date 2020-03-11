@@ -136,12 +136,36 @@ class Users
      */
     private $authCode;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserHasUserRights", mappedBy="user")
+     */
+    private $userHasUserRights;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\LogginLogs", mappedBy="users")
+     */
+    private $logginLogs;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UnwantedBehaviorReports", mappedBy="reporter")
+     */
+    private $unwantedBehaviorReports;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\AdminSentMails", mappedBy="user")
+     */
+    private $adminSentMails;
+
     public function __construct()
     {
         $this->userConnections = new ArrayCollection();
         $this->assets = new ArrayCollection();
         $this->loans = new ArrayCollection();
         $this->chats = new ArrayCollection();
+        $this->userHasUserRights = new ArrayCollection();
+        $this->logginLogs = new ArrayCollection();
+        $this->unwantedBehaviorReports = new ArrayCollection();
+        $this->adminSentMails = new ArrayCollection();
     }
 
 
@@ -474,6 +498,130 @@ class Users
     public function setAuthCode(?string $authCode): self
     {
         $this->authCode = $authCode;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserHasUserRights[]
+     */
+    public function getUserHasUserRights(): Collection
+    {
+        return $this->userHasUserRights;
+    }
+
+    public function addUserHasUserRight(UserHasUserRights $userHasUserRight): self
+    {
+        if (!$this->userHasUserRights->contains($userHasUserRight)) {
+            $this->userHasUserRights[] = $userHasUserRight;
+            $userHasUserRight->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserHasUserRight(UserHasUserRights $userHasUserRight): self
+    {
+        if ($this->userHasUserRights->contains($userHasUserRight)) {
+            $this->userHasUserRights->removeElement($userHasUserRight);
+            // set the owning side to null (unless already changed)
+            if ($userHasUserRight->getUser() === $this) {
+                $userHasUserRight->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LogginLogs[]
+     */
+    public function getLogginLogs(): Collection
+    {
+        return $this->logginLogs;
+    }
+
+    public function addLogginLog(LogginLogs $logginLog): self
+    {
+        if (!$this->logginLogs->contains($logginLog)) {
+            $this->logginLogs[] = $logginLog;
+            $logginLog->setUsers($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLogginLog(LogginLogs $logginLog): self
+    {
+        if ($this->logginLogs->contains($logginLog)) {
+            $this->logginLogs->removeElement($logginLog);
+            // set the owning side to null (unless already changed)
+            if ($logginLog->getUsers() === $this) {
+                $logginLog->setUsers(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UnwantedBehaviorReports[]
+     */
+    public function getUnwantedBehaviorReports(): Collection
+    {
+        return $this->unwantedBehaviorReports;
+    }
+
+    public function addUnwantedBehaviorReport(UnwantedBehaviorReports $unwantedBehaviorReport): self
+    {
+        if (!$this->unwantedBehaviorReports->contains($unwantedBehaviorReport)) {
+            $this->unwantedBehaviorReports[] = $unwantedBehaviorReport;
+            $unwantedBehaviorReport->setReporter($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUnwantedBehaviorReport(UnwantedBehaviorReports $unwantedBehaviorReport): self
+    {
+        if ($this->unwantedBehaviorReports->contains($unwantedBehaviorReport)) {
+            $this->unwantedBehaviorReports->removeElement($unwantedBehaviorReport);
+            // set the owning side to null (unless already changed)
+            if ($unwantedBehaviorReport->getReporter() === $this) {
+                $unwantedBehaviorReport->setReporter(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|AdminSentMails[]
+     */
+    public function getAdminSentMails(): Collection
+    {
+        return $this->adminSentMails;
+    }
+
+    public function addAdminSentMail(AdminSentMails $adminSentMail): self
+    {
+        if (!$this->adminSentMails->contains($adminSentMail)) {
+            $this->adminSentMails[] = $adminSentMail;
+            $adminSentMail->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdminSentMail(AdminSentMails $adminSentMail): self
+    {
+        if ($this->adminSentMails->contains($adminSentMail)) {
+            $this->adminSentMails->removeElement($adminSentMail);
+            // set the owning side to null (unless already changed)
+            if ($adminSentMail->getUser() === $this) {
+                $adminSentMail->setUser(null);
+            }
+        }
 
         return $this;
     }
