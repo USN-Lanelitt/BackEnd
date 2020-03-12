@@ -32,11 +32,9 @@ header("Access-Control-Allow-Origin: *");
 class UserConnectionsController extends AbstractController
 {
     private $logger;
-    private $session;
 
-    public function __construct(LoggerInterface $logger, SessionInterface $session){
+    public function __construct(LoggerInterface $logger){
         $this->logger=$logger;
-        $this->session = $session;
     }
 
     public function getAllUsers() {
@@ -54,10 +52,13 @@ class UserConnectionsController extends AbstractController
     }
 
     public function getAllFriends(Request $request){
-        //$this->logger->info($iId);
+        //Sjekker om requesten har innehold
+        //$content=json_decode($request->getContent());
+        //if(empty($content)){
+            //return new JsonResponse($content);
+        //}
 
         //Henter id til bruker
-        //$content = json_decode($request->getContent());
         //$iUserId1  = $content->userId1;
 
         //Kan hende jeg må søke finne bruker med telefon/mail
@@ -92,9 +93,13 @@ class UserConnectionsController extends AbstractController
 
     public function getFriend(Request $request){
         //Vet ikke hva som trengs av informasjon her
+        //Sjekker om requesten har innehold
+        //$content=json_decode($request->getContent());
+        //if(empty($content)){
+        //return new JsonResponse($content);
+        //}
 
         //Henter id til bruker og venn
-        //$content = json_decode($request->getContent());
         //$iUserId1  = $content->userId1;
         //$iUserId2  = $content->userId2;
 
@@ -114,8 +119,13 @@ class UserConnectionsController extends AbstractController
     }
 
     public function sendFriendRequest(Request $request){
+        //Sjekker om requesten har innehold
+        //$content=json_decode($request->getContent());
+        //if(empty($content)){
+        //return new JsonResponse($content);
+        //}
+
         //Hent id til bruker og brukeren som skal få venneforespørsel
-        //$content = json_decode($request->getContent());
         //$iUserId1  = $content->userId1;
         //$iUserId2  = $content->userId2;
 
@@ -157,8 +167,13 @@ class UserConnectionsController extends AbstractController
     }
 
     public function getAllFriendRequest(Request $request){
+        //Sjekker om requesten har innehold
+        //$content=json_decode($request->getContent());
+        //if(empty($content)){
+        //return new JsonResponse($content);
+        //}
+
         //Henter brukers id
-        //$content = json_decode($request->getContent());
         //$iUserId1  = $content->userId1;
 
         //$oRequests = $this->getDoctrine()->getRepository(UserConnections::class)->findBy(array('user1' => $iUserId1),array('user1' => 'ASC'),1 ,0)[0];
@@ -191,8 +206,13 @@ class UserConnectionsController extends AbstractController
     }
 
     public function newFriendship(Request $request){
+        //Sjekker om requesten har innehold
+        //$content=json_decode($request->getContent());
+        //if(empty($content)){
+        //return new JsonResponse($content);
+        //}
+
         //Henter brukers id og id'ene til bruker som har sendt venneforespørsel
-        //$content = json_decode($request->getContent());
         //$iUserId1  = $content->userId1;
         //$iUserId2  = $content->userId2;
 
@@ -242,10 +262,14 @@ class UserConnectionsController extends AbstractController
     }
 
 
-    public function deleteFriendship(Request $request)
-    {
+    public function deleteFriendship(Request $request){
+        //Sjekker om requesten har innehold
+        //$content=json_decode($request->getContent());
+        //if(empty($content)){
+        //return new JsonResponse($content);
+        //}
+
         //Henter brukers id og id'ene til bruker som har sendt venneforespørsel
-        //$content = json_decode($request->getContent());
         //$iUserId1  = $content->userId1;
         //$iUserId2  = $content->userId2;
 
@@ -285,10 +309,14 @@ class UserConnectionsController extends AbstractController
             return new JsonResponse('vennskap finnes ikke');
     }
 
-    public function getUserSearch(Request $request)
-    {
+    public function getUserSearch(Request $request){
+        //Sjekker om requesten har innehold
+        //$content=json_decode($request->getContent());
+        //if(empty($content)){
+        //return new JsonResponse($content);
+        //}
+
         //Henter brukers id og id'ene til bruker som har sendt venneforespørsel
-        //$content = json_decode($request->getContent());
         //$sSearch = $content->search;
 
         $sSearch = "nic";

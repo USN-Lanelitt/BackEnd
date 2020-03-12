@@ -44,7 +44,7 @@ class Loans
     private $dateEnd;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="boolean")
      */
     private $statusLoan;
 
@@ -123,12 +123,12 @@ class Loans
         return $this;
     }
 
-    public function getStatusLoan(): ?string
+    public function getStatusLoan(): ?bool
     {
         return $this->statusLoan;
     }
 
-    public function setStatusLoan(string $statusLoan): self
+    public function setStatusLoan(bool $statusLoan): self
     {
         $this->statusLoan = $statusLoan;
 
