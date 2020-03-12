@@ -61,7 +61,17 @@ deleteFriendship:
   controller: App\Controller\UserConnectionsController::deleteFriendship
   methods:    DELETE
 
-newLoan:
-  path: /newLoan
-  controller: App\Controller\LoanController::newLoan
+changeLoanStatus:
+  path: /changeLoanStatus
+  controller: App\Controller\LoanController::changeLoanStatus
   methods:    POST
+
+sendLoanRequest:
+  path: /sendLoanRequest
+  controller: App\Controller\LoanController::sendLoanRequest
+  methods:    POST
+
+getAllLoanRequest:
+    path: /getAllLoanRequest
+    controller: App\Controller\LoanController::getAllLoanRequest
+    methods:    GET
