@@ -21,6 +21,10 @@ edditAsset:
 addAsset:
   path: /api/assets/addAsset
   controller: App\Controller\AssetController::addAsset
+
+searchAsset:
+  path: /api/assets/getAssetSearch
+  controller: App\Controller\AssetController::getAssetSearch
   
 get_all_users:
   path: /getAll
