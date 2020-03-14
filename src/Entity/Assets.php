@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,17 +16,20 @@ class Assets
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"loanStatus", "loanRequest"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="assets")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"loanStatus"})
      */
     private $users;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"loanStatus", "loanRequest"})
      */
     private $assetName;
 
@@ -46,6 +50,7 @@ class Assets
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\AssetImages", mappedBy="assets")
+     * @Groups({"loanStatus"})
      */
     private $assetImages;
 

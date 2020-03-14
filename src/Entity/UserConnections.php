@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,6 +24,7 @@ class UserConnections
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="userConnections")
+     * @Groups({"friendInfo"})
      */
     private $user2;
 

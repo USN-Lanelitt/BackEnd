@@ -4,24 +4,19 @@ namespace App\Controller;
 
 use App\Entity\AssetCategories;
 use App\Entity\Assets;
-use App\Entity\IndividConnections;
 
 use App\Entity\Loans;
 use App\Entity\UserConnections;
 use App\Entity\Users;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\ORM\Mapping\ClassMetadataFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
-use App\Entity\UserConnectionsRepository;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
 use Psr\Log\LoggerInterface;
 
@@ -50,20 +45,26 @@ class LoanController extends AbstractController
         $iUserId  = 1;
 
         $conn = $this->getDoctrine()->getConnection();
-        $sql = "SELECT * FROM loans 
+        $sql = "SELECT id FROM loans 
                 WHERE status_loan LIKE 'sent'
                     AND assets_id IN (SELECT id FROM assets WHERE users_id=$iUserId)";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
-        $oRequestId = $stmt->fetchAll();
+        $iRequestIds = $stmt->fetchAll();
 
-        return $this->json($oRequestId, Response::HTTP_OK, [], [
+        $iIds = array_column($iRequestIds, 'id');
+        $this->logger->info(json_encode($iIds));
+
+        $oRequestIds = $this->getDoctrine()->getRepository(Loans::class)->findBy(array('id'=> $iIds));
+
+        return $this->json($oRequestIds, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
-            ObjectNormalizer::ATTRIBUTES => ['firstName', 'lastName'],
+            ObjectNormalizer::GROUPS => ['groups' => 'loanRequest'],
             ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
                 return $object->getId();
             }
         ]);
+
     }
 
     public function changeLoanStatus(Request $request) {
@@ -110,8 +111,8 @@ class LoanController extends AbstractController
         //Henter info om lånet
         //$iUserId  = $content->userId;
         //$iAssetId  = $content->assetId;
-        //$dStart  = $content->date_start;
-        //$dEnd  = $content->date_end;
+        //$dStart  = $content->StartDate;
+        //$dEnd  = $content->endDate;
 
         $iUserId  = 1;
         $iAssetId  = 2;
@@ -149,6 +150,42 @@ class LoanController extends AbstractController
             return new JsonResponse('Låneforhold er opprettet');
         }
         return new JsonResponse('Låneforholdet finnes fra før');
+    }
+
+    public function getLoanRequestStatus(Request $request) {
+
+        //Sjekker om requesten har innehold
+        //$content=json_decode($request->getContent());
+        //if(empty($content)){
+        //return new JsonResponse($content);
+        //}
+
+        $sStatusLoan = array("sent", "accepted", "denied", "available");
+
+        //Henter info om låneforespørsel
+        //$iUserId  = $content->userId;
+
+        $iUserId  = 1;
+
+        //$oUser = $this->getDoctrine()->getRepository(Users::class)->find($iUserId);
+        $oRequestIds = $this->getDoctrine()->getRepository(Loans::class)->findBy(array('users'=> $iUserId));
+
+        //Sjekker om bruker har sendt forespørsel
+        /*$conn = $this->getDoctrine()->getConnection();
+        $sql = "SELECT id FROM loans WHERE users_id= $iUserId";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $oRequestId = $stmt->fetchAll();*/
+
+        return $this->json($oRequestIds, Response::HTTP_OK, [], [
+            ObjectNormalizer::SKIP_NULL_VALUES => true,
+            //ObjectNormalizer::ATTRIBUTES => [],
+            ObjectNormalizer::GROUPS => ['groups' => 'loanStatus'],
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            }
+        ]);
+
     }
 
 }
