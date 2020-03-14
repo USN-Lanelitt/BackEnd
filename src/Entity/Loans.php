@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,21 +16,25 @@ class Loans
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"loanStatus", "loanRequest"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="loans")
+     * @Groups({"loanRequest"})
      */
     private $users;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Assets", inversedBy="loans")
+     * @Groups({"loanStatus", "loanRequest"})
      */
     private $assets;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     *
      */
     private $comment;
 
@@ -45,6 +50,7 @@ class Loans
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"loanStatus"})
      */
     private $statusLoan;
 
@@ -62,6 +68,7 @@ class Loans
     {
         return $this->id;
     }
+
 
     public function getUsers(): ?Users
     {

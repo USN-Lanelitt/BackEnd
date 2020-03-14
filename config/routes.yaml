@@ -75,3 +75,8 @@ getAllLoanRequest:
     path: /getAllLoanRequest
     controller: App\Controller\LoanController::getAllLoanRequest
     methods:    GET
+
+getLoanRequestStatus:
+  path: /getLoanRequestStatus
+  controller: App\Controller\LoanController::getLoanRequestStatus
+  methods:    GET

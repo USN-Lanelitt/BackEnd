@@ -2,26 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\AssetCategories;
-use App\Entity\Assets;
-use App\Entity\IndividConnections;
-use App\Entity\Individuals;
-
 use App\Entity\UserConnections;
 use App\Entity\Users;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-
-use App\Entity\UserConnectionsRepository;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
 use Psr\Log\LoggerInterface;
 
@@ -37,19 +24,6 @@ class UserConnectionsController extends AbstractController
         $this->logger=$logger;
     }
 
-    public function getAllUsers() {
-        $individer = $this->getDoctrine()->getRepository(Users::class)->findAll();
-
-        return $this->json($individer, Response::HTTP_OK, [], [
-            ObjectNormalizer::SKIP_NULL_VALUES => true,
-            ObjectNormalizer::ATTRIBUTES => ['firstName', 'lastName'],
-            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
-                return $object->getId();
-            }
-        ]);
-
-        $this->logger->info("getAllUsers");
-    }
 
     public function getAllFriends(Request $request){
         //Sjekker om requesten har innehold
@@ -82,7 +56,8 @@ class UserConnectionsController extends AbstractController
         //Skriver ut alle objektene
         return $this->json($users, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
-            ObjectNormalizer::ATTRIBUTES => ['firstName', 'lastName'],
+            //ObjectNormalizer::ATTRIBUTES => ['firstName', 'lastName'],
+            ObjectNormalizer::GROUPS => ['groups' => 'friendInfo'],
             ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
                 return $object->getId();
             }
@@ -111,7 +86,8 @@ class UserConnectionsController extends AbstractController
         //Skriver ut alle objektene
         return $this->json($user, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
-            ObjectNormalizer::ATTRIBUTES => ['firstName', 'lastName'],
+            //ObjectNormalizer::ATTRIBUTES => ['firstName', 'lastName'],
+            ObjectNormalizer::GROUPS => ['groups' => 'friendInfo'],
             ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
                 return $object->getId();
             }
@@ -197,7 +173,8 @@ class UserConnectionsController extends AbstractController
         //Skriver ut alle objektene
         return $this->json($users, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
-            ObjectNormalizer::ATTRIBUTES => ['firstName', 'lastName'],
+            //ObjectNormalizer::ATTRIBUTES => ['firstName', 'lastName'],
+            ObjectNormalizer::GROUPS => ['groups' => 'friendInfo'],
             ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
                 return $object->getId();
             }
@@ -319,28 +296,31 @@ class UserConnectionsController extends AbstractController
         //Henter brukers id og id'ene til bruker som har sendt venneforespørsel
         //$sSearch = $content->search;
 
-        $sSearch = "nic";
+        $sSearch = "n";
 
+        //Finner alle brukere med fornavn, mellomnavn, etternavn eller nickname som matcher søket
         $conn = $this->getDoctrine()->getConnection();
-        $sql = "SELECT id FROM users WHERE first_name LIKE '%$sSearch%'
+        $sql = "SELECT * FROM users WHERE first_name LIKE '%$sSearch%'
+                    OR middle_name LIKE '%$sSearch%'
                     OR last_name LIKE '%$sSearch%'
                     OR nickname LIKE '%$sSearch%'";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $oIds = $stmt->fetchAll();
 
-        $iIds = reset($oIds);
+        $iIds = array_column($oIds, 'id');
+        $this->logger->info(json_encode($iIds));
 
         //Henter alle objektene
         $users = $this->getDoctrine()->getRepository(Users::class)->findBy(array('id' => $iIds));
 
         return $this->json($users, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
-            ObjectNormalizer::ATTRIBUTES => ['firstName', 'lastName'],
+            ObjectNormalizer::GROUPS => ['groups' => 'friendInfo'],
             ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
                 return $object->getId();
             }
         ]);
-        $this->logger->info("getUserSearch");
+
     }
 }
