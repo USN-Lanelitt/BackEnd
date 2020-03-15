@@ -33,7 +33,7 @@ class LoanController extends AbstractController
         $this->logger=$logger;
     }
 
-    public function getAllLoanRequest(Request $request){
+    public function getAllLoanRequest(Request $request){ //Henter alle mottatte forespørsler
         $sStatusLoan = array("sent", "accepted", "denied", "available");
         //Sjekker om requesten har innehold
         //$content=json_decode($request->getContent());
@@ -42,11 +42,14 @@ class LoanController extends AbstractController
         //}
 
         //$iUserId  = $content->userId;
+
+        //HARDKODE
         $iUserId  = 1;
 
+        //Henter alle id'ene til lånene med eiendelen eid av brukeren med status "sent"
         $conn = $this->getDoctrine()->getConnection();
         $sql = "SELECT id FROM loans 
-                WHERE status_loan LIKE 'sent'
+                WHERE status_loan LIKE '$sStatusLoan[0]'
                     AND assets_id IN (SELECT id FROM assets WHERE users_id=$iUserId)";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
@@ -55,6 +58,7 @@ class LoanController extends AbstractController
         $iIds = array_column($iRequestIds, 'id');
         $this->logger->info(json_encode($iIds));
 
+        //Henter alle låne-objektene med status "sent"
         $oRequestIds = $this->getDoctrine()->getRepository(Loans::class)->findBy(array('id'=> $iIds));
 
         return $this->json($oRequestIds, Response::HTTP_OK, [], [
@@ -64,7 +68,6 @@ class LoanController extends AbstractController
                 return $object->getId();
             }
         ]);
-
     }
 
     public function changeLoanStatus(Request $request) {
@@ -75,18 +78,24 @@ class LoanController extends AbstractController
         //}
 
         //Henter info om lånet
-        //$iUserId  = $content->userId;
+        //$iStatus  = $content->newStatus;
         //$iLoanId  = $content->loanId;
 
+        //HARDKODE
         $sStatusLoan = array("sent", "accepted", "denied", "available");
-        $sStatus  = $sStatusLoan[1];
+        $iStatus = 1;
+        $sStatus  = $sStatusLoan[$iStatus];
         $iLoanId  = 2;
 
+        //Henter alle låne-objektene
         $oLoan = $this->getDoctrine()->getRepository(Loans::class)->find($iLoanId);
 
         $entityManager = $this->getDoctrine()->getManager();
 
+        //Hvis lånet har status "sent
         if($oLoan->getStatusLoan() == $sStatusLoan[0]){
+            //Hvis bruker trykker godkjen (vi mottar $sStatusLoan[1])
+            //skal status settes til $sStatusLoan[1]
             if($sStatus == $sStatusLoan[1]) {
                 $oLoan->setStatusLoan($sStatusLoan[1]);
             }
@@ -114,6 +123,7 @@ class LoanController extends AbstractController
         //$dStart  = $content->StartDate;
         //$dEnd  = $content->endDate;
 
+        //HARDKODE
         $iUserId  = 1;
         $iAssetId  = 2;
         $dStart  = new\DateTime();
@@ -152,7 +162,7 @@ class LoanController extends AbstractController
         return new JsonResponse('Låneforholdet finnes fra før');
     }
 
-    public function getLoanRequestStatus(Request $request) {
+    public function getLoanRequestStatus(Request $request) { //Henter status på alle forespørsler bruker har sendt
 
         //Sjekker om requesten har innehold
         //$content=json_decode($request->getContent());
@@ -160,22 +170,15 @@ class LoanController extends AbstractController
         //return new JsonResponse($content);
         //}
 
-        $sStatusLoan = array("sent", "accepted", "denied", "available");
-
         //Henter info om låneforespørsel
         //$iUserId  = $content->userId;
 
+        //HARDKODE
+        $sStatusLoan = array("sent", "accepted", "denied", "available");
         $iUserId  = 1;
 
-        //$oUser = $this->getDoctrine()->getRepository(Users::class)->find($iUserId);
+        //Henter alle låne-objektene der bruker har sendt en forespørsel
         $oRequestIds = $this->getDoctrine()->getRepository(Loans::class)->findBy(array('users'=> $iUserId));
-
-        //Sjekker om bruker har sendt forespørsel
-        /*$conn = $this->getDoctrine()->getConnection();
-        $sql = "SELECT id FROM loans WHERE users_id= $iUserId";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $oRequestId = $stmt->fetchAll();*/
 
         return $this->json($oRequestIds, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -186,6 +189,69 @@ class LoanController extends AbstractController
             }
         ]);
 
+    }
+
+    public function getAcceptedRequest(Request $request) { //Henter alle godkjente forespørsler brukeren har sendt
+        //Sjekker om requesten har innehold
+        //$content=json_decode($request->getContent());
+        //if(empty($content)){
+        //return new JsonResponse($content);
+        //}
+
+        //Henter info om låneforespørsel
+        //$iUserId  = $content->userId;
+
+        //HARDKODE
+        $sStatusLoan = array("sent", "accepted", "denied", "available");
+        $iUserId  = 1;
+
+        //Henter alle låne-objekter bruker har sendt med status = accepted
+        $oRequestIds = $this->getDoctrine()->getRepository(Loans::class)->findBy(array('users'=> $iUserId, 'statusLoan'=> $sStatusLoan[1]));
+
+        return $this->json($oRequestIds, Response::HTTP_OK, [], [
+            ObjectNormalizer::SKIP_NULL_VALUES => true,
+            ObjectNormalizer::GROUPS => ['groups' => 'loanStatus'],
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            }
+        ]);
+    }
+
+    public function getAllLoans(Request $request){ //Henter alle lån bruker har godkjent
+        //Sjekker om requesten har innehold
+        //$content=json_decode($request->getContent());
+        //if(empty($content)){
+        //return new JsonResponse($content);
+        //}
+
+        //$iUserId  = $content->userId;
+
+        //HARDKODE
+        $sStatusLoan = array("sent", "accepted", "denied", "available");
+        $iUserId  = 1;
+
+        //Henter alle id'ene til lånene med eiendelen eid av brukeren med status "sent"
+        $conn = $this->getDoctrine()->getConnection();
+        $sql = "SELECT id FROM loans 
+                WHERE status_loan LIKE '$sStatusLoan[1]'
+                    AND assets_id IN (SELECT id FROM assets WHERE users_id=$iUserId)";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $iRequestIds = $stmt->fetchAll();
+
+        $iIds = array_column($iRequestIds, 'id');
+        $this->logger->info(json_encode($iIds));
+
+        //Henter alle låne-objektene med status "sent"
+        $oRequestIds = $this->getDoctrine()->getRepository(Loans::class)->findBy(array('id'=> $iIds));
+
+        return $this->json($oRequestIds, Response::HTTP_OK, [], [
+            ObjectNormalizer::SKIP_NULL_VALUES => true,
+            ObjectNormalizer::GROUPS => ['groups' => 'loanRequest'],
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            }
+        ]);
     }
 
 }

@@ -46,9 +46,9 @@ sendFriendRequest:
   controller: App\Controller\UserConnectionsController::sendFriendRequest
   methods:    POST
 
-newFriendship:
-  path: /newFriendship
-  controller: App\Controller\UserConnectionsController::newFriendship
+replyFriendRequest:
+  path: /replyFriendRequest
+  controller: App\Controller\UserConnectionsController::replyFriendRequest
   methods:    POST
 
 getUserSearch:
@@ -79,4 +79,14 @@ getAllLoanRequest:
 getLoanRequestStatus:
   path: /getLoanRequestStatus
   controller: App\Controller\LoanController::getLoanRequestStatus
+  methods:    GET
+
+getAcceptedRequest:
+  path: /getAcceptedRequest
+  controller: App\Controller\LoanController::getAcceptedRequest
+  methods:    GET
+
+getAllLoans:
+  path: /getAllLoans
+  controller: App\Controller\LoanController::getAllLoans
   methods:    GET
