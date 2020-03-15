@@ -37,26 +37,14 @@ class UserConnectionsController extends AbstractController
 
         //Kan hende jeg må søke finne bruker med telefon/mail
 
+        //HARDKODE
         $iUserId1  = 1;
 
-        //Henter alle venner
-        $conn = $this->getDoctrine()->getConnection();
-        $sql = "SELECT user2_id FROM user_connections WHERE user1_id= $iUserId1";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $aUsersId = $stmt->fetchAll();
-
-        //Henter id'ene til alle vennene
-        $iIds = array_column($aUsersId, 'user2_id');
-        $this->logger->info(json_encode($iIds));
-
-        //Henter alle venner-objektene
-        $users = $this->getDoctrine()->getRepository(Users::class)->findBy(array('id' => $iIds));
+        $oFirnds = $this->getDoctrine()->getRepository(UserConnections::class)->findFriends($iUserId1);
 
         //Skriver ut alle objektene
-        return $this->json($users, Response::HTTP_OK, [], [
+        return $this->json($oFirnds, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
-            //ObjectNormalizer::ATTRIBUTES => ['firstName', 'lastName'],
             ObjectNormalizer::GROUPS => ['groups' => 'friendInfo'],
             ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
                 return $object->getId();
@@ -78,7 +66,7 @@ class UserConnectionsController extends AbstractController
         //$iUserId1  = $content->userId1;
         //$iUserId2  = $content->userId2;
 
-        $iUserId1  = 1;
+        //HARDKODE
         $iUserId2  = 2;
 
         $user = $this->getDoctrine()->getRepository(Users::class)->find($iUserId2);
@@ -105,17 +93,13 @@ class UserConnectionsController extends AbstractController
         //$iUserId1  = $content->userId1;
         //$iUserId2  = $content->userId2;
 
+        //HARDKODE
         $iUserId1  = 1;
-        $iUserId2  = 4;
+        $iUserId2  = 3;
 
-        //Finner user_connections rad
-        $conn = $this->getDoctrine()->getConnection();
-        $sql = "SELECT id FROM user_connections WHERE user1_id= $iUserId1 AND user2_id=$iUserId2";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $oConnectionId = $stmt->fetchAll();
+        $oConnection = $this->getDoctrine()->getRepository(UserConnections::class)->findBy(array('user1'=>$iUserId1, 'user2'=>$iUserId2));
 
-        $check = empty($oConnectionId);
+        $check = empty($oConnection);
 
         //Sjekker om forespørsel allerede har blitt sendt (hvis tom)
         if ($check) {
@@ -152,8 +136,7 @@ class UserConnectionsController extends AbstractController
         //Henter brukers id
         //$iUserId1  = $content->userId1;
 
-        //$oRequests = $this->getDoctrine()->getRepository(UserConnections::class)->findBy(array('user1' => $iUserId1),array('user1' => 'ASC'),1 ,0)[0];
-
+        //HARDKODE
         $iUserId1  = 1;
 
         //Henter alle venner
@@ -182,7 +165,7 @@ class UserConnectionsController extends AbstractController
         $this->logger->info("getAllFriendRequest");
     }
 
-    public function newFriendship(Request $request){
+    public function replyFriendRequest (Request $request){
         //Sjekker om requesten har innehold
         //$content=json_decode($request->getContent());
         //if(empty($content)){
@@ -192,51 +175,56 @@ class UserConnectionsController extends AbstractController
         //Henter brukers id og id'ene til bruker som har sendt venneforespørsel
         //$iUserId1  = $content->userId1;
         //$iUserId2  = $content->userId2;
+        //$iStatus  = $content->newStatus;
 
-        $iUserId1  = 4;
-        $iUserId2  = 1;
+        //HARDKODE
+        $iUserId1  = 1;
+        $iUserId2  = 3;
+        $iStatus  = 0;
 
-        $user1 = $this->getDoctrine()->getRepository(Users::class)->find($iUserId1);
-        $user2 = $this->getDoctrine()->getRepository(Users::class)->find($iUserId2);
+        //Henter objektene til brukerne
+        $oUser1 = $this->getDoctrine()->getRepository(Users::class)->find($iUserId1);
+        $oUser2 = $this->getDoctrine()->getRepository(Users::class)->find($iUserId2);
 
-        $entityManager = $this->getDoctrine()->getManager();
+        //Henter Forespørselen
+        $oUserConn = $this->getDoctrine()->getRepository(UserConnections::class)->findOneBy(array('user1'=> $iUserId2, 'user2'=> $iUserId1, 'requestStatus'=>0));
 
-        //Finner user_connections rad
-        $conn = $this->getDoctrine()->getConnection();
-        $sql = "SELECT id FROM user_connections WHERE user1_id= $iUserId2 AND user2_id=$iUserId1 AND request_status=false";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $oConnectionId = $stmt->fetchAll();
-
-        //Henter id til bruker som har sendt forespørselen
-        $iId=reset($oConnectionId);
-        $this->logger->info(json_encode('gggggggg'));
-
-        $check = empty($oConnectionId);
+        $check = empty($oUserConn);
 
         //Sjekker om forespørsel har blitt sendt (hvis ikke tom)
-        if (!$check){
-            //Endrer request status til sann
-            $userConn = $this->getDoctrine()->getRepository(UserConnections::class)->find($iId);
-            $userConn->setRequestStatus(true);
-            $entityManager->persist($userConn);
-            $entityManager->flush();
+        if (!$check) {
+            $entityManager = $this->getDoctrine()->getManager();
+            //Hvis bruker trykker godkjen (vi mottar 1), settes status til 1
+            if($iStatus == 1) {
+                $oUserConn->setRequestStatus(1);
+                $entityManager->persist($oUserConn);
 
-            //Oppretter ny rad med mottakers info
-            $userConn2 = new UserConnections();
-            $userConn2->setUser1($user1);
-            $userConn2->setUser2($user2);
-            $userConn2->setRequestStatus(true);
-            $userConn2->setTimestamp(new \DateTime());
+                //Oppretter ny rad med mottakers info
+                $oUserConn2 = new UserConnections();
+                $oUserConn2->setUser1($oUser1);
+                $oUserConn2->setUser2($oUser2);
+                $oUserConn2->setRequestStatus(1);
+                $oUserConn2->setTimestamp(new \DateTime());
+                $entityManager->persist($oUserConn2);
+                $entityManager->flush();
 
-            $entityManager->persist($userConn2);
-            $entityManager->flush();
+                return new JsonResponse('Vennskap er opprettet');
+                $this->logger->info('newfriend');
+            }
+            else {
+                //Sletter forespørsel
+                $entityManager->remove($oUserConn);
+                $entityManager->flush();
 
-            return new JsonResponse('Vennskap er opprettet');
-            $this->logger->info('newfriend');
+                return new JsonResponse('Venneforespørsel er ikke godtatt og forespørsel slettet');
+                $this->logger->info('deniedfriend');
+
+            }
+
         }
         return new JsonResponse('Finner ikke forespørsel');
     }
+
 
 
     public function deleteFriendship(Request $request){
@@ -250,6 +238,7 @@ class UserConnectionsController extends AbstractController
         //$iUserId1  = $content->userId1;
         //$iUserId2  = $content->userId2;
 
+        //HARDKODE
         $iUserId1  = 1;
         $iUserId2  = 4;
 
@@ -267,7 +256,7 @@ class UserConnectionsController extends AbstractController
 
         $check = empty($oConnectionId);
 
-        //Sjekker om forespørsel allerede har blitt sendt (hvis tom)
+        //Sjekker om vennskapet finnes (hvis ikke tom)
         if (!$check) {
 
             $id1 = $ids[0];
@@ -296,6 +285,7 @@ class UserConnectionsController extends AbstractController
         //Henter brukers id og id'ene til bruker som har sendt venneforespørsel
         //$sSearch = $content->search;
 
+        //HARDKODE
         $sSearch = "n";
 
         //Finner alle brukere med fornavn, mellomnavn, etternavn eller nickname som matcher søket
