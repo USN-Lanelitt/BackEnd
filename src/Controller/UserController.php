@@ -146,7 +146,7 @@ class UserController extends AbstractController
         // sjekke passord.
         if ( ! password_verify($sPassword, $sHashPassword))
         {
-            $arrayCollection = array(200);
+            $arrayCollection = array(400);
             $this->logger->info('Feil ved innlogging');
         }
         else
