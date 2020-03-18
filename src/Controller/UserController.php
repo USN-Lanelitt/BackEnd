@@ -146,14 +146,14 @@ class UserController extends AbstractController
         // sjekke passord.
         if ( ! password_verify($sPassword, $sHashPassword))
         {
-            $arrayCollection = array(400);
+            $arrayCollection = array(200);
             $this->logger->info('Feil ved innlogging');
         }
         else
         {
             // Generere en 20 char string som lagres på bruker. Brukes for å sjekke om det er riktig logginn ved hver api spørring.
-            $sAuthCode = UtilController::RandomString();
-            $arrayCollection[0]['authCode'] = $sAuthCode;
+            //$sAuthCode = UtilController::RandomString();
+            //$arrayCollection[0]['authCode'] = $sAuthCode;
 
             // lagre til databasen
             /*$oUser2 = new Users();
@@ -163,8 +163,9 @@ class UserController extends AbstractController
             $entityManager->persist($oUser2);
             $entityManager->flush();*/
 
-            $this->logger->info("AuthCode");
-            $this->logger->info($sAuthCode);
+            //$this->logger->info("AuthCode");
+            //$this->logger->info($sAuthCode);
+            $arrayCollection = array(200);
         }
 
         $this->logger->info(json_encode($arrayCollection));
