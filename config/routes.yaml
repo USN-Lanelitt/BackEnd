@@ -94,3 +94,8 @@ getAllLoans:
   path: /getAllLoans
   controller: App\Controller\LoanController::getAllLoans
   methods:    GET
+
+getCurrentUser:
+    path: /api/getCurrentUser
+    controller: App\Controller\UserController::getCurrentUser
+    methods:  POST
