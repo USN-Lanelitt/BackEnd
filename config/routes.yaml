@@ -26,6 +26,10 @@ searchAsset:
   path: /api/assets/getAssetSearch
   controller: App\Controller\AssetController::getAssetSearch
 
+getAsset:
+  path: /api/assets/getAsset
+  controller: App\Controller\AssetController::getAsset
+
 getFriend:
   path: /getFriend
   controller: App\Controller\UserConnectionsController::getFriend
