@@ -27,18 +27,18 @@ class UserConnectionsController extends AbstractController
 
     public function getAllFriends(Request $request){
         //Sjekker om requesten har innehold
-        //$content=json_decode($request->getContent());
-        //if(empty($content)){
-            //return new JsonResponse($content);
-        //}
+        $content=json_decode($request->getContent());
+        if(empty($content)){
+            return new JsonResponse($content);
+        }
 
         //Henter id til bruker
-        //$iUserId1  = $content->userId1;
+        $iUserId1  = $content->userId1;
 
         //Kan hende jeg må søke finne bruker med telefon/mail
 
         //HARDKODE
-        $iUserId1  = 1;
+        //$iUserId1  = 1;
 
         $oFirnds = $this->getDoctrine()->getRepository(UserConnections::class)->findFriends($iUserId1);
 
