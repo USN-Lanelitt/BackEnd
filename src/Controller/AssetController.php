@@ -46,8 +46,13 @@ class AssetController extends AbstractController{
         if(empty($content)){
             return new JsonResponse($content);
         }
+        $iUserId=$content->userId;
         $sSearch=$content->search;
-        $sSearch="Topp";
+
+        /*$sSearch="Topp";*/
+        //Sjekk om lånetingen er offentlig
+        //Hvis ikke sjekk om personer er venner
+        //Sjekk at tingen ikke er lånt ut
 
         $conn=$this->getDoctrine()->getConnection();
         $sql="SELECT id FROM assets WHERE UPPER(asset_name) LIKE UPPER('%$sSearch%') ";
@@ -64,7 +69,7 @@ class AssetController extends AbstractController{
 
         return $this->json($assets, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
-            ObjectNormalizer::ATTRIBUTES => ['name', 'description'],
+            ObjectNormalizer::ATTRIBUTES => ['id','assetName', 'description'],
             ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
                 return $object->getId();
             }
@@ -73,26 +78,32 @@ class AssetController extends AbstractController{
     }
 
     public function getMyAssets(Request $request){
-
         $content = json_decode($request->getContent());
+        if(empty($content)){
+            return new JsonResponse($content);
+        }
         $iUserId = $content->userId;
-        $iUserId=1;
+
         $user=$this->getDoctrine()->getRepository(Users::class)->find($iUserId);
         $assets=$user->getAssets();
         $aAssets = $assets->toArray();
 
+        if(empty($aAssets)){
+            return new JsonResponse($aAssets);
+        }
 
         $d1=empty($aAssets);
         $d2="not empty";
         if($d1){
             $d2="empty";
         }
-        //foreach($aAssets as $a=>$value){
-          //  $d1->add($a)
-        //}
-
-        //$d1=$assets->get();
-        return new JsonResponse($d2);
+        return $this->json($aAssets, Response::HTTP_OK, [], [
+            ObjectNormalizer::SKIP_NULL_VALUES => true,
+            ObjectNormalizer::ATTRIBUTES => ['id','assetName', 'description'],
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            }
+        ]);
     }
 
     public function addAsset(Request $request){
@@ -116,18 +127,10 @@ class AssetController extends AbstractController{
         $asset->setDescription($tDescription);
         $asset->setAssetCondition($iCondition);
 
+
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($asset);
         $entityManager->flush();
-
-        $asset->setDescription("TESTING");
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($asset);
-        $entityManager->flush();
-
-        $this->logger->info($ut);
-
-        $this->logger->info($ut);
 
         return new JsonResponse("Eiendel lagd til");
     }
@@ -136,6 +139,27 @@ class AssetController extends AbstractController{
 
     }
     public function getAsset(Request $request){
+
+
+        $content = json_decode($request->getContent());
+        if(empty($content)){
+            return new JsonResponse($content);
+        }
+        $iAssetId = $content->assetId;
+
+        $asset=$this->getDoctrine()->getRepository(Assets::class)->find($iAssetId);
+
+        if(empty($asset)){
+            return new JsonResponse($asset);
+        }
+
+        return $this->json($asset, Response::HTTP_OK, [], [
+            ObjectNormalizer::SKIP_NULL_VALUES => true,
+            ObjectNormalizer::ATTRIBUTES => ['id','assetName', 'description'],
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            }
+        ]);
     }
     public function edditAsset(){
 
