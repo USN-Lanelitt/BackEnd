@@ -48,6 +48,7 @@ class LoansRepository extends ServiceEntityRepository
     }
     */
 
+
     public function findAllAssetLoans($assetId)
     {
         $sStatus = "accepted";

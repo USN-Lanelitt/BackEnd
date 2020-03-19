@@ -26,35 +26,39 @@ searchAsset:
   path: /api/assets/getAssetSearch
   controller: App\Controller\AssetController::getAssetSearch
 
+getAsset:
+  path: /api/assets/getAsset
+  controller: App\Controller\AssetController::getAsset
+
 getFriend:
   path: /friend/{iFriendId}
   controller: App\Controller\UserConnectionsController::getFriend
-  methods:    GET
+  methods: GET
 
 getFriends:
   path: /friends
   controller: App\Controller\UserConnectionsController::getFriends
-  methods:    GET
+  methods: GET
 
 sendFriendRequest:
   path: /user/request/{iUserId}
   controller: App\Controller\UserConnectionsController::sendFriendRequest
-  methods:    POST
+  methods: POST
 
 getFriendRequests:
   path: /friendRequests
   controller: App\Controller\UserConnectionsController::getFriendRequest
-  methods:    GET
+  methods: GET
 
 replyFriendRequest:
   path: /friendRequest/reply
   controller: App\Controller\UserConnectionsController::replyFriendRequest
-  methods:    POST
+  methods: POST
 
 deleteFriendship:
   path: /friend/delete/{iFriendId}
   controller: App\Controller\UserConnectionsController::deleteFriendship
-  methods:    DELETE
+  methods: POST
 
 getUserSearch:
   path: /search/{sSearch}
@@ -64,7 +68,7 @@ getUserSearch:
 sendLoanRequest:
   path: /asset/request/{iAssetId}
   controller: App\Controller\LoanController::sendLoanRequest
-  methods:    POST
+  methods: POST
 
 getLoanRequest:
     path: /loanRequest
@@ -74,7 +78,7 @@ getLoanRequest:
 getLoanRequestStatus:
   path: /loanStatus
   controller: App\Controller\LoanController::getLoanRequestStatus
-  methods:    GET
+  methods: GET
 
 replyLoanRequest:
   path: /loanRequest/reply
@@ -84,14 +88,14 @@ replyLoanRequest:
 getAcceptedRequest:
   path: /loanAccepted
   controller: App\Controller\LoanController::getAcceptedRequest
-  methods:    GET
-
+  methods: GET
+  
 getLoans:
   path: /loans
   controller: App\Controller\LoanController::getLoans
-  methods:    GET
+  methods: GET
 
-getAllUnavailableDates:
-  path: /getAllUnavailableDates
-  controller: App\Controller\LoanController::getAllUnavailableDates
-  methods:    GET
+getCurrentUser:
+    path: /api/getCurrentUser
+    controller: App\Controller\UserController::getCurrentUser
+

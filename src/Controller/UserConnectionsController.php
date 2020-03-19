@@ -28,18 +28,22 @@ class UserConnectionsController extends AbstractController
         //Vet ikke hva som trengs av informasjon her
         //Sjekker om requesten har innehold
         //$content=json_decode($request->getContent());
-        //if(empty($content)){
-        //return new JsonResponse($content);
-        //}
+
+        $userId = $request->headers->get('x-userid');
+        $this->logger->info("userId:" .$userId);
+
+        if(empty($userId)){
+            return new JsonResponse();
+        }
 
         //Henter id til bruker og venn
         //$iUserId1  = $content->userId1;
         //$iUserId2  = $content->userId2;
 
         //HARDKODE
-        $iUserId2  = 2;
+        //$iUserId1  = 1;
 
-        $user = $this->getDoctrine()->getRepository(Users::class)->find($iUserId2);
+        $oFriends = $this->getDoctrine()->getRepository(UserConnections::class)->findFriends($userId);
 
         //Skriver ut alle objektene
         return $this->json($user, Response::HTTP_OK, [], [
