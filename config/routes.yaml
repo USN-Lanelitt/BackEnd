@@ -33,64 +33,68 @@ getAsset:
 getFriend:
   path: /getFriend
   controller: App\Controller\UserConnectionsController::getFriend
-  methods:    GET
+
 
 getAllFriends:
   path: /getAllFriends
   controller: App\Controller\UserConnectionsController::getAllFriends
-  methods:    GET
+
 
 getAllFriendRequest:
   path: /getAllFriendRequest
   controller: App\Controller\UserConnectionsController::getAllFriendRequest
-  methods:    GET
+
 
 sendFriendRequest:
   path: /sendFriendRequest
   controller: App\Controller\UserConnectionsController::sendFriendRequest
-  methods:    POST
+
 
 replyFriendRequest:
   path: /replyFriendRequest
   controller: App\Controller\UserConnectionsController::replyFriendRequest
-  methods:    POST
+
 
 getUserSearch:
   path: /getUserSearch
   controller: App\Controller\UserConnectionsController::getUserSearch
-  methods:    GET
+
 
 deleteFriendship:
   path: /deleteFriendship
   controller: App\Controller\UserConnectionsController::deleteFriendship
-  methods:    DELETE
+
 
 changeLoanStatus:
   path: /changeLoanStatus
   controller: App\Controller\LoanController::changeLoanStatus
-  methods:    POST
+
 
 sendLoanRequest:
   path: /sendLoanRequest
   controller: App\Controller\LoanController::sendLoanRequest
-  methods:    POST
+
 
 getAllLoanRequest:
     path: /getAllLoanRequest
     controller: App\Controller\LoanController::getAllLoanRequest
-    methods:    GET
+
 
 getLoanRequestStatus:
   path: /getLoanRequestStatus
   controller: App\Controller\LoanController::getLoanRequestStatus
-  methods:    GET
+
 
 getAcceptedRequest:
   path: /getAcceptedRequest
   controller: App\Controller\LoanController::getAcceptedRequest
-  methods:    GET
+
 
 getAllLoans:
   path: /getAllLoans
   controller: App\Controller\LoanController::getAllLoans
-  methods:    GET
+
+
+getCurrentUser:
+    path: /api/getCurrentUser
+    controller: App\Controller\UserController::getCurrentUser

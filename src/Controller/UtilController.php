@@ -23,4 +23,14 @@ class UtilController extends AbstractController
             return ($sFirstname.' '.$sMiddlename.' '.$sLastname);
         return ($sFirstname.' '.$sLastname);
     }
+
+    public static function RandomString()
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randstring = '';
+        for ($i = 0; $i < 19; $i++) {
+            $randstring .= $characters[rand(0, strlen($characters)-1)];
+        }
+        return $randstring;
+    }
 }
