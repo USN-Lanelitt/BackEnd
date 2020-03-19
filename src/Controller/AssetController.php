@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Entity\AssetCategories;
 use App\Entity\Assets;
+use App\Entity\Loans;
 use App\Entity\IndividConnections;
 use App\Entity\Individuals;
 
@@ -141,18 +142,43 @@ class AssetController extends AbstractController{
     public function getAsset(Request $request){
 
 
+       /*
         $content = json_decode($request->getContent());
         if(empty($content)){
             return new JsonResponse($content);
         }
         $iAssetId = $content->assetId;
+       */
+        $iAssetId = 1;
 
         $asset=$this->getDoctrine()->getRepository(Assets::class)->find($iAssetId);
+        $assetLoan=$this->getDoctrine()->getRepository(Loans::class)->findOneBy(array('assets'=>$iAssetId, 'statusLoan'=>'accepted'));
+
 
         if(empty($asset)){
             return new JsonResponse($asset);
         }
-
+        if(!empty($assetLoan)){
+            $dStart=strtotime($assetLoan->getDateStart());
+            $dEnd=strtotime($assetLoan->getDateEnd());
+            $ikkeLedig = array();
+            $teller = 0;
+            for ($i=$dStart; $i<=$dEnd; $i+=86400) {
+                $teller += 1;
+                $ikkeLedig[$teller] = date("Y-m-d", $i);
+            }
+            //*
+            return new JsonResponse(0);
+            /*/
+            return $this->json($assetLoan, Response::HTTP_OK, [], [
+                ObjectNormalizer::SKIP_NULL_VALUES => true,
+                ObjectNormalizer::ATTRIBUTES => ['id', 'assetsId', 'dateStart', 'dateEnd'],
+                ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                    return $object->getId();
+                }
+            ]);
+            //*/
+        }
         return $this->json($asset, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
             ObjectNormalizer::ATTRIBUTES => ['id','assetName', 'description'],
@@ -160,6 +186,7 @@ class AssetController extends AbstractController{
                 return $object->getId();
             }
         ]);
+
     }
     public function edditAsset(){
 
