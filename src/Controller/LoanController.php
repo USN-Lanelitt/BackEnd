@@ -70,6 +70,8 @@ class LoanController extends AbstractController
 
         $check = empty($oConnectionId);
 
+        /// trenger ikke dette
+        
         //hvis ikke låneforholdet finnes
         if ($check){
 
