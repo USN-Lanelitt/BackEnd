@@ -33,13 +33,96 @@ class LoanController extends AbstractController
         $this->logger=$logger;
     }
 
-    public function getAllLoanRequest(Request $request){ //Henter alle mottatte forespørsler
+    public function sendLoanRequest(Request $request) {
+        //Sjekker om requesten har innehold
+        //$content=json_decode($request->getContent());
+        //if(empty($content)){
+        //return new JsonResponse($content);
+        //}
+
+        //Henter info om lånet
+        //$iUserId  = $content->userId;
+        //$iAssetId  = $content->assetId;
+        //$dStart  = $content->StartDate;
+        //$dEnd  = $content->endDate;
+
+        //HARDKODE
+        $iUserId  = 1;
+        $iAssetId  = 16;
+        $dStart  = "2020-03-17";
+        $dEnd  = "2020-04-17";
+        $sStatusLoan = array("sent", "accepted", "denied", "available");
+
+        $oUser = $this->getDoctrine()->getRepository(Users::class)->find($iUserId);
+        $oAsset = $this->getDoctrine()->getRepository(Assets::class)->find($iAssetId);
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        //Sjekker om låneforholdet finnes fra før av
+        $conn = $this->getDoctrine()->getConnection();
+        $sql = "SELECT id FROM loans 
+                WHERE users_id= $iUserId 
+                  AND assets_id = $iAssetId 
+                  AND status_loan not like '$sStatusLoan[3]'";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $oConnectionId = $stmt->fetchAll();
+
+        $check = empty($oConnectionId);
+
+        //hvis ikke låneforholdet finnes
+        if ($check){
+
+            $dUNIXStart  = strtotime($dStart);
+            $dUNIXEnd  = strtotime($dEnd);
+
+            // Specify the start date. This date can be any English textual format
+            /*$date_from = "2010-02-03";
+            $date_from = strtotime($date_from); // Convert date to a UNIX timestamp
+
+            // Specify the end date. This date can be any English textual format
+            $date_to = "2010-09-10";
+            $date_to = strtotime($date_to); // Convert date to a UNIX timestamp  */
+
+            // Loop from the start date to end date and output all dates inbetween
+            $ikkeLedig = array();
+            $teller = 0;
+            for ($i=$dUNIXStart; $i<=$dUNIXEnd; $i+=86400) {
+                $teller += 1;
+                $ikkeLedig[$teller] = date("Y-m-d", $i);
+            }
+
+            return new JsonResponse($ikkeLedig);
+            // if(){ }
+            //Oppretter lånefohold
+            $oLoan = new Loans();
+            $oLoan->setUsers($oUser);
+            $oLoan->setAssets($oAsset);
+            $oLoan->setDateStart(\DateTime::createFromFormat('Y-m-d',$dStart));
+            $oLoan->setDateEnd(\DateTime::createFromFormat('Y-m-d',$dEnd));
+            $oLoan->setStatusLoan($sStatusLoan[0]);
+
+            $entityManager->persist($oLoan);
+            $entityManager->flush();
+
+            //return new JsonResponse('Låneforhold er opprettet');
+        }
+        return new JsonResponse('Låneforholdet finnes fra før');
+    }
+
+
+    public function getLoanRequest(Request $request){ //Henter alle mottatte forespørsler
         $sStatusLoan = array("sent", "accepted", "denied", "available");
         //Sjekker om requesten har innehold
         //$content=json_decode($request->getContent());
         //if(empty($content)){
         //return new JsonResponse($content);
         //}
+        /*if (!$events) {
+            throw $this->createNotFoundException(
+                'No event found'
+            );
+        }*/
 
         //$iUserId  = $content->userId;
 
@@ -70,7 +153,35 @@ class LoanController extends AbstractController
         ]);
     }
 
-    public function changeLoanStatus(Request $request) {
+    public function getLoanRequestStatus(Request $request) { //Henter status på alle forespørsler bruker har sendt
+
+        //Sjekker om requesten har innehold
+        //$content=json_decode($request->getContent());
+        //if(empty($content)){
+        //return new JsonResponse($content);
+        //}
+
+        //Henter info om låneforespørsel
+        //$iUserId  = $content->userId;
+
+        //HARDKODE
+        $sStatusLoan = array("sent", "accepted", "denied", "available");
+        $iUserId  = 1;
+
+        //Henter alle låne-objektene der bruker har sendt en forespørsel
+        $oRequestIds = $this->getDoctrine()->getRepository(Loans::class)->findBy(array('users'=> $iUserId));
+
+        return $this->json($oRequestIds, Response::HTTP_OK, [], [
+            ObjectNormalizer::SKIP_NULL_VALUES => true,
+            //ObjectNormalizer::ATTRIBUTES => [],
+            ObjectNormalizer::GROUPS => ['groups' => 'loanStatus'],
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            }
+        ]);
+    }
+
+    public function replyLoanRequest(Request $request) {
         //Sjekker om requesten har innehold
         //$content=json_decode($request->getContent());
         //if(empty($content)){
@@ -110,88 +221,8 @@ class LoanController extends AbstractController
         return new JsonResponse('Forespørsel finnes ikke');
     }
 
-    public function sendLoanRequest(Request $request) {
-        //Sjekker om requesten har innehold
-        //$content=json_decode($request->getContent());
-        //if(empty($content)){
-        //return new JsonResponse($content);
-        //}
 
-        //Henter info om lånet
-        //$iUserId  = $content->userId;
-        //$iAssetId  = $content->assetId;
-        //$dStart  = $content->StartDate;
-        //$dEnd  = $content->endDate;
-
-        //HARDKODE
-        $iUserId  = 1;
-        $iAssetId  = 2;
-        $dStart  = new\DateTime();
-        $dEnd  = new\DateTime();
-        $sStatusLoan = array("sent", "accepted", "denied", "available");
-
-        $oUser = $this->getDoctrine()->getRepository(Users::class)->find($iUserId);
-        $oAsset = $this->getDoctrine()->getRepository(Assets::class)->find($iAssetId);
-
-        $entityManager = $this->getDoctrine()->getManager();
-
-        //Sjekker om låneforholdet finnes fra før av
-        $conn = $this->getDoctrine()->getConnection();
-        $sql = "SELECT id FROM loans WHERE users_id= $iUserId AND assets_id = $iAssetId AND status_loan not like '$sStatusLoan[3]'";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $oConnectionId = $stmt->fetchAll();
-
-        $check = empty($oConnectionId);
-
-        //hvis ikke låneforholdet finnes
-        if ($check){
-            //Oppretter lånefohold
-            $oLoan = new Loans();
-            $oLoan->setUsers($oUser);
-            $oLoan->setAssets($oAsset);
-            $oLoan->setDateStart($dStart);
-            $oLoan->setDateEnd($dEnd);
-            $oLoan->setStatusLoan($sStatusLoan[0]);
-
-            $entityManager->persist($oLoan);
-            $entityManager->flush();
-
-            return new JsonResponse('Låneforhold er opprettet');
-        }
-        return new JsonResponse('Låneforholdet finnes fra før');
-    }
-
-    public function getLoanRequestStatus(Request $request) { //Henter status på alle forespørsler bruker har sendt
-
-        //Sjekker om requesten har innehold
-        //$content=json_decode($request->getContent());
-        //if(empty($content)){
-        //return new JsonResponse($content);
-        //}
-
-        //Henter info om låneforespørsel
-        //$iUserId  = $content->userId;
-
-        //HARDKODE
-        $sStatusLoan = array("sent", "accepted", "denied", "available");
-        $iUserId  = 1;
-
-        //Henter alle låne-objektene der bruker har sendt en forespørsel
-        $oRequestIds = $this->getDoctrine()->getRepository(Loans::class)->findBy(array('users'=> $iUserId));
-
-        return $this->json($oRequestIds, Response::HTTP_OK, [], [
-            ObjectNormalizer::SKIP_NULL_VALUES => true,
-            //ObjectNormalizer::ATTRIBUTES => [],
-            ObjectNormalizer::GROUPS => ['groups' => 'loanStatus'],
-            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
-                return $object->getId();
-            }
-        ]);
-
-    }
-
-    public function getAcceptedRequest(Request $request) { //Henter alle godkjente forespørsler brukeren har sendt
+    public function getAcceptedRequests(Request $request) { //Henter alle godkjente forespørsler brukeren har sendt
         //Sjekker om requesten har innehold
         //$content=json_decode($request->getContent());
         //if(empty($content)){
@@ -217,7 +248,7 @@ class LoanController extends AbstractController
         ]);
     }
 
-    public function getAllLoans(Request $request){ //Henter alle lån bruker har godkjent
+    public function getLoans(Request $request){ //Henter alle lån bruker har godkjent
         //Sjekker om requesten har innehold
         //$content=json_decode($request->getContent());
         //if(empty($content)){
@@ -246,6 +277,34 @@ class LoanController extends AbstractController
         $oRequestIds = $this->getDoctrine()->getRepository(Loans::class)->findBy(array('id'=> $iIds));
 
         return $this->json($oRequestIds, Response::HTTP_OK, [], [
+            ObjectNormalizer::SKIP_NULL_VALUES => true,
+            ObjectNormalizer::GROUPS => ['groups' => 'loanRequest'],
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            }
+        ]);
+    }
+
+    public function getAllUnavailableDates(){
+        $assetId = 15;
+        $aIds = $this->getDoctrine()->getRepository(Loans::class)->findAllAssetLoans($assetId);
+
+        $aUnavailableDates = $aIds;
+        $teller = 0;
+        foreach($aUnavailableDates as $id) {
+            $teller += 1;
+            //$dates = array($id->getDateStart(), $id->getDateEnd());
+            $aUnavailableDate[$teller]  = $aUnavailableDates[0]['dateStart'];
+            $aUnavailableDate[$teller+1]  = $aUnavailableDates[0]['dateEnd'];
+            //for ($i = $dUNIXStart; $i <= $dUNIXEnd; $i+=86400) {
+                // $teller += 1;
+
+                //$aUnavailableDate[$teller] = date("Y-m-d", $i);
+                //}
+           // }
+        }
+
+        return $this->json($aUnavailableDate, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
             ObjectNormalizer::GROUPS => ['groups' => 'loanRequest'],
             ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {

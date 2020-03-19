@@ -45,7 +45,6 @@ class UserController extends AbstractController
 
         $sBirthdate = new DateTime($sBirthdate);
 
-
         // Sjekke om e-post finnes i databasen
         $oUserExist = $this->getDoctrine()->getRepository(Users::class)->findOneBy(['email'=>$sEmail]);
 
