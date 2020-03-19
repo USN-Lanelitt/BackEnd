@@ -47,4 +47,17 @@ class LoansRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findAllAssetLoans($assetId)
+{
+    $sStatus = "accepted";
+    return $this->createQueryBuilder('l')
+        ->andWhere('l.assets = :id')
+        ->andWhere('l.statusLoan = :status')
+        ->setParameter('id', $assetId)
+        ->setParameter('status', $sStatus)
+        ->orderBy('l.id', 'ASC')
+        ->getQuery()
+        ->getArrayResult()
+        ;
+}
 }

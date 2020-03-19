@@ -9,4 +9,6 @@
 /vendor/
 /.idea/
 /src/Controller/SendMailController.php
+/composer.lock
+/symfony.lock
 ###< symfony/framework-bundle ###
