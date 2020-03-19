@@ -24,36 +24,6 @@ class UserConnectionsController extends AbstractController
         $this->logger=$logger;
     }
 
-
-    public function getAllFriends(Request $request){
-        //Sjekker om requesten har innehold
-        //$content=json_decode($request->getContent());
-        //if(empty($content)){
-            //return new JsonResponse($content);
-        //}
-
-        //Henter id til bruker
-        //$iUserId1  = $content->userId1;
-
-        //Kan hende jeg må søke finne bruker med telefon/mail
-
-        //HARDKODE
-        $iUserId1  = 1;
-
-        $oFirnds = $this->getDoctrine()->getRepository(UserConnections::class)->findFriends($iUserId1);
-
-        //Skriver ut alle objektene
-        return $this->json($oFirnds, Response::HTTP_OK, [], [
-            ObjectNormalizer::SKIP_NULL_VALUES => true,
-            ObjectNormalizer::GROUPS => ['groups' => 'friendInfo'],
-            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
-                return $object->getId();
-            }
-        ]);
-
-        $this->logger->info("getAllFriends");
-    }
-
     public function getFriend(Request $request){
         //Vet ikke hva som trengs av informasjon her
         //Sjekker om requesten har innehold
@@ -80,6 +50,35 @@ class UserConnectionsController extends AbstractController
                 return $object->getId();
             }
         ]);
+    }
+
+    public function getFriends(Request $request){
+        //Sjekker om requesten har innehold
+        //$content=json_decode($request->getContent());
+        //if(empty($content)){
+        //return new JsonResponse($content);
+        //}
+
+        //Henter id til bruker
+        //$iUserId1  = $content->userId1;
+
+        //Kan hende jeg må søke finne bruker med telefon/mail
+
+        //HARDKODE
+        $iUserId1  = 1;
+
+        $oFriends = $this->getDoctrine()->getRepository(UserConnections::class)->findFriends($iUserId1);
+
+        //Skriver ut alle objektene
+        return $this->json($oFriends, Response::HTTP_OK, [], [
+            ObjectNormalizer::SKIP_NULL_VALUES => true,
+            ObjectNormalizer::GROUPS => ['groups' => 'friendInfo'],
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            }
+        ]);
+
+        $this->logger->info("getAllFriends");
     }
 
     public function sendFriendRequest(Request $request){
@@ -126,7 +125,7 @@ class UserConnectionsController extends AbstractController
         return new JsonResponse('forespørsel er allerede sendt');
     }
 
-    public function getAllFriendRequest(Request $request){
+    public function getFriendRequest(Request $request){
         //Sjekker om requesten har innehold
         //$content=json_decode($request->getContent());
         //if(empty($content)){
@@ -165,7 +164,7 @@ class UserConnectionsController extends AbstractController
         $this->logger->info("getAllFriendRequest");
     }
 
-    public function replyFriendRequest (Request $request){
+    public function replyFriendRequest(Request $request){
         //Sjekker om requesten har innehold
         //$content=json_decode($request->getContent());
         //if(empty($content)){
@@ -224,8 +223,6 @@ class UserConnectionsController extends AbstractController
         }
         return new JsonResponse('Finner ikke forespørsel');
     }
-
-
 
     public function deleteFriendship(Request $request){
         //Sjekker om requesten har innehold
