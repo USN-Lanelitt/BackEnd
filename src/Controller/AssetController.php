@@ -10,6 +10,8 @@ use App\Entity\IndividConnections;
 use App\Entity\Individuals;
 
 use App\Entity\Users;
+use DateInterval;
+use DatePeriod;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -70,7 +72,7 @@ class AssetController extends AbstractController{
 
         return $this->json($assets, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
-            ObjectNormalizer::ATTRIBUTES => ['id','assetName', 'description'],
+            ObjectNormalizer::ATTRIBUTES => ['id'],
             ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
                 return $object->getId();
             }
@@ -152,33 +154,10 @@ class AssetController extends AbstractController{
         $iAssetId = 1;
 
         $asset=$this->getDoctrine()->getRepository(Assets::class)->find($iAssetId);
-        $assetLoan=$this->getDoctrine()->getRepository(Loans::class)->findOneBy(array('assets'=>$iAssetId, 'statusLoan'=>'accepted'));
-
-
         if(empty($asset)){
             return new JsonResponse($asset);
         }
-        if(!empty($assetLoan)){
-            $dStart=strtotime($assetLoan->getDateStart());
-            $dEnd=strtotime($assetLoan->getDateEnd());
-            $ikkeLedig = array();
-            $teller = 0;
-            for ($i=$dStart; $i<=$dEnd; $i+=86400) {
-                $teller += 1;
-                $ikkeLedig[$teller] = date("Y-m-d", $i);
-            }
-            //*
-            return new JsonResponse(0);
-            /*/
-            return $this->json($assetLoan, Response::HTTP_OK, [], [
-                ObjectNormalizer::SKIP_NULL_VALUES => true,
-                ObjectNormalizer::ATTRIBUTES => ['id', 'assetsId', 'dateStart', 'dateEnd'],
-                ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
-                    return $object->getId();
-                }
-            ]);
-            //*/
-        }
+
         return $this->json($asset, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
             ObjectNormalizer::ATTRIBUTES => ['id','assetName', 'description'],
@@ -188,6 +167,38 @@ class AssetController extends AbstractController{
         ]);
 
     }
+    public function assetAvailebility($id){
+        $assetLoans=$this->getDoctrine()->getRepository(Loans::class)->findBy(array('assets'=>$id, 'statusLoan'=>'accepted'));
+
+        $ikkeLedig = array();
+        $teller = 0;
+        if(!empty($assetLoans)) {
+            foreach ($assetLoans as $assetLoan) {
+
+                $dStart = $assetLoan->getDateStart();
+                //return new JsonResponse($dStart);
+
+                $dEnd = $assetLoan->getDateEnd();
+                $interval = DateInterval::createFromDateString('1 day');
+                $period = new DatePeriod($dStart, $interval, $dEnd);
+
+                foreach ($period as $dt) {
+                    $teller += 1;
+                    $ikkeLedig[$teller] = $dt->format("Y-m-d");
+                }
+                /*
+                $dStart = strtotime($assetLoan->getDateStart()->format('Y-m-d'));
+                $dEnd = strtotime($assetLoan->getDateEnd()->format('Y-m-d'));
+                for ($i = $dStart; $i <= $dEnd; $i += 86400) {
+                    $teller += 1;
+                    $ikkeLedig[$teller] = date("Y-m-d", $i);
+                }*/
+            }
+
+        }
+        return new JsonResponse($ikkeLedig);
+    }
+
     public function edditAsset(){
 
     }

@@ -23,8 +23,12 @@ addAsset:
   controller: App\Controller\AssetController::addAsset
 
 searchAsset:
-  path: /api/assets/getAssetSearch
+  path: /api/assets/search
   controller: App\Controller\AssetController::getAssetSearch
+
+assetAvailebility:
+  path: /assets/availebility/{id}
+  controller: App\Controller\AssetController::assetAvailebility
 
 getAsset:
   path: /api/assets/getAsset
