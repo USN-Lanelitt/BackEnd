@@ -46,7 +46,7 @@ class UserConnectionsController extends AbstractController
         $oFriends = $this->getDoctrine()->getRepository(UserConnections::class)->findFriends($userId);
 
         //Skriver ut alle objektene
-        return $this->json($user, Response::HTTP_OK, [], [
+        return $this->json($userId, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
             //ObjectNormalizer::ATTRIBUTES => ['firstName', 'lastName'],
             ObjectNormalizer::GROUPS => ['groups' => 'friendInfo'],
