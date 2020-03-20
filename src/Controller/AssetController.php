@@ -168,7 +168,7 @@ class AssetController extends AbstractController{
 
     }
     public function assetAvailebility($id){
-        $assetLoans=$this->getDoctrine()->getRepository(Loans::class)->findBy(array('assets'=>$id, 'statusLoan'=>'accepted'));
+        $assetLoans=$this->getDoctrine()->getRepository(Loans::class)->findBy(array('assets'=>$id, 'statusLoan'=>2));
 
         $ikkeLedig = array();
         $teller = 0;

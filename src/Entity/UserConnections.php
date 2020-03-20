@@ -34,7 +34,7 @@ class UserConnections
     private $timestamp;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\ManyToOne(targetEntity="App\Entity\RequestStatus", inversedBy="userConnections")
      */
     private $requestStatus;
 
@@ -79,12 +79,12 @@ class UserConnections
         return $this;
     }
 
-    public function getRequestStatus(): ?bool
+    public function getRequestStatus(): ?RequestStatus
     {
         return $this->requestStatus;
     }
 
-    public function setRequestStatus(bool $requestStatus): self
+    public function setRequestStatus(?RequestStatus $requestStatus): self
     {
         $this->requestStatus = $requestStatus;
 

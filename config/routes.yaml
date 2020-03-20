@@ -31,7 +31,7 @@ assetAvailebility:
   controller: App\Controller\AssetController::assetAvailebility
 
 getAsset:
-  path: /api/assets/getAsset
+  path: /assets/getAsset
   controller: App\Controller\AssetController::getAsset
 
 getFriend:

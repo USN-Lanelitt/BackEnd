@@ -47,10 +47,9 @@ class Loans
      * @ORM\Column(type="datetime")
      */
     private $dateEnd;
-
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"loanStatus"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\RequestStatus", inversedBy="loans")
+     * @Groups({"loanStatus", "loanRequest"})
      */
     private $statusLoan;
 
@@ -130,12 +129,12 @@ class Loans
         return $this;
     }
 
-    public function getStatusLoan(): ?string
+    public function getStatusLoan(): ?RequestStatus
     {
         return $this->statusLoan;
     }
 
-    public function setStatusLoan(string $statusLoan): self
+    public function setStatusLoan(?RequestStatus $statusLoan): self
     {
         $this->statusLoan = $statusLoan;
 
