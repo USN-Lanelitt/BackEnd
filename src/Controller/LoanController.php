@@ -330,7 +330,7 @@ class LoanController extends AbstractController
 
                 $dEnd = $assetLoan->getDateEnd();
                 $interval = DateInterval::createFromDateString('1 day');
-                $period = new DatePeriod($dStart, $interval, $dEnd);
+                $period = new DatePeriod($dStart, $interval, $dEnd->modify( '+1 day' ));
 
                 foreach ($period as $dt) {
                     $teller += 1;

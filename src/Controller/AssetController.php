@@ -65,7 +65,7 @@ class AssetController extends AbstractController{
 
         return $this->json($assets, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
-            ObjectNormalizer::ATTRIBUTES => ['id'],
+            ObjectNormalizer::GROUPS => ['groups' => 'asset'],
             ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
                 return $object->getId();
             }
@@ -91,7 +91,7 @@ class AssetController extends AbstractController{
         }
         return $this->json($aAssets, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
-            ObjectNormalizer::ATTRIBUTES => ['id','assetName', 'description'],
+            ObjectNormalizer::GROUPS => ['groups' => 'asset'],
             ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
                 return $object->getId();
             }
@@ -107,14 +107,12 @@ class AssetController extends AbstractController{
 
         return $this->json($asset, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
-            ObjectNormalizer::ATTRIBUTES => ['id','assetName', 'description', 'asset_condition'],
+            ObjectNormalizer::GROUPS => ['groups' => 'asset'],
             ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
                 return $object->getId();
             }
         ]);
     }
-
-
 
     public function addAsset(Request $request){
         $ut="\n\n**************************************************************************\n\n";
@@ -122,20 +120,22 @@ class AssetController extends AbstractController{
         $content = json_decode($request->getContent());
 
         $iUserId = $content->userId;
-        $iCategoryId = $content->categoryId;
+        $iTypeId = $content->typeId;
         $sAssetName = $content->assetName;
         $tDescription = $content->description;
         $iCondition = $content->condition;
+        $bPublic=$content->public;
 
         $user=$this->getDoctrine()->getRepository(Users::class)->find($iUserId);
-        //$assetCategory=$this->getDoctrine()->getRepository(AssetCategories::class)->find($iCategoryId);
+        //$oAssetType=$this->getDoctrine()->getRepository(AssetCategories::class)->find($iTypeId);
 
         $asset=new Assets();
         $asset->setUsers($user);
-        //$asset->setCategory($assetCategory);
+        //$asset->setAssetType($oAssetType);
         $asset->setAssetname($sAssetName);
         $asset->setDescription($tDescription);
         $asset->setAssetCondition($iCondition);
+        $asset->setPublic($bPublic);
 
 
         $entityManager = $this->getDoctrine()->getManager();
@@ -145,9 +145,45 @@ class AssetController extends AbstractController{
         return new JsonResponse("Eiendel lagd til");
     }
 
+    public function editAsset(Request $request, $userId, $assetId){
+        $asset=$this->getDoctrine()->getRepository(Assets::class)->findOneBy(array('id'=>$assetId, 'users'=>$userId));
+
+        if(empty($asset)){
+            return new JsonResponse($asset);
+        }
+
+        $content = json_decode($request->getContent());
+        $iUserId = $content->userId;
+        $iTypeId = $content->typeId;
+        $sAssetName = $content->assetName;
+        $tDescription = $content->description;
+        $iCondition = $content->condition;
+        $bPublic=$content->public;
+
+        //*
+        $oUser=$this->getDoctrine()->getRepository(Users::class)->find($iUserId);
+        //$oAssetType=$this->getDoctrine()->getRepository(AssetCategories::class)->find($iTypeId);
+
+        $asset->setUsers($oUser);
+        //$asset->setAssetType($oAssetType);
+        $asset->setAssetname($sAssetName);
+        $asset->setDescription($tDescription);
+        $asset->setAssetCondition($iCondition);
+        $asset->setPublic($bPublic);
 
 
-    public function edditAsset(){
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($asset);
+        $entityManager->flush();
+        //*/
+
+        return $this->json($asset, Response::HTTP_OK, [], [
+            ObjectNormalizer::SKIP_NULL_VALUES => true,
+            ObjectNormalizer::GROUPS => ['groups' => 'asset'],
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            }
+        ]);
 
     }
     public function removeAsset(){
