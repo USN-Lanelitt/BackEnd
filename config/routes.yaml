@@ -11,6 +11,7 @@ login:
   path: /api/login
   controller: App\Controller\UserController::login
 
+#---------------------------------------------------John-Berge Grimaas--------------------------------------------------
 getAssetSearch:
   path: /assets/search/{userId}/{search}
   controller: App\Controller\AssetController::getAssetSearch
@@ -36,10 +37,22 @@ editAsset:
   controller: App\Controller\AssetController::editAsset
   methods: GET
 
+getMainImage:
+  path: /assetsImage/getMainImage/{assetId}
+  controller: App\Controller\AssetImageController::getMainImage
+  methods: GET
+
+addImage:
+  path: /assetsImage/addImage/{userId}/{assetId}
+  controller: App\Controller\AssetImageController::addImage
+  methods: POST
+
 assetAvailability:
   path: /loans/availability/{assetId}
   controller: App\Controller\LoanController::assetAvailability
   methods: GET
+
+#-----------------------------------------------------------------------------------------------------------------------
 
 getFriend:
   path: /friend/{iFriendId}

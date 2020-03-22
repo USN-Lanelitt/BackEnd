@@ -3,33 +3,20 @@
 namespace App\Controller;
 
 
-use App\Entity\AssetCategories;
 use App\Entity\Assets;
-use App\Entity\Loans;
 use App\Entity\IndividConnections;
 use App\Entity\Individuals;
-
+use App\Entity\UserConnectionsRepository;
 use App\Entity\Users;
-use DateInterval;
-use DatePeriod;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-
-use App\Entity\UserConnectionsRepository;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Psr\Log\LoggerInterface;
-
-
-
 
 $request = Request::createFromGlobals();
 
