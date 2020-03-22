@@ -11,29 +11,35 @@ login:
   path: /api/login
   controller: App\Controller\UserController::login
 
+getAssetSearch:
+  path: /assets/search/{userId}/{search}
+  controller: App\Controller\AssetController::getAssetSearch
+  methods: GET
+
 getMyAssets:
-  path: /api/assets/getMyAsset
+  path: /assets/getMyAsset/{userId}
   controller: App\Controller\AssetController::getMyAssets
+  methods: GET
+
+getAsset:
+  path: /assets/getAsset/{assetId}
+  controller: App\Controller\AssetController::getAsset
+  methods: GET
 
 editAsset:
   path: /api/assets/editAsset
   controller: App\Controller\AssetController::editAsset
+  methods: POST
 
 addAsset:
   path: /api/assets/addAsset
   controller: App\Controller\AssetController::addAsset
+  methods: POST
 
-searchAsset:
-  path: /api/assets/search
-  controller: App\Controller\AssetController::getAssetSearch
-
-assetAvailebility:
-  path: /assets/availebility/{id}
-  controller: App\Controller\AssetController::assetAvailebility
-
-getAsset:
-  path: /assets/getAsset
-  controller: App\Controller\AssetController::getAsset
+assetAvailability:
+  path: /loans/availability/{assetId}
+  controller: App\Controller\LoanController::assetAvailability
+  methods: GET
 
 getFriend:
   path: /friend/{iFriendId}

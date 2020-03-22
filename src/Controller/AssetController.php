@@ -43,22 +43,14 @@ class AssetController extends AbstractController{
         $this->logger=$logger;
     }
 
-    public function getAssetSearch(Request $request){
+    public function getAssetSearch($userId, $search){
 
-        $content=json_decode($request->getContent());
-        if(empty($content)){
-            return new JsonResponse($content);
-        }
-        $iUserId=$content->userId;
-        $sSearch=$content->search;
-
-        /*$sSearch="Topp";*/
-        //Sjekk om lånetingen er offentlig
-        //Hvis ikke sjekk om personer er venner
         //Sjekk at tingen ikke er lånt ut
 
         $conn=$this->getDoctrine()->getConnection();
-        $sql="SELECT id FROM assets WHERE UPPER(asset_name) LIKE UPPER('%$sSearch%') ";
+        $sql="SELECT id FROM assets 
+              WHERE UPPER(asset_name) LIKE UPPER('%$search%') /**/   
+              AND (users_id IN (SELECT user2_id FROM user_connections WHERE user1_id LIKE $userId) OR (users_id LIKE $userId OR public LIKE TRUE))";
         $stmt=$conn->prepare($sql);
         $stmt->execute();
 
@@ -70,6 +62,7 @@ class AssetController extends AbstractController{
         //Henter alle objektene
         $assets = $this->getDoctrine()->getRepository(Assets::class)->findBy(array('id' => $iIds));
 
+
         return $this->json($assets, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
             ObjectNormalizer::ATTRIBUTES => ['id'],
@@ -80,20 +73,16 @@ class AssetController extends AbstractController{
 
     }
 
-    public function getMyAssets(Request $request){
-        $content = json_decode($request->getContent());
-        if(empty($content)){
-            return new JsonResponse($content);
-        }
-        $iUserId = $content->userId;
+    public function getMyAssets($userId){
 
-        $user=$this->getDoctrine()->getRepository(Users::class)->find($iUserId);
+
+        $user=$this->getDoctrine()->getRepository(Users::class)->find($userId);
+        if(empty($user)){
+            return new JsonResponse("empty");
+        }
         $assets=$user->getAssets();
         $aAssets = $assets->toArray();
 
-        if(empty($aAssets)){
-            return new JsonResponse($aAssets);
-        }
 
         $d1=empty($aAssets);
         $d2="not empty";
@@ -108,6 +97,24 @@ class AssetController extends AbstractController{
             }
         ]);
     }
+
+    public function getAsset($assetId){
+
+        $asset=$this->getDoctrine()->getRepository(Assets::class)->find($assetId);
+        if(empty($asset)){
+            return new JsonResponse($asset);
+        }
+
+        return $this->json($asset, Response::HTTP_OK, [], [
+            ObjectNormalizer::SKIP_NULL_VALUES => true,
+            ObjectNormalizer::ATTRIBUTES => ['id','assetName', 'description', 'asset_condition'],
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            }
+        ]);
+    }
+
+
 
     public function addAsset(Request $request){
         $ut="\n\n**************************************************************************\n\n";
@@ -138,66 +145,7 @@ class AssetController extends AbstractController{
         return new JsonResponse("Eiendel lagd til");
     }
 
-    public function getAllAssets(){
 
-    }
-    public function getAsset(Request $request){
-
-
-       /*
-        $content = json_decode($request->getContent());
-        if(empty($content)){
-            return new JsonResponse($content);
-        }
-        $iAssetId = $content->assetId;
-       */
-        $iAssetId = 1;
-
-        $asset=$this->getDoctrine()->getRepository(Assets::class)->find($iAssetId);
-        if(empty($asset)){
-            return new JsonResponse($asset);
-        }
-
-        return $this->json($asset, Response::HTTP_OK, [], [
-            ObjectNormalizer::SKIP_NULL_VALUES => true,
-            ObjectNormalizer::ATTRIBUTES => ['id','assetName', 'description'],
-            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
-                return $object->getId();
-            }
-        ]);
-
-    }
-    public function assetAvailebility($id){
-        $assetLoans=$this->getDoctrine()->getRepository(Loans::class)->findBy(array('assets'=>$id, 'statusLoan'=>2));
-
-        $ikkeLedig = array();
-        $teller = 0;
-        if(!empty($assetLoans)) {
-            foreach ($assetLoans as $assetLoan) {
-
-                $dStart = $assetLoan->getDateStart();
-                //return new JsonResponse($dStart);
-
-                $dEnd = $assetLoan->getDateEnd();
-                $interval = DateInterval::createFromDateString('1 day');
-                $period = new DatePeriod($dStart, $interval, $dEnd);
-
-                foreach ($period as $dt) {
-                    $teller += 1;
-                    $ikkeLedig[$teller] = $dt->format("Y-m-d");
-                }
-                /*
-                $dStart = strtotime($assetLoan->getDateStart()->format('Y-m-d'));
-                $dEnd = strtotime($assetLoan->getDateEnd()->format('Y-m-d'));
-                for ($i = $dStart; $i <= $dEnd; $i += 86400) {
-                    $teller += 1;
-                    $ikkeLedig[$teller] = date("Y-m-d", $i);
-                }*/
-            }
-
-        }
-        return new JsonResponse($ikkeLedig);
-    }
 
     public function edditAsset(){
 

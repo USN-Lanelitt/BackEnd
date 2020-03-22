@@ -8,6 +8,8 @@ use App\Entity\Assets;
 use App\Entity\Loans;
 use App\Entity\UserConnections;
 use App\Entity\Users;
+use DateInterval;
+use DatePeriod;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\Mapping\ClassMetadataFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -313,6 +315,38 @@ class LoanController extends AbstractController
                 return $object->getId();
             }
         ]);
+    }
+
+    public function assetAvailability($assetId){
+        $assetLoans=$this->getDoctrine()->getRepository(Loans::class)->findBy(array('assets'=>$assetId, 'statusLoan'=>1));
+
+        $ikkeLedig = array();
+        $teller = 0;
+        if(!empty($assetLoans)) {
+            foreach ($assetLoans as $assetLoan) {
+
+                $dStart = $assetLoan->getDateStart();
+                //return new JsonResponse($dStart);
+
+                $dEnd = $assetLoan->getDateEnd();
+                $interval = DateInterval::createFromDateString('1 day');
+                $period = new DatePeriod($dStart, $interval, $dEnd);
+
+                foreach ($period as $dt) {
+                    $teller += 1;
+                    $ikkeLedig[$teller] = $dt->format("Y-m-d");
+                }
+                /*
+                $dStart = strtotime($assetLoan->getDateStart()->format('Y-m-d'));
+                $dEnd = strtotime($assetLoan->getDateEnd()->format('Y-m-d'));
+                for ($i = $dStart; $i <= $dEnd; $i += 86400) {
+                    $teller += 1;
+                    $ikkeLedig[$teller] = date("Y-m-d", $i);
+                }*/
+            }
+
+        }
+        return new JsonResponse($ikkeLedig);
     }
 
 }
