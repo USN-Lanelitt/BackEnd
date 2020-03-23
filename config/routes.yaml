@@ -52,70 +52,70 @@ assetAvailability:
   controller: App\Controller\LoanController::assetAvailability
   methods: GET
 
-#-----------------------------------------------------------------------------------------------------------------------
-
+#---------------------------------------------UserConnections--Nicole Bendu---------------------------------------------
 getFriend:
-  path: /friend/{iFriendId}
+  path: /user/{iUserId}/friend/{iFriendId}
   controller: App\Controller\UserConnectionsController::getFriend
   methods: GET
 
 getFriends:
-  path: /friends
+  path: /user/{iUserId}/friends
   controller: App\Controller\UserConnectionsController::getFriends
   methods: GET
 
 sendFriendRequest:
-  path: /user/request/{iUserId}
+  path: /user/{iUserId}/request/{iFriendId}
   controller: App\Controller\UserConnectionsController::sendFriendRequest
   methods: POST
 
 getFriendRequests:
-  path: /friendRequests
+  path: /user/{iUserId}/friendRequests
   controller: App\Controller\UserConnectionsController::getFriendRequest
   methods: GET
 
 replyFriendRequest:
-  path: /friendRequest/reply
+  path: /user/{iUserId}/friendRequest/{iFriendId}/{iStatus}
   controller: App\Controller\UserConnectionsController::replyFriendRequest
   methods: POST
 
 deleteFriendship:
-  path: /friend/delete/{iFriendId}
+  path: /user/{iUserId}/friend/{iFriendId}/delete
   controller: App\Controller\UserConnectionsController::deleteFriendship
   methods: POST
 
 getUserSearch:
-  path: /search/{sSearch}
+  path: /user/{iUserId}/search/{sSearch}
   controller: App\Controller\UserConnectionsController::getUserSearch
   methods:    GET
 
+#---------------------------------------------------Loans--Nicole Bendu-------------------------------------------------
 sendLoanRequest:
-  path: /asset/request/{iAssetId}
+  path: /user/{iUserId}/asset/{iAssetId}/request
   controller: App\Controller\LoanController::sendLoanRequest
   methods: POST
 
 getLoanRequest:
-    path: /loanRequest
+    path: /user/{iUserId}/loanRequest
     controller: App\Controller\LoanController::getLoanRequest
     methods:    GET
 
 getLoanRequestStatus:
-  path: /loanStatus
+  path: /user/{iUserId}/loanRequest/status
   controller: App\Controller\LoanController::getLoanRequestStatus
   methods: GET
 
-replyLoanRequest:
-  path: /loanRequest/reply
+replyLoanRequests:
+  path: /user/{iUserId}/loanRequest/{iLoanId}/{iStatus}
   controller: App\Controller\LoanController::replyLoanRequest
   methods:    POST
 
 getAcceptedRequest:
-  path: /loanAccepted
-  controller: App\Controller\LoanController::getAcceptedRequest
+  path: /user/{iUserId}/loanAccepted
+  controller: App\Controller\LoanController::getAcceptedRequests
   methods: GET
   
 getLoans:
-  path: /loans
+  path: /user/{iUserId}/loans
   controller: App\Controller\LoanController::getLoans
   methods: GET
 
