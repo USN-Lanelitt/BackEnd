@@ -24,29 +24,22 @@ class UserConnectionsController extends AbstractController
         $this->logger=$logger;
     }
 
-    public function getFriend(Request $request){
-        //Vet ikke hva som trengs av informasjon her
+    public function getFriend($iUserId, $iFriendId){
         //Sjekker om requesten har innehold
         //$content=json_decode($request->getContent());
 
-        $userId = $request->headers->get('x-userid');
-        $this->logger->info("userId:" .$userId);
+        //$iUserId = $request->headers->get('x-userid');
+        //$this->logger->info("iUserid:" .$iUserId);
 
-        if(empty($userId)){
+        if(empty($iUserId)){
             return new JsonResponse();
         }
 
-        //Henter id til bruker og venn
-        //$iUserId1  = $content->userId1;
-        //$iUserId2  = $content->userId2;
-
-        //HARDKODE
-        //$iUserId1  = 1;
-
-        $oFriends = $this->getDoctrine()->getRepository(UserConnections::class)->findFriends($userId);
+        //Ser om de er venner
+        $oFriend = $this->getDoctrine()->getRepository(UserConnections::class)->findFriend($iUserId, $iFriendId);
 
         //Skriver ut alle objektene
-        return $this->json($userId, Response::HTTP_OK, [], [
+        return $this->json($oFriend, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
             //ObjectNormalizer::ATTRIBUTES => ['firstName', 'lastName'],
             ObjectNormalizer::GROUPS => ['groups' => 'friendInfo'],
@@ -56,22 +49,12 @@ class UserConnectionsController extends AbstractController
         ]);
     }
 
-    public function getFriends(Request $request){
-        //Sjekker om requesten har innehold
-        //$content=json_decode($request->getContent());
-        //if(empty($content)){
-        //return new JsonResponse($content);
-        //}
+    public function getFriends($iUserId){
+        if(empty($iUserId)){
+            return new JsonResponse();
+        }
 
-        //Henter id til bruker
-        //$iUserId1  = $content->userId1;
-
-        //Kan hende jeg må søke finne bruker med telefon/mail
-
-        //HARDKODE
-        $iUserId1  = 1;
-
-        $oFriends = $this->getDoctrine()->getRepository(UserConnections::class)->findFriends($iUserId1);
+        $oFriends = $this->getDoctrine()->getRepository(UserConnections::class)->findFriends($iUserId);
 
         //Skriver ut alle objektene
         return $this->json($oFriends, Response::HTTP_OK, [], [
@@ -85,39 +68,28 @@ class UserConnectionsController extends AbstractController
         $this->logger->info("getAllFriends");
     }
 
-    public function sendFriendRequest(Request $request){
-        //Sjekker om requesten har innehold
-        //$content=json_decode($request->getContent());
-        //if(empty($content)){
-        //return new JsonResponse($content);
-        //}
+    public function sendFriendRequest($iUserId, $iFriendId){
+        if(empty($iUserId)){
+            return new JsonResponse();
+        }
 
-        //Hent id til bruker og brukeren som skal få venneforespørsel
-        //$iUserId1  = $content->userId1;
-        //$iUserId2  = $content->userId2;
+        $iStatusSent = 0;
+        //Sjekker om forespørsel allerede har blitt sendt
+        $oConnection = $this->getDoctrine()->getRepository(UserConnections::class)->findBy(array('user1'=>$iUserId, 'user2'=>$iFriendId));
 
-        //HARDKODE
-        $iUserId1  = 1;
-        $iUserId2  = 3;
-
-        $oConnection = $this->getDoctrine()->getRepository(UserConnections::class)->findBy(array('user1'=>$iUserId1, 'user2'=>$iUserId2));
-
-        $check = empty($oConnection);
-
-        //Sjekker om forespørsel allerede har blitt sendt (hvis tom)
-        if ($check) {
-
-            $user1 = $this->getDoctrine()->getRepository(Users::class)->find($iUserId1);
-            $user2 = $this->getDoctrine()->getRepository(Users::class)->find($iUserId2);
+        //hvis den ikke finnes
+        if (empty($oConnection)) {
+            $oUser1 = $this->getDoctrine()->getRepository(Users::class)->find($iUserId);
+            $oUser2 = $this->getDoctrine()->getRepository(Users::class)->find($iFriendId);
+            $oStatusSent = $this->getDoctrine()->getRepository(RequestStatus::class)->find($iStatusSent);
 
             $entityManager = $this->getDoctrine()->getManager();
 
             //Oppretter ny rad med senders info
             $userConn = new UserConnections();
-            $userConn->setUser1($user1);
-            $userConn->setUser2($user2);
-            $userConn->setRequestStatus(false);
-            $userConn->setTimestamp(new \DateTime());
+            $userConn->setUser1($oUser1);
+            $userConn->setUser2($oUser2);
+            $userConn->setRequestStatus($oStatusSent);
 
             $entityManager->persist($userConn);
             $entityManager->flush();
@@ -129,38 +101,18 @@ class UserConnectionsController extends AbstractController
         return new JsonResponse('forespørsel er allerede sendt');
     }
 
-    public function getFriendRequest(Request $request){
-        //Sjekker om requesten har innehold
-        //$content=json_decode($request->getContent());
-        //if(empty($content)){
-        //return new JsonResponse($content);
-        //}
+    public function getFriendRequest($iUserId){
+        if(empty($iUserId)){
+            return new JsonResponse();
+        }
 
-        //Henter brukers id
-        //$iUserId1  = $content->userId1;
-
-        //HARDKODE
-        $iUserId1  = 1;
-
-        //Henter alle venner
-        $conn = $this->getDoctrine()->getConnection();
-        $sql = "SELECT user2_id FROM user_connections WHERE user1_id= $iUserId1 AND request_status = false";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $aUsersId = $stmt->fetchAll();
-
-        //Henter id'ene til alle vennene
-        $iIds = array_column($aUsersId, 'user2_id');
-        $this->logger->info(json_encode($iIds));
-
-        //Henter alle venner-objektene
-        $users = $this->getDoctrine()->getRepository(Users::class)->findBy(array('id' => $iIds));
+        //Henter alle venneforespørsler
+        $users = $this->getDoctrine()->getRepository(UserConnections::class)->findFriendRequest($iUserId);
 
         //Skriver ut alle objektene
         return $this->json($users, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
-            //ObjectNormalizer::ATTRIBUTES => ['firstName', 'lastName'],
-            ObjectNormalizer::GROUPS => ['groups' => 'friendInfo'],
+            ObjectNormalizer::GROUPS => ['groups' => 'friendRequestInfo'],
             ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
                 return $object->getId();
             }
@@ -168,45 +120,37 @@ class UserConnectionsController extends AbstractController
         $this->logger->info("getAllFriendRequest");
     }
 
-    public function replyFriendRequest(Request $request){
-        //Sjekker om requesten har innehold
-        //$content=json_decode($request->getContent());
-        //if(empty($content)){
-        //return new JsonResponse($content);
-        //}
+    public function replyFriendRequest($iUserId, $iFriendId, $iStatus){
 
-        //Henter brukers id og id'ene til bruker som har sendt venneforespørsel
-        //$iUserId1  = $content->userId1;
-        //$iUserId2  = $content->userId2;
-        //$iStatus  = $content->newStatus;
+        if(empty($iUserId)){
+            return new JsonResponse();
+        }
 
-        //HARDKODE
-        $iUserId1  = 1;
-        $iUserId2  = 3;
-        $iStatus  = 0;
+        $statusSent = 0;
 
-        //Henter objektene til brukerne
-        $oUser1 = $this->getDoctrine()->getRepository(Users::class)->find($iUserId1);
-        $oUser2 = $this->getDoctrine()->getRepository(Users::class)->find($iUserId2);
+        //Henter user objektene
+        $oUser1 = $this->getDoctrine()->getRepository(Users::class)->find($iUserId);
+        $oUser2 = $this->getDoctrine()->getRepository(Users::class)->find($iFriendId);
+        $oStatus = $this->getDoctrine()->getRepository(RequestStatus::class)->find($iStatus);
 
-        //Henter Forespørselen
-        $oUserConn = $this->getDoctrine()->getRepository(UserConnections::class)->findOneBy(array('user1'=> $iUserId2, 'user2'=> $iUserId1, 'requestStatus'=>0));
+        //Henter forespørselen
+        $oUserConn = $this->getDoctrine()->getRepository(UserConnections::class)->findOneBy(array('user1'=> $iFriendId, 'user2'=> $iUserId, 'requestStatus'=>$statusSent));
 
-        $check = empty($oUserConn);
-
-        //Sjekker om forespørsel har blitt sendt (hvis ikke tom)
-        if (!$check) {
+        //Sjekker om forespørsel har blitt sendt
+        if ($oUserConn) {
             $entityManager = $this->getDoctrine()->getManager();
-            //Hvis bruker trykker godkjen (vi mottar 1), settes status til 1
+
+            //Hvis bruker trykker godkjenn (vi mottar 1), settes status til 1(accepted)
             if($iStatus == 1) {
-                $oUserConn->setRequestStatus(1);
+                $oUserConn->setRequestStatus($oStatus);
+                $oUserConn->setTimestamp(new \DateTime());
                 $entityManager->persist($oUserConn);
 
                 //Oppretter ny rad med mottakers info
                 $oUserConn2 = new UserConnections();
                 $oUserConn2->setUser1($oUser1);
                 $oUserConn2->setUser2($oUser2);
-                $oUserConn2->setRequestStatus(1);
+                $oUserConn2->setRequestStatus($oStatus);
                 $oUserConn2->setTimestamp(new \DateTime());
                 $entityManager->persist($oUserConn2);
                 $entityManager->flush();
@@ -228,25 +172,15 @@ class UserConnectionsController extends AbstractController
         return new JsonResponse('Finner ikke forespørsel');
     }
 
-    public function deleteFriendship(Request $request){
-        //Sjekker om requesten har innehold
-        //$content=json_decode($request->getContent());
-        //if(empty($content)){
-        //return new JsonResponse($content);
-        //}
-
-        //Henter brukers id og id'ene til bruker som har sendt venneforespørsel
-        //$iUserId1  = $content->userId1;
-        //$iUserId2  = $content->userId2;
-
-        //HARDKODE
-        $iUserId1  = 1;
-        $iUserId2  = 4;
+    public function deleteFriendship($iUserId, $iFriendId){
+        if(empty($iUserId)){
+            return new JsonResponse();
+        }
 
         $conn = $this->getDoctrine()->getConnection();
 
-        $sql = "SELECT id FROM user_connections WHERE  (user1_id = $iUserId1 AND user2_id = $iUserId2)
-                   OR (user1_id = $iUserId2 and user2_id = $iUserId1)";
+        $sql = "SELECT id FROM user_connections WHERE  (user1_id = $iUserId AND user2_id = $iFriendId)
+                   OR (user1_id = $iFriendId and user2_id = $iUserId)";
 
         $stmt = $conn->prepare($sql);
         $stmt->execute();
@@ -255,39 +189,28 @@ class UserConnectionsController extends AbstractController
         $ids = array_column($oConnectionId, 'id');
         $this->logger->info(json_encode($ids));
 
-        $check = empty($oConnectionId);
-
-        //Sjekker om vennskapet finnes (hvis ikke tom)
-        if (!$check) {
-
+        //Sjekker om vennskapet finnes
+        if ($oConnectionId) {
             $id1 = $ids[0];
             $id2 = $ids[1];
 
-            $user1 = $this->getDoctrine()->getRepository(UserConnections::class)->find($id1);
-            $user2 = $this->getDoctrine()->getRepository(UserConnections::class)->find($id2);
+            $oUser1 = $this->getDoctrine()->getRepository(UserConnections::class)->find($id1);
+            $oUser2 = $this->getDoctrine()->getRepository(UserConnections::class)->find($id2);
 
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($user1);
-            $entityManager->remove($user2);
+            $entityManager->remove($oUser1);
+            $entityManager->remove($oUser2);
             $entityManager->flush();
             return new JsonResponse('slettet');
-
         }
             return new JsonResponse('vennskap finnes ikke');
     }
 
-    public function getUserSearch(Request $request){
-        //Sjekker om requesten har innehold
-        //$content=json_decode($request->getContent());
-        //if(empty($content)){
-        //return new JsonResponse($content);
-        //}
+    public function getUserSearch($iUserId, $sSearch){
 
-        //Henter brukers id og id'ene til bruker som har sendt venneforespørsel
-        //$sSearch = $content->search;
-
-        //HARDKODE
-        $sSearch = "n";
+        if(empty($iUserId)){
+            return new JsonResponse();
+        }
 
         //Finner alle brukere med fornavn, mellomnavn, etternavn eller nickname som matcher søket
         $conn = $this->getDoctrine()->getConnection();
