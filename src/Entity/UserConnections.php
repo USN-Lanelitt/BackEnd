@@ -19,6 +19,7 @@ class UserConnections
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="userConnections")
+     * @Groups({"friendRequestInfo"})
      */
     private $user1;
 
