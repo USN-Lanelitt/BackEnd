@@ -47,12 +47,10 @@ class UserController extends AbstractController
         $oUserExist = $this->getDoctrine()->getRepository(Users::class)->findOneBy(['email'=>$sEmail]);
 
         if ($oUserExist === null) { // bruker finnes ikke - Opprette ny bruker
-            //$this->logger->info("200");
             $bRegistreUser = true;
             $aReturn[0] = 200;
         }
         else { // bruker finnes
-            //$this->logger->info("101");
             $bRegistreUser = false;
             $aReturn[0] = 400;
         }
@@ -66,14 +64,12 @@ class UserController extends AbstractController
             }
             else
             {
-                //$this->logger->info("200");
                 $bRegistreUser = true;
                 $aReturn[0] = 200;
             }
         }
         else
         {
-            //$this->logger->info("102");
             $bRegistreUser = false;
             $aReturn[0] = 400;
         }
@@ -112,10 +108,6 @@ class UserController extends AbstractController
     {
         $this->logger->info($sUsername);
         $this->logger->info($sPassword);
-
-        /*$content = json_decode($request->getContent());
-        $sUsername = $content->username;
-        $sPassword = $content->password;*/
 
         $oRepository = $this->getDoctrine()->getRepository(Users::class);
         $oUser = "";
