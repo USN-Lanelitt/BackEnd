@@ -48,11 +48,11 @@ class UserController extends AbstractController
 
         if ($oUserExist === null) { // bruker finnes ikke - Opprette ny bruker
             $bRegistreUser = true;
-            $aReturn[0] = 200;
+            $aReturn['code'] = 200;
         }
         else { // bruker finnes
             $bRegistreUser = false;
-            $aReturn[0] = 400;
+            $aReturn['code'] = 400;
         }
 
         //Sjekke om telefon finnes fra før
@@ -65,13 +65,13 @@ class UserController extends AbstractController
             else
             {
                 $bRegistreUser = true;
-                $aReturn[0] = 200;
+                $aReturn['code'] = 200;
             }
         }
         else
         {
             $bRegistreUser = false;
-            $aReturn[0] = 400;
+            $aReturn['code'] = 400;
         }
 
         if ($bRegistreUser) {
@@ -109,7 +109,7 @@ class UserController extends AbstractController
         $this->logger->info($sUsername);
         $this->logger->info($sPassword);
 
-        $arrayCollection['code'] = array(400);
+        $arrayCollection['code'] = 400;
 
         $oRepository = $this->getDoctrine()->getRepository(Users::class);
         $oUser = "";
@@ -138,7 +138,7 @@ class UserController extends AbstractController
         // sjekke passord.
         if ( ! password_verify($sPassword, $sHashPassword))
         {
-            $arrayCollection['code'] = array(400);
+            //$arrayCollection['code'] = array(400);
             $this->logger->info('Feil ved innlogging');
         }
         else
@@ -157,56 +157,7 @@ class UserController extends AbstractController
 
             //$this->logger->info("AuthCode");
             //$this->logger->info($sAuthCode);
-            $arrayCollection['code'] = array(200);
-        }
-
-        $this->logger->info(json_encode($arrayCollection));
-
-        return new JsonResponse($arrayCollection);
-    }
-
-    public function getCurrentUser(Request $request)
-    {
-        $bRegistreUser = false;
-        $aReturn = array();
-        /* STATUS Koder
-         * 200 - OK
-         * 400 - Generell feil
-         */
-        $this->logger->info($request);
-        $this->logger->info('getCurrentUser');
-
-        // Hente ut data fra overføring fra React
-        $content = json_decode($request->getContent());
-        $sUsername      = $content->email;
-
-        $oRepository = $this->getDoctrine()->getRepository(Users::class);
-
-        if(strpos($sUsername, "@") !== false) // logger inn med e-post
-            $oUser = $oRepository->findBy([ 'email' => $sUsername ]);
-
-        if ($oUser === null) {
-            $bRegistreUser = true;
-            $aReturn[0] = 400;
-
-        }
-        else
-        {
-            $bRegistreUser = false;
-            $aReturn[0] = 200;
-
-            $arrayCollection = array();
-
-            foreach ($oUser as $oU) {
-                $arrayCollection[] = array(
-                    'id' => $oU->getId(),
-                    'firstname' => $oU->getFirstname(),
-                    'middlename' => $oU->getMiddlename(),
-                    'lastname' => $oU->getLastname(),
-                    'email' => $oU->getEmail(),
-                    'mobile' => $oU->getPhone()
-                );
-            }
+            $arrayCollection['code'] = 200;
         }
 
         $this->logger->info(json_encode($arrayCollection));
