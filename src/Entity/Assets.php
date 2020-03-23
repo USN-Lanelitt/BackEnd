@@ -16,20 +16,20 @@ class Assets
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"loanStatus", "loanRequest", "asset"})
+     * @Groups({"loanRequest", "asset"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="assets")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"loanStatus", "asset"})
+     * @Groups({"asset"})
      */
     private $users;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"loanStatus", "loanRequest", "asset"})
+     * @Groups({"loanRequest", "asset"})
      */
     private $assetName;
 
@@ -52,7 +52,7 @@ class Assets
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\AssetImages", mappedBy="assets")
-     * @Groups({"loanStatus", "asset"})
+     * @Groups({"asset"})
      */
     private $assetImages;
 
