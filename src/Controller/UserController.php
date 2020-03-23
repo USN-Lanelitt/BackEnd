@@ -12,6 +12,7 @@ use Psr\Log\LoggerInterface;
 use \DateTime;
 use \App\Controller\SendEmailController;
 
+$request = Request::createFromGlobals();
 header("Access-Control-Allow-Origin: *");
 
 class UserController extends AbstractController
@@ -44,6 +45,8 @@ class UserController extends AbstractController
         $sPassword   = password_hash($content->password, PASSWORD_DEFAULT);
 
         $sBirthdate = new DateTime($sBirthdate);
+
+        $this->logger->info($request);
 
         // Sjekke om e-post finnes i databasen
         $oUserExist = $this->getDoctrine()->getRepository(Users::class)->findOneBy(['email'=>$sEmail]);
@@ -110,13 +113,14 @@ class UserController extends AbstractController
         return new JsonResponse($aReturn);
     }
 
-    public function login(Request $request)
+    public function login(Request $request, $sUsername, $sPassword)
     {
-        $this->logger->info($request);
+        $this->logger->info($sUsername);
+        $this->logger->info($sPassword);
 
-        $content = json_decode($request->getContent());
+        /*$content = json_decode($request->getContent());
         $sUsername = $content->username;
-        $sPassword = $content->password;
+        $sPassword = $content->password;*/
 
         $oRepository = $this->getDoctrine()->getRepository(Users::class);
         $oUser = "";

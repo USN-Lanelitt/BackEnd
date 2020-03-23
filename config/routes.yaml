@@ -8,7 +8,7 @@ register:
   methods: POST
 
 login:
-  path: /api/login
+  path: /api/login/{username}/{password}
   controller: App\Controller\UserController::login
 
 #---------------------------------------------------John-Berge Grimaas--------------------------------------------------
