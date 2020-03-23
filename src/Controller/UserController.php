@@ -12,7 +12,6 @@ use Psr\Log\LoggerInterface;
 use \DateTime;
 use \App\Controller\SendEmailController;
 
-$request = Request::createFromGlobals();
 header("Access-Control-Allow-Origin: *");
 
 class UserController extends AbstractController
@@ -140,7 +139,7 @@ class UserController extends AbstractController
                 'middlename' => $oU->getMiddlename(),
                 'lastname' => $oU->getLastname(),
                 'email' => $oU->getEmail(),
-                'mobile' => $oU->getPhone()
+                'phone' => $oU->getPhone()
                 // ... Same for each property you want
             );
             $sHashPassword =  $oU->getPassword();
