@@ -43,10 +43,6 @@ class UserController extends AbstractController
         $sPhone      = $content->phone;
         $sPassword   = password_hash($content->password, PASSWORD_DEFAULT);
 
-        $sBirthdate = new DateTime($sBirthdate);
-
-        $this->logger->info($request);
-
         // Sjekke om e-post finnes i databasen
         $oUserExist = $this->getDoctrine()->getRepository(Users::class)->findOneBy(['email'=>$sEmail]);
 
@@ -88,7 +84,7 @@ class UserController extends AbstractController
             $oUser->setFirstName($sFirstname);
             $oUser->setMiddleName($sMiddlename);
             $oUser->setLastName($sLastname);
-            $oUser->setBirthDate($sBirthdate);
+            $oUser->setBirthDate(\DateTime::createFromFormat('d.m.Y', $sBirthdate));
             $oUser->setEmail($sEmail);
             $oUser->setPhone($sPhone);
             $oUser->setPassword($sPassword);
