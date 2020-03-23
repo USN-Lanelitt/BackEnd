@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,6 +19,7 @@ class RequestStatus
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"loanStatus"})
      */
     private $status;
 
