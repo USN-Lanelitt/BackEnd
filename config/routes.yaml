@@ -8,8 +8,9 @@ register:
   methods: POST
 
 login:
-  path: /api/login/{username}/{password}
+  path: /api/login/{sUsername}/{sPassword}
   controller: App\Controller\UserController::login
+  methods: GET
 
 #---------------------------------------------------John-Berge Grimaas--------------------------------------------------
 getAssetSearch:

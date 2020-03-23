@@ -113,7 +113,7 @@ class UserController extends AbstractController
         return new JsonResponse($aReturn);
     }
 
-    public function login(Request $request, $sUsername, $sPassword)
+    public function login($sUsername, $sPassword)
     {
         $this->logger->info($sUsername);
         $this->logger->info($sPassword);
