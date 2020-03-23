@@ -109,6 +109,8 @@ class UserController extends AbstractController
         $this->logger->info($sUsername);
         $this->logger->info($sPassword);
 
+        $arrayCollection['code'] = array(400);
+
         $oRepository = $this->getDoctrine()->getRepository(Users::class);
         $oUser = "";
 
