@@ -47,6 +47,21 @@ class UserConnectionsRepository extends ServiceEntityRepository
         ;
     }*/
 
+    public function findFriend($user, $friend)
+    {
+        //1 = vennskap
+        $status = 1;
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.user1 = :user')
+            ->andWhere('u.user2 = :friend')
+            ->andWhere('u.requestStatus = :status')
+            ->setParameter('user', $user)
+            ->setParameter('friend', $friend)
+            ->setParameter('status', $status)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 
     public function findFriends($user)
     {
