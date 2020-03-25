@@ -35,19 +35,19 @@ class Users
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"loanStatus", "friendInfo", "loanRequest"})
+     * @Groups({"loanStatus", "friendInfo", "loanRequest", "friendRequestInfo"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"loanStatus", "friendInfo", "loanRequest"})
+     * @Groups({"loanStatus", "friendInfo", "loanRequest", "friendRequestInfo"})
      */
     private $middleName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"loanStatus", "friendInfo", "loanRequest"})
+     * @Groups({"loanStatus", "friendInfo", "loanRequest", "friendRequestInfo"})
      */
     private $lastName;
 
