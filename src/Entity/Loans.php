@@ -34,22 +34,24 @@ class Loans
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     *
+     * @Groups({"loanStatus", "loanRequest"})
      */
     private $comment;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"loanStatus", "loanRequest"})
      */
     private $dateStart;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"loanStatus", "loanRequest"})
      */
     private $dateEnd;
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\RequestStatus", inversedBy="loans")
-     * @Groups({"loanStatus", "loanRequest"})
+     * @Groups({"loanStatus"})
      */
     private $statusLoan;
 
