@@ -56,23 +56,23 @@ class UserController extends AbstractController
         }
 
         //Sjekke om telefon finnes fra før
-        $oUserExist = $this->getDoctrine()->getRepository(Users::class)->findOneBy(['phone'=>$sPhone]);
 
-        if ($oUserExist === null) {
-            if (! $bRegistreUser) { // kun sette 200 hvis begge ikke finnes.
-                // ikke gjøre noe
-            }
-            else
-            {
-                $bRegistreUser = true;
-                $aReturn['code'] = 200;
+        $oUserExist = $this->getDoctrine()->getRepository(Users::class)->findOneBy(['phone'=>$sPhone]);
+        if (strlen($sPhone) === 8) {
+            if ($oUserExist === null) {
+                if (!$bRegistreUser) { // kun sette 200 hvis begge ikke finnes.
+                    // ikke gjøre noe
+                } else {
+                    $bRegistreUser = true;
+                    $aReturn['code'] = 200;
+                }
+            } else {
+                $bRegistreUser = false;
+                $aReturn['code'] = 400;
             }
         }
         else
-        {
-            $bRegistreUser = false;
-            $aReturn['code'] = 400;
-        }
+            $sPhone = "";
 
         if ($bRegistreUser) {
             // lagre brukerinfo
@@ -138,7 +138,6 @@ class UserController extends AbstractController
         // sjekke passord.
         if ( ! password_verify($sPassword, $sHashPassword))
         {
-            //$arrayCollection['code'] = array(400);
             $this->logger->info('Feil ved innlogging');
         }
         else
