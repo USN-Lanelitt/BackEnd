@@ -56,8 +56,8 @@ class UserController extends AbstractController
         }
 
         //Sjekke om telefon finnes fra før
-
         $oUserExist = $this->getDoctrine()->getRepository(Users::class)->findOneBy(['phone'=>$sPhone]);
+        // sjekke om telefonnummeret har riktig antall tegn
         if (strlen($sPhone) === 8) {
             if ($oUserExist === null) {
                 if (!$bRegistreUser) { // kun sette 200 hvis begge ikke finnes.
@@ -71,8 +71,11 @@ class UserController extends AbstractController
                 $aReturn['code'] = 400;
             }
         }
-        else
+        else // hvis ikke riktig antall tegn, sette blank.
+        {
             $sPhone = "";
+        }
+
 
         if ($bRegistreUser) {
             // lagre brukerinfo
