@@ -221,6 +221,8 @@ class UserController extends AbstractController
         } else {
             $this->logger->info("File is not an image.");
             $uploadOk = 0;
+            // returnere 400 hvis det ikke er et bilde.
+            return new JsonResponse($aCode);
         }
 
         if (move_uploaded_file($sImage, $target_file)) {
@@ -232,7 +234,7 @@ class UserController extends AbstractController
             $this->logger->info("Sorry, there was an error uploading your file.");
         }
 
-        return new JsonResponse(true);
+        return new JsonResponse($aCode);
     }
 }
 
