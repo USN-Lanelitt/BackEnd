@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use phpDocumentor\Reflection\File;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Individuals;
 use App\Entity\Users;
@@ -198,17 +199,40 @@ class UserController extends AbstractController
 
     public function profileimageUpload(Request $request)
     {
-        $sFile = $request->files->get('file');
-        $this->logger->info($sFile);
-        $this->logger->info("Er kommet hit **************************");
+        $aCode['code'] = 400;
+        $sImage = $request->files->get('file');
+        $iId    = $request->request->get('userId');
+        $ImageOriginalName = $sImage->getClientOriginalName();
+        //$this->logger->info($sImage->getClientOriginalExtension());
 
-        $content = file_get_contents($sFile);
-        $fp = fopen($sFile, "w");
-        fwrite($fp, $content);
-        fclose($fp);
+        // lage nutt bilde navn
+        $temp = explode(".", $ImageOriginalName);
+        $newfilename = $iId.'_profileimage.' . end($temp);
 
+        $target_dir = "../../FrontEnd/public/profileImages/";
 
-        //$this->logger->info($content);
+        $target_file = $target_dir . $newfilename;
+        $this->logger->info($target_file);
+
+        $check = getimagesize($sImage);
+        if($check !== false) {
+            $this->logger->info("File is an image - " . $check["mime"] . ".");
+            $uploadOk = 1;
+        } else {
+            $this->logger->info("File is not an image.");
+            $uploadOk = 0;
+        }
+
+        if (move_uploaded_file($sImage, $target_file)) {
+            $this->logger->info("The file ". basename($ImageOriginalName). " has been uploaded.");
+            $aCode['code'] = 200;
+            $oUser = new Users();
+            $oUser->setProfileImage($newfilename);
+        } else {
+            $this->logger->info("Sorry, there was an error uploading your file.");
+        }
+
         return new JsonResponse(true);
     }
 }
+
