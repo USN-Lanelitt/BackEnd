@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use phpDocumentor\Reflection\File;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Individuals;
 use App\Entity\Users;
@@ -56,8 +57,8 @@ class UserController extends AbstractController
         }
 
         //Sjekke om telefon finnes fra før
-
         $oUserExist = $this->getDoctrine()->getRepository(Users::class)->findOneBy(['phone'=>$sPhone]);
+        // sjekke om telefonnummeret har riktig antall tegn
         if (strlen($sPhone) === 8) {
             if ($oUserExist === null) {
                 if (!$bRegistreUser) { // kun sette 200 hvis begge ikke finnes.
@@ -71,8 +72,10 @@ class UserController extends AbstractController
                 $aReturn['code'] = 400;
             }
         }
-        else
+        else // hvis ikke riktig antall tegn, sette blank.
+        {
             $sPhone = "";
+        }
 
         if ($bRegistreUser) {
             // lagre brukerinfo
@@ -112,7 +115,6 @@ class UserController extends AbstractController
         $arrayCollection['code'] = 400;
 
         $oRepository = $this->getDoctrine()->getRepository(Users::class);
-        $oUser = "";
 
         if(strpos($sUsername, "@") !== false) // logger inn med e-post
             $oUser = $oRepository->findBy([ 'email' => $sUsername ]);
@@ -163,4 +165,78 @@ class UserController extends AbstractController
 
         return new JsonResponse($arrayCollection);
     }
+
+
+    public function updatePassword(Request $request)
+    {
+        $this->logger->info($request);
+        $aCode['code'] = 400;
+
+        // Hente ut data fra overføring fra React
+        $content = json_decode($request->getContent());
+        $iUserId        = (int)$content->userId;
+        $sOldPassword   = $content->currentPassword;
+        $sNewPassword   = password_hash($content->newPassword, PASSWORD_DEFAULT);
+        $sHashPassword  = "";
+
+        $oRepository = $this->getDoctrine()->getRepository(Users::class);
+        $oUser = $oRepository->findBy([ 'id' => $iUserId ]);
+
+        foreach($oUser as $oU) {
+            $sHashPassword = $oU->getPassword();
+        }
+
+        if (password_verify($sOldPassword, $sHashPassword)) // passordene stemmer
+        {
+            // Lagre nytt passord
+            $oUser = new Users();
+            $oUser->setPassword($sNewPassword);
+            $aCode['code'] = 200;
+        }
+
+        return new JsonResponse($aCode);
+    }
+
+    public function profileimageUpload(Request $request)
+    {
+        $aReturn['code'] = 400;
+        $aReturn['image'] = "";
+        $sImage = $request->files->get('file');
+        $iId    = $request->request->get('userId');
+        $ImageOriginalName = $sImage->getClientOriginalName();
+        //$this->logger->info($sImage->getClientOriginalExtension());
+
+        // lage nutt bilde navn
+        $temp = explode(".", $ImageOriginalName);
+        $newfilename = $iId.'_profileimage.' . end($temp);
+
+        $target_dir = "../../FrontEnd/public/profileImages/";
+
+        $target_file = $target_dir . $newfilename;
+        $this->logger->info($target_file);
+
+        $check = getimagesize($sImage);
+        if($check !== false) {
+            $this->logger->info("File is an image - " . $check["mime"] . ".");
+            $uploadOk = 1;
+        } else {
+            $this->logger->info("File is not an image.");
+            $uploadOk = 0;
+            // returnere 400 hvis det ikke er et bilde.
+            return new JsonResponse($aReturn);
+        }
+
+        if (move_uploaded_file($sImage, $target_file)) {
+            $this->logger->info("The file ". basename($ImageOriginalName). " has been uploaded.");
+            $aReturn['code'] = 200;
+            $aReturn['image'] = $newfilename;
+            $oUser = new Users();
+            $oUser->setProfileImage($newfilename);
+        } else {
+            $this->logger->info("Sorry, there was an error uploading your file.");
+        }
+
+        return new JsonResponse($aReturn);
+    }
 }
+
