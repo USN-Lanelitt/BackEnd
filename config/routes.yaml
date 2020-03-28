@@ -124,3 +124,12 @@ getCurrentUser:
     path: /api/getCurrentUser
     controller: App\Controller\UserController::getCurrentUser
 
+profileimageUpload:
+  path: /profileimageUpload
+  controller: App\Controller\UserController::profileimageUpload
+  methods: POST
+
+updatePassword:
+    path: /updatePassword
+    controller: App\Controller\UserController::updatePassword
+    methods: POST

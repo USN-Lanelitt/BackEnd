@@ -76,7 +76,6 @@ class UserController extends AbstractController
             $sPhone = "";
         }
 
-
         if ($bRegistreUser) {
             // lagre brukerinfo
             $oUser = new Users();
@@ -115,7 +114,6 @@ class UserController extends AbstractController
         $arrayCollection['code'] = 400;
 
         $oRepository = $this->getDoctrine()->getRepository(Users::class);
-        $oUser = "";
 
         if(strpos($sUsername, "@") !== false) // logger inn med e-post
             $oUser = $oRepository->findBy([ 'email' => $sUsername ]);
@@ -165,5 +163,52 @@ class UserController extends AbstractController
         $this->logger->info(json_encode($arrayCollection));
 
         return new JsonResponse($arrayCollection);
+    }
+
+
+    public function updatePassword(Request $request)
+    {
+        $this->logger->info($request);
+        $aCode['code'] = 400;
+
+        // Hente ut data fra overføring fra React
+        $content = json_decode($request->getContent());
+        $iUserId        = (int)$content->userId;
+        $sOldPassword   = $content->currentPassword;
+        $sNewPassword   = password_hash($content->newPassword, PASSWORD_DEFAULT);
+        $sHashPassword  = "";
+
+        $oRepository = $this->getDoctrine()->getRepository(Users::class);
+        $oUser = $oRepository->findBy([ 'id' => $iUserId ]);
+
+        foreach($oUser as $oU) {
+            $sHashPassword = $oU->getPassword();
+        }
+
+        if (password_verify($sOldPassword, $sHashPassword)) // passordene stemmer
+        {
+            // Lagre nytt passord
+            $oUser = new Users();
+            $oUser->setPassword($sNewPassword);
+            $aCode['code'] = 200;
+        }
+
+        return new JsonResponse($aCode);
+    }
+
+    public function profileimageUpload(Request $request)
+    {
+        $sFile = $request->files->get('file');
+        $this->logger->info($sFile);
+        $this->logger->info("Er kommet hit **************************");
+
+        $content = file_get_contents($sFile);
+        $fp = fopen($sFile, "w");
+        fwrite($fp, $content);
+        fclose($fp);
+
+
+        //$this->logger->info($content);
+        return new JsonResponse(true);
     }
 }
