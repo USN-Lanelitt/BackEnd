@@ -12,6 +12,7 @@ login:
   controller: App\Controller\UserController::login
   methods: GET
 
+
 #---------------------------------------------------John-Berge Grimaas--------------------------------------------------
 getAssetSearch:
   path: /assets/search/{userId}/{search}
@@ -54,20 +55,24 @@ assetAvailability:
   methods: GET
 
 getAssetTypes:
-  path: /asset/type/{iCatId}
+  path: /assets/type/{iCatId}
   controller: App\Controller\AssetTypeController::getAssetTypes
   methods: GET
 
 getAssetCategories:
-  path: /asset/category
+  path: /assets/category
   controller: App\Controller\AssetTypeController::getAssetCategories
   methods: GET
 
 getAllAssetTypes:
-  path: /asset/AllTypes
+  path: /assets/AllTypes
   controller: App\Controller\AssetTypeController::getAllAssetTypes
   methods: GET
 
+removeAsset:
+  path: /assets/removeAsset/{assetId}
+  controller: App\Controller\AssetController::removeAsset
+  methods: POST
 
 #---------------------------------------------UserConnections--Nicole Bendu---------------------------------------------
 getFriend:

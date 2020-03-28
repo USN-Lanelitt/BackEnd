@@ -54,4 +54,5 @@ class AssetTypeController extends AbstractController{
         ]);
 
     }
+
 }

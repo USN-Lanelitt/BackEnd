@@ -4,6 +4,7 @@ namespace App\Controller;
 
 
 use App\Entity\Assets;
+use App\Entity\AssetTypes;
 use App\Entity\IndividConnections;
 use App\Entity\Individuals;
 use App\Entity\UserConnectionsRepository;
@@ -114,7 +115,7 @@ class AssetController extends AbstractController{
         $bPublic=$content->public;
 
         $user=$this->getDoctrine()->getRepository(Users::class)->find($iUserId);
-        $oAssetType=$this->getDoctrine()->getRepository(AssetCategories::class)->find($iTypeId);
+        $oAssetType=$this->getDoctrine()->getRepository(AssetTypes::class)->find($iTypeId);
 
         $asset=new Assets();
         $asset->setUsers($user);
@@ -149,7 +150,7 @@ class AssetController extends AbstractController{
 
         //*
         $oUser=$this->getDoctrine()->getRepository(Users::class)->find($iUserId);
-        //$oAssetType=$this->getDoctrine()->getRepository(AssetCategories::class)->find($iTypeId);
+        $oAssetType=$this->getDoctrine()->getRepository(AssetTypes::class)->find($iTypeId);
 
         $asset->setUsers($oUser);
         //$asset->setAssetType($oAssetType);
@@ -173,7 +174,14 @@ class AssetController extends AbstractController{
         ]);
 
     }
-    public function removeAsset(){
+    public function removeAsset($assetId){
 
+        $oAsset=$this->getDoctrine()->getRepository(Assets::class)->find($assetId);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($oAsset);
+        $entityManager->flush();
+
+        return new JsonResponse("Eiendel slettet");
     }
 }
