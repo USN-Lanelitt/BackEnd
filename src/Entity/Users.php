@@ -29,7 +29,7 @@ class Users
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"loanStatus"})
+     * @Groups({"loanStatus", "asset"})
      */
     private $id;
 

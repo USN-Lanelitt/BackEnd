@@ -114,11 +114,11 @@ class AssetController extends AbstractController{
         $bPublic=$content->public;
 
         $user=$this->getDoctrine()->getRepository(Users::class)->find($iUserId);
-        //$oAssetType=$this->getDoctrine()->getRepository(AssetCategories::class)->find($iTypeId);
+        $oAssetType=$this->getDoctrine()->getRepository(AssetCategories::class)->find($iTypeId);
 
         $asset=new Assets();
         $asset->setUsers($user);
-        //$asset->setAssetType($oAssetType);
+        $asset->setAssetType($oAssetType);
         $asset->setAssetname($sAssetName);
         $asset->setDescription($tDescription);
         $asset->setAssetCondition($iCondition);
