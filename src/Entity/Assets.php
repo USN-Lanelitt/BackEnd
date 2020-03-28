@@ -47,6 +47,7 @@ class Assets
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\AssetTypes", inversedBy="assets")
+     * @Groups({"asset"})
      */
     private $assetType;
 
