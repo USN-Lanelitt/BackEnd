@@ -199,7 +199,8 @@ class UserController extends AbstractController
 
     public function profileimageUpload(Request $request)
     {
-        $aCode['code'] = 400;
+        $aReturn['code'] = 400;
+        $aReturn['image'] = "";
         $sImage = $request->files->get('file');
         $iId    = $request->request->get('userId');
         $ImageOriginalName = $sImage->getClientOriginalName();
@@ -222,19 +223,20 @@ class UserController extends AbstractController
             $this->logger->info("File is not an image.");
             $uploadOk = 0;
             // returnere 400 hvis det ikke er et bilde.
-            return new JsonResponse($aCode);
+            return new JsonResponse($aReturn);
         }
 
         if (move_uploaded_file($sImage, $target_file)) {
             $this->logger->info("The file ". basename($ImageOriginalName). " has been uploaded.");
-            $aCode['code'] = 200;
+            $aReturn['code'] = 200;
+            $aReturn['image'] = $newfilename;
             $oUser = new Users();
             $oUser->setProfileImage($newfilename);
         } else {
             $this->logger->info("Sorry, there was an error uploading your file.");
         }
 
-        return new JsonResponse($aCode);
+        return new JsonResponse($aReturn);
     }
 }
 
