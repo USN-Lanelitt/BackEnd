@@ -53,6 +53,16 @@ assetAvailability:
   controller: App\Controller\LoanController::assetAvailability
   methods: GET
 
+getAssetTypes:
+  path: /asset/type/{iCatId}
+  controller: App\Controller\AssetTypeController::getAssetTypes
+  methods: GET
+
+getAssetCategories:
+  path: /asset/category
+  controller: App\Controller\AssetTypeController::getAssetCategories
+  methods: GET
+
 #---------------------------------------------UserConnections--Nicole Bendu---------------------------------------------
 getFriend:
   path: /user/{iUserId}/friend/{iFriendId}
