@@ -63,6 +63,12 @@ getAssetCategories:
   controller: App\Controller\AssetTypeController::getAssetCategories
   methods: GET
 
+getAllAssetTypes:
+  path: /asset/AllTypes
+  controller: App\Controller\AssetTypeController::getAllAssetTypes
+  methods: GET
+
+
 #---------------------------------------------UserConnections--Nicole Bendu---------------------------------------------
 getFriend:
   path: /user/{iUserId}/friend/{iFriendId}
