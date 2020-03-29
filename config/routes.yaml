@@ -75,6 +75,12 @@ removeAsset:
   methods: DELETE
 
 #---------------------------------------------UserConnections--Nicole Bendu---------------------------------------------
+
+getUsers:
+  path: /users
+  controller: App\Controller\UserController::getUsers
+  methods: GET
+
 getFriend:
   path: /user/{iUserId}/friend/{iFriendId}
   controller: App\Controller\UserConnectionsController::getFriend
