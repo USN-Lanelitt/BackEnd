@@ -238,5 +238,21 @@ class UserController extends AbstractController
 
         return new JsonResponse($aReturn);
     }
+    
+        public function getUsers()
+    {
+        //Henter alla brukere
+        $oUsers = $this->getDoctrine()->getRepository(Users::class)->findAll();
+
+        //Skriver ut alle objektene
+        return $this->json($oUsers, Response::HTTP_OK, [], [
+            ObjectNormalizer::SKIP_NULL_VALUES => true,
+            ObjectNormalizer::GROUPS => ['groups' => 'friendInfo'],
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            }
+        ]);
+    }
+    
 }
 
