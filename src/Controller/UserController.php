@@ -238,8 +238,8 @@ class UserController extends AbstractController
 
         return new JsonResponse($aReturn);
     }
-    
-        public function getUsers()
+
+    public function getUsers()
     {
         //Henter alla brukere
         $oUsers = $this->getDoctrine()->getRepository(Users::class)->findAll();
