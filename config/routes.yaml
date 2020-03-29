@@ -147,6 +147,13 @@ getLoans:
   controller: App\Controller\LoanController::getLoans
   methods: GET
 
+#---------------------------------------------------Reports--Nicole Bendu-------------------------------------------------
+getReports:
+  path: /getReports
+  controller: App\Controller\UnwantedBehaviorReportsController::getReports
+  methods: GET
+
+
 getCurrentUser:
     path: /api/getCurrentUser
     controller: App\Controller\UserController::getCurrentUser
