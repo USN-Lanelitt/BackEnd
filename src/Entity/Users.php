@@ -68,11 +68,13 @@ class Users
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"friendInfo"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"friendInfo"})
      */
     private $phone;
 
@@ -100,21 +102,25 @@ class Users
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"friendInfo"})
      */
     private $usertype;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"friendInfo"})
      */
     private $active;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"friendInfo"})
      */
     private $newsSubscription;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"friendInfo"})
      */
     private $userterms;
 

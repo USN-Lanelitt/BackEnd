@@ -148,11 +148,21 @@ getLoans:
   methods: GET
 
 #---------------------------------------------------Reports--Nicole Bendu-------------------------------------------------
+
+report:
+  path: /user/{iUserId}/report/{iUserId2}
+  controller: App\Controller\UnwantedBehaviorReportsController::report
+  methods: POST
+
+editUser:
+  path: /user/{iUserId}/edit
+  controller: App\Controller\UserController::editUser
+  methods: POST
+
 getReports:
   path: /getReports
   controller: App\Controller\UnwantedBehaviorReportsController::getReports
   methods: GET
-
 
 getCurrentUser:
     path: /api/getCurrentUser
