@@ -70,7 +70,6 @@ class Loans
         return $this->id;
     }
 
-
     public function getUsers(): ?Users
     {
         return $this->users;

@@ -254,6 +254,62 @@ class UserController extends AbstractController
             }
         ]);
     }
-    
+
+    public function editUser(Request $request, $iUserId)
+    {
+        $this->logger->info($request.''.$iUserId);
+
+        /*
+         lag en sjekk på epost, har den endret seg, finnes den fra før
+         */
+
+        // Hente ut data fra overføring fra React
+        /*$content = json_decode($request->getContent());
+        $sFirstname  = $content->firstname;
+        $sMiddlename = $content->middlename;
+        $sLastname   = $content->lastname;
+        $sBirthdate  = $content->birthdate;
+        $sEmail      = $content->email;
+        $sPhone      = $content->phone;
+        $sPassword   = password_hash($content->password, PASSWORD_DEFAULT);
+        $iActive= $content->active;*/
+
+        $sFirstname  = "nicole";
+        $sMiddlename = "";
+        $sLastname   = "bendu";
+        $iActive = 1;
+
+        $sEmail      = "123@123.com";
+
+        $sPassword   = password_hash('123456', PASSWORD_DEFAULT);
+
+        // Sjekke om brukeren finnes i databasen
+        $oUser = $this->getDoctrine()->getRepository(Users::class)->find($iUserId);
+
+        $oUser->setFirstName($sFirstname);
+        $oUser->setMiddleName($sMiddlename);
+        $oUser->setLastName($sLastname);
+        $oUser->setActive($iActive);
+        //$oUser->setBirthDate(\DateTime::createFromFormat('d.m.Y', $sBirthdate));
+        //$oUser->setPhone($sPhone);
+
+        if($sEmail != $oUser->getEmail() ) {
+            $oEmailExist = $this->getDoctrine()->getRepository(Users::class)->findEmail($sEmail);
+
+            if(empty($oEmailExist)) {
+                $oUser->setEmail($sEmail);
+            }
+        }
+
+        if($sPassword != $oUser->getPassword()){
+            $oUser->setPassword($sPassword);
+        }
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($oUser);
+        $entityManager->flush();
+
+        return new JsonResponse("endret");
+    }
 }
 

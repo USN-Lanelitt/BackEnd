@@ -36,30 +36,31 @@ class UnwantedBehaviorReportsController extends AbstractController
         $this->logger=$logger;
     }
 
-    function report(Request $request, $iReporterId, $iReportedId){
-        if(empty($iReporterId)){
+    function report(Request $request, $iUserId, $iUserId2){
+        if(empty($iUserId)){
             return new JsonResponse();
         }
 
-        $subjects = array('person', 'asset');
+        $this->logger->info(json_decode($request));
 
         //Henter kommentar og emne
         $content=json_decode($request->getContent());
-        $sComment = $content->comment;
         $sSubject = $content->subject;
+        $sComment = $content->comment;
 
-        $oUser1 = $this->getDoctrine()->getRepository(Users::class)->find($iReporterId);
-        $oUser2 = $this->getDoctrine()->getRepository(Users::class)->find($iReportedId);
+
+        $oUser1 = $this->getDoctrine()->getRepository(Users::class)->find($iUserId);
+        $oUser2 = $this->getDoctrine()->getRepository(Users::class)->find($iUserId2);
 
         $entityManager = $this->getDoctrine()->getManager();
 
         //Oppretter ny rad med klage
         $report = new UnwantedBehaviorReports();
-        $report->setReporter($iReporterId);
-        $report->setReported($iReportedId);
+        $report->setReporter($oUser1);
+        $report->setReported($oUser2);
         $report->setTimestamp(new \DateTime());
         $report->setComment($sComment);
-        $report->setSubject(new \DateTime());
+        $report->setSubject($sSubject);
 
         $entityManager->persist($report);
         $entityManager->flush();
