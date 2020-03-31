@@ -48,7 +48,6 @@ class UnwantedBehaviorReportsController extends AbstractController
         $sSubject = $content->subject;
         $sComment = $content->comment;
 
-
         $oUser1 = $this->getDoctrine()->getRepository(Users::class)->find($iUserId);
         $oUser2 = $this->getDoctrine()->getRepository(Users::class)->find($iUserId2);
 

@@ -12,6 +12,24 @@ login:
   controller: App\Controller\UserController::login
   methods: GET
 
+editUser:
+  path: /user/{iUserId}/edit
+  controller: App\Controller\UserController::editUser
+  methods: POST
+
+getCurrentUser:
+  path: /api/getCurrentUser
+  controller: App\Controller\UserController::getCurrentUser
+
+profileimageUpload:
+  path: /profileimageUpload
+  controller: App\Controller\UserController::profileimageUpload
+  methods: POST
+
+updatePassword:
+  path: /updatePassword
+  controller: App\Controller\UserController::updatePassword
+  methods: POST
 
 #---------------------------------------------------John-Berge Grimaas--------------------------------------------------
 getAssetSearch:
@@ -147,16 +165,11 @@ getLoans:
   controller: App\Controller\LoanController::getLoans
   methods: GET
 
-#---------------------------------------------------Reports--Nicole Bendu-------------------------------------------------
+#---------------------------------------------------Report--Nicole Bendu-------------------------------------------------
 
-report:
+makeReport:
   path: /user/{iUserId}/report/{iUserId2}
   controller: App\Controller\UnwantedBehaviorReportsController::report
-  methods: POST
-
-editUser:
-  path: /user/{iUserId}/edit
-  controller: App\Controller\UserController::editUser
   methods: POST
 
 getReports:
@@ -164,16 +177,3 @@ getReports:
   controller: App\Controller\UnwantedBehaviorReportsController::getReports
   methods: GET
 
-getCurrentUser:
-    path: /api/getCurrentUser
-    controller: App\Controller\UserController::getCurrentUser
-
-profileimageUpload:
-  path: /profileimageUpload
-  controller: App\Controller\UserController::profileimageUpload
-  methods: POST
-
-updatePassword:
-    path: /updatePassword
-    controller: App\Controller\UserController::updatePassword
-    methods: POST
