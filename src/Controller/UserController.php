@@ -174,10 +174,15 @@ class UserController extends AbstractController
 
         // Hente ut data fra overføring fra React
         $content = json_decode($request->getContent());
+        $this->logger->info($content);
         $iUserId        = (int)$content->userId;
         $sOldPassword   = $content->currentPassword;
         $sNewPassword   = password_hash($content->newPassword, PASSWORD_DEFAULT);
         $sHashPassword  = "";
+
+        $this->logger->info($sOldPassword);
+        $this->logger->info($sNewPassword);
+
 
         $oRepository = $this->getDoctrine()->getRepository(Users::class);
         $oUser = $oRepository->findBy([ 'id' => $iUserId ]);
@@ -239,4 +244,5 @@ class UserController extends AbstractController
         return new JsonResponse($aReturn);
     }
 }
+
 
