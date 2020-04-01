@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UnwantedBehaviorReportsRepository")
@@ -13,31 +14,37 @@ class UnwantedBehaviorReports
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"reportInfo"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="unwantedBehaviorReports")
+     * @Groups({"reportInfo"})
      */
     private $reporter;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="unwantedBehaviorReports")
+     * @Groups({"reportInfo"})
      */
     private $reported;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"reportInfo"})
      */
     private $timestamp;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"reportInfo"})
      */
     private $comment;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"reportInfo"})
      */
     private $subject;
 

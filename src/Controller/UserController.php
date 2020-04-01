@@ -6,11 +6,12 @@ use phpDocumentor\Reflection\File;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Individuals;
 use App\Entity\Users;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Sw;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Psr\Log\LoggerInterface;
-use \DateTime;
 use \App\Controller\SendEmailController;
 
 header("Access-Control-Allow-Origin: *");
@@ -242,6 +243,108 @@ class UserController extends AbstractController
         }
 
         return new JsonResponse($aReturn);
+    }
+
+    public function getUsers()
+    {
+        //Henter alla brukere
+        $oUsers = $this->getDoctrine()->getRepository(Users::class)->findAll();
+
+        //Skriver ut alle objektene
+        return $this->json($oUsers, Response::HTTP_OK, [], [
+            ObjectNormalizer::SKIP_NULL_VALUES => true,
+            ObjectNormalizer::GROUPS => ['groups' => 'userInfo'],
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            }
+        ]);
+    }
+
+    public function editUser(Request $request, $iUserId)
+    {
+        $this->logger->info($request.''.$iUserId);
+
+        // Hente ut data fra overføring fra React
+        $content = json_decode($request->getContent());
+        $sNickname  = $content->nickname;
+        $sFirstname  = $content->firstname;
+        $sMiddlename = $content->middlename;
+        $sLastname = $content->lastname;
+        $sEmail      = $content->email;
+        $sUsertype= $content->usertype;
+        $iActive= $content->active;
+        $iNewsSubscription = $content->newsSubscription;
+
+        //$sAddress  = $content->address;
+        //$sAddress2   = $content->address2;
+        //$sZipCode  = $content->zipCode;
+        //$sPhone = $content->phone;
+        //$sPassword   = password_hash($content->password, PASSWORD_DEFAULT);
+        //$iUserterms = $content->userterms;
+
+        // Sjekke om brukeren finnes i databasen
+        $oUser = $this->getDoctrine()->getRepository(Users::class)->find($iUserId);
+
+        $oUser->setNickname($sNickname);
+        $oUser->setFirstName($sFirstname);
+        $oUser->setMiddleName($sMiddlename);
+        $oUser->setLastName($sLastname);
+        $oUser->setUserType($sUsertype);
+
+        //$oUser->setAddress($sAddress);
+        //$oUser->setAddress2($sAddress2);
+        //$oUser->setZipCode($sZipCode);
+        //$oUser->setPhone($sPhone);
+        //$oUser->setBirthDate(\DateTime::createFromFormat('d.m.Y', $sBirthdate));
+
+        //Setter in verdi for active
+        if($iActive == "true" ) {
+            $true=1;
+            $oUser->setActive($true);
+        }
+        else {
+            $false=0;
+            $oUser->setActive($false);
+        }
+
+        //Setter in verdi for NewsSubscription
+        if($iNewsSubscription == "true" ) {
+            $true=1;
+            $oUser->setNewsSubscription($true);
+        }
+        else {
+            $false=0;
+            $oUser->setNewsSubscription($false);
+        }
+
+        //Setter in verdi for Userterms
+       /*if($iUserterms == "true" ) {
+            $true=1;
+            $oUser->setUserterms($true);
+        }
+        else {
+            $false=0;
+            $oUser->setUserterms($false);
+        }*/
+
+        //lag en sjekk på epost, har den endret seg, finnes den fra før
+        if($sEmail != $oUser->getEmail() ) {
+            $oEmailExist = $this->getDoctrine()->getRepository(Users::class)->findEmail($sEmail);
+
+            if (empty($oEmailExist)) {
+                $oUser->setEmail($sEmail);
+            }
+        }
+
+        /*if($sPassword != $oUser->getPassword()){
+            $oUser->setPassword($sPassword);
+        }*/
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($oUser);
+        $entityManager->flush();
+
+        return new JsonResponse("endret");
     }
 }
 

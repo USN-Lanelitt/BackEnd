@@ -47,7 +47,7 @@ class AssetTypeController extends AbstractController{
 
         return $this->json($assetType, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
-            ObjectNormalizer::ATTRIBUTES => ['id', 'assetType'],
+            ObjectNormalizer::ATTRIBUTES => ['id', 'assetType', 'imgUrl'],
             ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
                 return $object->getId();
             }

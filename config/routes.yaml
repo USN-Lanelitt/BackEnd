@@ -12,6 +12,24 @@ login:
   controller: App\Controller\UserController::login
   methods: GET
 
+editUser:
+  path: /user/{iUserId}/edit
+  controller: App\Controller\UserController::editUser
+  methods: POST
+
+getCurrentUser:
+  path: /api/getCurrentUser
+  controller: App\Controller\UserController::getCurrentUser
+
+profileimageUpload:
+  path: /profileimageUpload
+  controller: App\Controller\UserController::profileimageUpload
+  methods: POST
+
+updatePassword:
+  path: /updatePassword
+  controller: App\Controller\UserController::updatePassword
+  methods: POST
 
 #---------------------------------------------------John-Berge Grimaas--------------------------------------------------
 getAssetSearch:
@@ -74,7 +92,23 @@ removeAsset:
   controller: App\Controller\AssetController::removeAsset
   methods: DELETE
 
+getIndividAssetAmount:
+  path: /assets/IndividAssetAmount/{userId}
+  controller: App\Controller\AssetController::getIndividAssetAmount
+  methods: GET
+
+getAssetAmount:
+  path: /assets/AssetAmount
+  controller: App\Controller\AssetController::getAssetAmount
+  methods: GET
+
 #---------------------------------------------UserConnections--Nicole Bendu---------------------------------------------
+
+getUsers:
+  path: /users
+  controller: App\Controller\UserController::getUsers
+  methods: GET
+
 getFriend:
   path: /user/{iUserId}/friend/{iFriendId}
   controller: App\Controller\UserConnectionsController::getFriend
@@ -141,16 +175,15 @@ getLoans:
   controller: App\Controller\LoanController::getLoans
   methods: GET
 
-getCurrentUser:
-    path: /api/getCurrentUser
-    controller: App\Controller\UserController::getCurrentUser
+#---------------------------------------------------Report--Nicole Bendu-------------------------------------------------
 
-profileimageUpload:
-  path: /profileimageUpload
-  controller: App\Controller\UserController::profileimageUpload
+makeReport:
+  path: /user/{iUserId}/report/{iUserId2}
+  controller: App\Controller\UnwantedBehaviorReportsController::report
   methods: POST
 
-updatePassword:
-    path: /updatePassword
-    controller: App\Controller\UserController::updatePassword
-    methods: POST
+getReports:
+  path: /getReports
+  controller: App\Controller\UnwantedBehaviorReportsController::getReports
+  methods: GET
+

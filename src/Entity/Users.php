@@ -29,67 +29,73 @@ class Users
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"loanStatus", "asset"})
+     * @Groups({"loanStatus", "asset", "friendInfo", "friendRequestInfo", "reportInfo", "userInfo"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"loanStatus", "friendInfo", "loanRequest", "friendRequestInfo"})
+     * @Groups({"loanStatus", "friendInfo", "loanRequest", "friendRequestInfo", "reportInfo", "userInfo"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"loanStatus", "friendInfo", "loanRequest", "friendRequestInfo"})
+     * @Groups({"loanStatus", "friendInfo", "loanRequest", "friendRequestInfo", "reportInfo", "userInfo"})
      */
     private $middleName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"loanStatus", "friendInfo", "loanRequest", "friendRequestInfo"})
+     * @Groups({"loanStatus", "friendInfo", "loanRequest", "friendRequestInfo", "reportInfo", "userInfo"})
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"userInfo"})
      */
     private $address;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"userInfo"})
      */
     private $address2;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Zipcode", inversedBy="users")
+     * @Groups({"userInfo"})
      */
     private $zipCode;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"friendInfo", "userInfo"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"friendInfo", "userInfo"})
      */
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"loanStatus, friendInfo", "loanRequest"})
+     * @Groups({"loanStatus, friendInfo", "loanRequest", "userInfo"})
      */
     private $nickname;
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Groups({"userInfo"})
      */
     private $birthDate;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"loanStatus, friendInfo"})
+     * @Groups({"loanStatus, friendInfo", "userInfo"})
      */
     private $profileImage;
 
@@ -100,21 +106,25 @@ class Users
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"friendInfo", "userInfo"})
      */
     private $usertype;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"friendInfo", "userInfo"})
      */
     private $active;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"friendInfo", "userInfo"})
      */
     private $newsSubscription;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"friendInfo", "userInfo"})
      */
     private $userterms;
 

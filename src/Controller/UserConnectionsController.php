@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\RequestStatus;
 use App\Entity\UserConnections;
 use App\Entity\Users;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
