@@ -184,4 +184,19 @@ class AssetController extends AbstractController{
 
         return new JsonResponse("Eiendel slettet");
     }
+    public function getIndividAssetAmount($userId){
+
+        $assets=$this->getDoctrine()->getRepository(Assets::class)->findBy(array('users'=>$userId));
+        $assetAmount=count($assets);
+
+
+        return new JsonResponse($assetAmount);
+    }
+    public function getAssetAmount(){
+
+        $assets=$this->getDoctrine()->getRepository(Assets::class)->findAll();
+        $assetAmount=count($assets);
+
+        return new JsonResponse($assetAmount);
+    }
 }

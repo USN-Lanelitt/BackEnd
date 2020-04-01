@@ -92,6 +92,16 @@ removeAsset:
   controller: App\Controller\AssetController::removeAsset
   methods: DELETE
 
+getIndividAssetAmount:
+  path: /assets/IndividAssetAmount/{userId}
+  controller: App\Controller\AssetController::getIndividAssetAmount
+  methods: GET
+
+getAssetAmount:
+  path: /assets/AssetAmount
+  controller: App\Controller\AssetController::getAssetAmount
+  methods: GET
+
 #---------------------------------------------UserConnections--Nicole Bendu---------------------------------------------
 
 getUsers:
