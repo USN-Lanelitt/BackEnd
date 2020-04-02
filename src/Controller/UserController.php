@@ -207,23 +207,23 @@ class UserController extends AbstractController
     {
         $aReturn['code'] = 400;
         $aReturn['image'] = "";
-        $sImage = $request->files->get('file');
-        $iId    = $request->request->get('userId');
+        $sImage            = $request->files->get('file');
+        $iUserId           = $request->request->get('userId');
         $ImageOriginalName = $sImage->getClientOriginalName();
         //$this->logger->info($sImage->getClientOriginalExtension());
 
-        // lage nutt bilde navn
-        $temp = explode(".", $ImageOriginalName);
-        $newfilename = $iId.'_profileimage.' . end($temp);
+        // lage nytt bilde navn
+        $aTemp = explode(".", $ImageOriginalName);
+        $sNewfilename = $iUserId.'_profileImage.'.end($aTemp);
 
-        $target_dir = "../../FrontEnd/public/profileImages/";
+        $sTargetDir = "../../FrontEnd/public/profileImages/";
 
-        $target_file = $target_dir . $newfilename;
-        $this->logger->info($target_file);
+        $sTargetFile = $sTargetDir . $sNewfilename;
+        $this->logger->info($sTargetFile);
 
-        $check = getimagesize($sImage);
-        if($check !== false) {
-            $this->logger->info("File is an image - " . $check["mime"] . ".");
+        $aCheck = getimagesize($sImage);
+        if($aCheck !== false) {
+            $this->logger->info("File is an image - " . $aCheck["mime"] . ".");
             $uploadOk = 1;
         } else {
             $this->logger->info("File is not an image.");
@@ -232,12 +232,26 @@ class UserController extends AbstractController
             return new JsonResponse($aReturn);
         }
 
-        if (move_uploaded_file($sImage, $target_file)) {
+        if (move_uploaded_file($sImage, $sTargetFile)) {
             $this->logger->info("The file ". basename($ImageOriginalName). " has been uploaded.");
             $aReturn['code'] = 200;
-            $aReturn['image'] = $newfilename;
-            $oUser = new Users();
-            $oUser->setProfileImage($newfilename);
+            $aReturn['image'] = $sNewfilename;
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $oUsers = $entityManager->getRepository(Users::class)->find($iUserId);
+
+            if (!$oUsers) {
+                throw $this->createNotFoundException(
+                    'No product found for id '.$iUserId
+                );
+            }
+
+            $oUsers->setProfileImage($sNewfilename);
+            $entityManager->flush();
+
+            if ( !empty($queryBuilder) ){
+                # Row updated
+            }
         } else {
             $this->logger->info("Sorry, there was an error uploading your file.");
         }

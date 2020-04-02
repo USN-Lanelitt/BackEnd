@@ -48,13 +48,24 @@ class UsersRepository extends ServiceEntityRepository
     }
     */
 
-    public function findEmail($email)
+    public function findEmail($sEmail)
     {
         return $this->createQueryBuilder('u')
-            ->andWhere('u.email = :email')
-            ->setParameter('email', $email)
-            ->getQuery()
-            ->getResult()
-            ;
+                    ->andWhere('u.email = :email')
+                    ->setParameter('email', $sEmail)
+                    ->getQuery()
+                    ->getResult();
+    }
+
+    public function updateProfileImage($iUserId, $sNewfilename)
+    {
+        return $this->createQueryBuilder('u')
+                    ->update()
+                    ->set('u.profile_image', 'profile_image')
+                    ->setParameter('profile_image', $sNewfilename)
+                    ->where('u.id', 'userid')
+                    ->setParameter('userid', $iUserId)
+                    ->getQuery()
+                    ->execute();
     }
 }
