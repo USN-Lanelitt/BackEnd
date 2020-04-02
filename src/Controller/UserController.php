@@ -239,19 +239,13 @@ class UserController extends AbstractController
 
             $entityManager = $this->getDoctrine()->getManager();
             $oUsers = $entityManager->getRepository(Users::class)->find($iUserId);
-
             if (!$oUsers) {
                 throw $this->createNotFoundException(
                     'No product found for id '.$iUserId
                 );
             }
-
             $oUsers->setProfileImage($sNewfilename);
             $entityManager->flush();
-
-            if ( !empty($queryBuilder) ){
-                # Row updated
-            }
         } else {
             $this->logger->info("Sorry, there was an error uploading your file.");
         }
