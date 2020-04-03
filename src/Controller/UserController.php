@@ -268,6 +268,15 @@ class UserController extends AbstractController
         ]);
     }
 
+    public function getUserAmount()
+    {
+        //Henter antall brukere
+        $oUsers = $this->getDoctrine()->getRepository(Users::class)->findAll();
+        $userAmount=count($oUsers);
+
+        return new JsonResponse($userAmount);
+    }
+
     public function editUser(Request $request, $iUserId)
     {
         $this->logger->info($request.''.$iUserId);
@@ -279,7 +288,7 @@ class UserController extends AbstractController
         $sMiddlename = $content->middlename;
         $sLastname = $content->lastname;
         $sEmail      = $content->email;
-        $sUsertype= $content->usertype;
+        $sUsertype = $content->usertype;
         $iActive= $content->active;
         $iNewsSubscription = $content->newsSubscription;
 

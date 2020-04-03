@@ -31,6 +31,11 @@ updatePassword:
   controller: App\Controller\UserController::updatePassword
   methods: POST
 
+getUserAmount:
+  path: /users/amount
+  controller: App\Controller\UserController::getUserAmount
+  methods: GET
+
 #---------------------------------------------------John-Berge Grimaas--------------------------------------------------
 getAssetSearch:
   path: /assets/search/{userId}/{search}
@@ -175,6 +180,7 @@ getLoans:
   controller: App\Controller\LoanController::getLoans
   methods: GET
 
+
 #---------------------------------------------------Report--Nicole Bendu-------------------------------------------------
 
 makeReport:
@@ -185,5 +191,10 @@ makeReport:
 getReports:
   path: /getReports
   controller: App\Controller\UnwantedBehaviorReportsController::getReports
+  methods: GET
+
+getReportAmount:
+  path: /report/amount
+  controller: App\Controller\UnwantedBehaviorReportsController::getReportAmount
   methods: GET
 

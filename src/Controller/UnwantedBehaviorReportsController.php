@@ -82,4 +82,13 @@ class UnwantedBehaviorReportsController extends AbstractController
         ]);
     }
 
+    public function getReportAmount()
+    {
+        //Henter antall brukere
+        $oReports = $this->getDoctrine()->getRepository(UnwantedBehaviorReports::class)->findAll();
+        $reportAmount=count($oReports);
+
+        return new JsonResponse($reportAmount);
+    }
+
 }
