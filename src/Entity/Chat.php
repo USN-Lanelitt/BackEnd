@@ -2,6 +2,11 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,26 +23,31 @@ class Chat
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="chats")
+     * @Groups({"chat"})
      */
     private $user1;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="chats")
+     * @Groups({"chat"})
      */
     private $user2;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"chat"})
      */
     private $timestampSent;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"chat"})
      */
     private $message;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"chat"})
      */
     private $timestampRead;
 

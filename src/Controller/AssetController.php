@@ -2,12 +2,8 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Assets;
 use App\Entity\AssetTypes;
-use App\Entity\IndividConnections;
-use App\Entity\Individuals;
-use App\Entity\UserConnectionsRepository;
 use App\Entity\Users;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
