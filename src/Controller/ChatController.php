@@ -22,8 +22,8 @@ $request = Request::createFromGlobals();
 header("Access-Control-Allow-Origin: *");
 
 class ChatController extends AbstractController{
-    public function getChat($userId1, $userId2)
-    {
+
+    public function getChat($userId1, $userId2){
 
         //hent chatt fra DB basert på brukerid1 og brukerid2
         $chatMessages=$this->getDoctrine()->getRepository(Chat::class)->findBy(array('user1' => array($userId1,$userId2), 'user2' => array($userId1,$userId2)));
@@ -40,13 +40,28 @@ class ChatController extends AbstractController{
         ]);
     }
 
-    public function writeMessage()
-    {
+    public function writeMessage(Request $request, $userId1, $userId2){
+        $content = json_decode($request->getContent());
+        $message = $content->message;
 
+        $user1=$this->getDoctrine()->getRepository(Users::class)->find($userId1);
+        $user2=$this->getDoctrine()->getRepository(Users::class)->find($userId2);
+
+
+        $chat=new Chat();
+        $chat->setUser1($user1);
+        $chat->setUser2($user2);
+        $chat->setMessage($message);
+        $chat->setTimestampSent(new \DateTime());
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($chat);
+        $entityManager->flush();
+
+        return $this->getChat($userId1, $userId2);
     }
 
-    public function readMessage()
-    {
+    public function readMessage(){
 
     }
 
