@@ -107,6 +107,21 @@ getAssetAmount:
   controller: App\Controller\AssetController::getAssetAmount
   methods: GET
 
+getChat:
+  path: /users/chat/{userId1}/{userId2}
+  controller: App\Controller\ChatController::getChat
+  methods: GET
+
+writeMessage:
+  path: /users/writeMessage/{userId1}/{userId2}
+  controller: App\Controller\ChatController::writeMessage
+  methods: POST
+
+getUsersAssets:
+  path: /assets/getUsersAssets/{userId1}/{userId2}
+  controller: App\Controller\AssetController::getUsersAssets
+  methods: GET
+
 #---------------------------------------------UserConnections--Nicole Bendu---------------------------------------------
 
 getUsers:

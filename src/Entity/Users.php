@@ -35,7 +35,7 @@ class Users
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"loanStatus", "friendInfo", "loanRequest", "friendRequestInfo", "reportInfo", "userInfo"})
+     * @Groups({"loanStatus", "friendInfo", "loanRequest", "friendRequestInfo", "reportInfo", "userInfo", "chat"})
      */
     private $firstName;
 
@@ -47,7 +47,7 @@ class Users
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"loanStatus", "friendInfo", "loanRequest", "friendRequestInfo", "reportInfo", "userInfo"})
+     * @Groups({"loanStatus", "friendInfo", "loanRequest", "friendRequestInfo", "reportInfo", "userInfo", "chat"})
      */
     private $lastName;
 
