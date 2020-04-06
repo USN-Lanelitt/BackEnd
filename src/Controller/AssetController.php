@@ -26,7 +26,35 @@ class AssetController extends AbstractController{
     public function __construct(LoggerInterface $logger){
         $this->logger=$logger;
     }
+    public function getUsersAssets($userId1, $userId2){
 
+        //Sjekk at tingen ikke er lånt ut
+
+        $conn=$this->getDoctrine()->getConnection();
+        $sql="SELECT id FROM assets 
+              WHERE users_id LIKE $userId2
+              AND (users_id IN (SELECT user2_id FROM user_connections WHERE user1_id LIKE $userId1) OR (users_id LIKE $userId1 OR public LIKE TRUE))";
+        $stmt=$conn->prepare($sql);
+        $stmt->execute();
+
+        $aAssetId = $stmt->fetchAll();
+
+        $iIds = array_column($aAssetId, 'id');
+        //$iIds = reset($aAssetId);
+
+        //Henter alle objektene
+        $assets = $this->getDoctrine()->getRepository(Assets::class)->findBy(array('id' => $iIds));
+
+
+        return $this->json($assets, Response::HTTP_OK, [], [
+            ObjectNormalizer::SKIP_NULL_VALUES => true,
+            ObjectNormalizer::GROUPS => ['groups' => 'asset'],
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            }
+        ]);
+
+    }
     public function getAssetSearch($userId, $search){
 
         //Sjekk at tingen ikke er lånt ut
