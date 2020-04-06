@@ -63,4 +63,31 @@ class LoansRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findAllStatusSent($userId)
+    {
+        $sStatusSent = 0;
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.users = :id')
+            ->andWhere('l.statusLoan = :status')
+            ->setParameter('id', $userId)
+            ->setParameter('status', $sStatusSent)
+            ->orderBy('l.id', 'ASC')
+            ->getQuery()
+            ->getArrayResult()
+            ;
+    }
+
+    public function findAllStatusDenied($userId)
+    {
+        $sStatusSent = 2;
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.users = :id')
+            ->andWhere('l.statusLoan = :status')
+            ->setParameter('id', $userId)
+            ->setParameter('status', $sStatusSent)
+            ->orderBy('l.id', 'ASC')
+            ->getQuery()
+            ->getArrayResult()
+            ;
+    }
 }

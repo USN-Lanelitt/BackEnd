@@ -24,6 +24,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 use Psr\Log\LoggerInterface;
 
+
 $request = Request::createFromGlobals();
 
 header("Access-Control-Allow-Origin: *");
