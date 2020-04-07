@@ -122,6 +122,15 @@ getUsersAssets:
   controller: App\Controller\AssetController::getUsersAssets
   methods: GET
 
+getAssetRating:
+  path: /assets/RatingController/getAssetRating/{assetId}
+  controller: App\Controller\RatingController::getAssetRating
+  methods: GET
+
+rateAsset:
+  path: /assets/RatingController/rateAsset/{userId}/{assetId}/{newRating}
+  controller: App\Controller\RatingController::rateAsset
+  methods: POST
 #---------------------------------------------UserConnections--Nicole Bendu---------------------------------------------
 
 getUsers:
