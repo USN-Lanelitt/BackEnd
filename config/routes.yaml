@@ -131,6 +131,12 @@ rateAsset:
   path: /assets/RatingController/rateAsset/{userId}/{assetId}/{newRating}
   controller: App\Controller\RatingController::rateAsset
   methods: POST
+
+getChats:
+  path: /users/getChats/{userId}
+  controller: App\Controller\ChatController::getChats
+  methods: GET
+
 #---------------------------------------------UserConnections--Nicole Bendu---------------------------------------------
 
 getUsers:

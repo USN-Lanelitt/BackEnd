@@ -23,6 +23,28 @@ header("Access-Control-Allow-Origin: *");
 
 class ChatController extends AbstractController{
 
+    public function  getChats($userId){
+
+        $conn=$this->getDoctrine()->getConnection();
+        $sql="SELECT id FROM users WHERE id IN (SELECT DISTINCT(user2_id) FROM chat where user1_id=$userId)";
+        $stmt=$conn->prepare($sql);
+        $stmt->execute();
+
+        $aUsersId = $stmt->fetchAll();
+
+        $iIds = array_column($aUsersId, 'id');
+
+        $users=$this->getDoctrine()->getRepository(Users::class)->findBy(array('id'=>$iIds));
+
+        return $this->json($users, Response::HTTP_OK, [], [
+            ObjectNormalizer::SKIP_NULL_VALUES => true,
+            ObjectNormalizer::GROUPS => ['groups' => 'userInfo'],
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            }
+        ]);
+    }
+
     public function getChat($userId1, $userId2){
 
         //hent chatt fra DB basert på brukerid1 og brukerid2

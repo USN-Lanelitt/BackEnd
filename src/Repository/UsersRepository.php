@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Users;
+use App\Entity\Chat;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -48,6 +49,7 @@ class UsersRepository extends ServiceEntityRepository
     }
     */
 
+
     public function findEmail($sEmail)
     {
         return $this->createQueryBuilder('u')
@@ -68,4 +70,20 @@ class UsersRepository extends ServiceEntityRepository
                     ->getQuery()
                     ->execute();
     }
+    /*public function  findChatUser($userId){
+        $subQuery= $this->_em->createQueryBuilder()
+                        ->select('DISTINCT c.user2_id')
+                        ->from('chat', 'c')
+                        ->where('c.user1_id=userId')
+                        ->setParameter('userId', $userId)
+                        ->getQuery()
+                        ->getArrayResult();
+        $query=$this->createQueryBuilder('u');
+
+        $query ->andWhere($query->expr()->in('u.id',$subQuery))
+                ->getQuery()
+                ->getArrayResult();
+
+        return $query;
+    }*/
 }
