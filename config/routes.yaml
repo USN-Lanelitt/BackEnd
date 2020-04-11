@@ -42,6 +42,11 @@ getAssetSearch:
   controller: App\Controller\AssetController::getAssetSearch
   methods: GET
 
+getAssetType:
+  path: /assets/getAssetType/{userId}/{typeId}
+  controller: App\Controller\AssetController::getAssetType
+  methods: GET
+
 getMyAssets:
   path: /assets/getMyAsset/{userId}
   controller: App\Controller\AssetController::getMyAssets
@@ -60,7 +65,7 @@ addAsset:
 editAsset:
   path: /assets/editAsset/{userId}/{assetId}
   controller: App\Controller\AssetController::editAsset
-  methods: GET
+  methods: PUT
 
 getMainImage:
   path: /assetsImage/getMainImage/{assetId}
