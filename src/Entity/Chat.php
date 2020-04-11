@@ -80,9 +80,10 @@ class Chat
         return $this;
     }
 
-    public function getTimestampSent(): ?\DateTimeInterface
+    public function getTimestampSent(): string
     {
-        return $this->timestampSent;
+        $temp=$this->timestampSent;
+        return $temp->format('Y-m-d H:i:s');
     }
 
     public function setTimestampSent(\DateTimeInterface $timestampSent): self
