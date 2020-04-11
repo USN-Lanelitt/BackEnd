@@ -147,6 +147,11 @@ logging:
   controller: App\Controller\UtilController::logging
   methods: POST
 
+getLogg:
+  path: /logging/{userId}/{loggName}
+  controller: App\Controller\UtilController::getLogg
+  methods: GET
+
 #---------------------------------------------UserConnections--Nicole Bendu---------------------------------------------
 
 getUsers:
@@ -188,6 +193,7 @@ getUserSearch:
   path: /user/{iUserId}/search/{sSearch}
   controller: App\Controller\UserConnectionsController::getUserSearch
   methods:    GET
+
 
 #---------------------------------------------------Loans--Nicole Bendu-------------------------------------------------
 sendLoanRequest:

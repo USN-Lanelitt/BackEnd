@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Users;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UtilController extends AbstractController
@@ -33,9 +35,22 @@ class UtilController extends AbstractController
         }
         return $randstring;
     }
+    public static function getLogg($userId, $loggName){
 
+        //$loggName="logg";
+        $myfile = fopen("$loggName.txt", "r") or die("Unable to open file!");
+        $logg=array();
+        $teller=0;
+        while(!feof($myfile)) {
+            $logg[$teller]= fgets($myfile);
+            $teller++;
+        }
+        fclose($myfile);
+        return new JsonResponse($logg);
 
+    }
     public static function logging($userId, $functionName, $controllerName, $info, $change){
+        $loggName="logg";
         $loggingLevel=8;
         $cSV=";";
         $timeStamp=new \DateTime();
@@ -48,40 +63,42 @@ class UtilController extends AbstractController
         }
         //Nivå 0 logger ikke
 
-        //Nivå 1 logger kun set funksjoner, logger ikke $info, logger alt til en fil
-        //Nivå 2 logger kun set funksjoner, logger $info, logger alt til en fil
-        //Nivå 3 logger kun set funksjoner, logger ikke $info, logger tilhørende controller fil
-        //Nivå 4 logger kun set funksjoner, logger $info, logger tilhørende controller fil
+        //Nivå 1 logger kun set funksjoner, logger ikke $info, logger alt til hovedloggen
+        //Nivå 2 logger kun set funksjoner, logger $info, logger alt til hovedloggen
+        //Nivå 3 logger kun set funksjoner, logger ikke $info, logger tilhørende controller fil og til hovedloggen
+        //Nivå 4 logger kun set funksjoner, logger $info, logger tilhørende controller fil og til hovedloggen
         if($loggingLevel<=4&&$loggingLevel>0&&$change==1){
             if($loggingLevel<=2){
                 if($loggingLevel==2){
                     $data.=("".$info);
                 }
-                file_put_contents("logg.txt", $data, FILE_APPEND);
+                file_put_contents("$loggName.txt", $data, FILE_APPEND);
             }
             else if($loggingLevel>=3){
                 if($loggingLevel==4){
                     $data.=("".$info);
                 }
                 file_put_contents("$controllerName.txt", $data, FILE_APPEND);
+                file_put_contents("$loggName.txt", $data, FILE_APPEND);
             }
         }
-        //Nivå 5 logger set og get funksjoner, logger ikke $info, logger alt til en fil
-        //Nivå 6 logger set og get funksjoner, logger $info, logger alt til en fil
-        //Nivå 7 logger kun set og get funksjoner, logger ikke $info, logger tilhørende controller fil
-        //Nivå 8 logger kun set og get funksjoner, logger $info, logger tilhørende controller fil
+        //Nivå 5 logger set og get funksjoner, logger ikke $info, logger alt til hovedloggen
+        //Nivå 6 logger set og get funksjoner, logger $info, logger alt til hovedloggen
+        //Nivå 7 logger kun set og get funksjoner, logger ikke $info, logger tilhørende controller fil og til hovedloggen
+        //Nivå 8 logger kun set og get funksjoner, logger $info, logger tilhørende controller fil og til hovedloggen
         else if($loggingLevel>4){
             if($loggingLevel<=6){
                 if($loggingLevel==6){
                     $data.=($cSV.$info);
                 }
-                file_put_contents("logg.txt", $data, FILE_APPEND);
+                file_put_contents("$loggName.txt", $data, FILE_APPEND);
             }
             else if($loggingLevel>=7){
                 if($loggingLevel==8){
                     $data.=($cSV.$info);
                 }
                 file_put_contents("$controllerName.txt", $data, FILE_APPEND);
+                file_put_contents("$loggName.txt", $data, FILE_APPEND);
             }
         }
     }
