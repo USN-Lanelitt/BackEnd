@@ -220,7 +220,6 @@ getLoans:
   controller: App\Controller\LoanController::getLoans
   methods: GET
 
-
 #---------------------------------------------------Report--Nicole Bendu-------------------------------------------------
 
 makeReport:

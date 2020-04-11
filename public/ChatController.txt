@@ -52,7 +52,51 @@
 52;writeMessage;ChatController;2020-04-11 18:45:17;POST/DELETE;52 - 35 - Opprett chat
 52;writeMessage;ChatController;2020-04-11 18:45:17;GET;52 - 35
 52;writeMessage;ChatController;2020-04-11 18:45:46;GET;52 - 18
-52;writeMessage;ChatController;2020-04-11 18:46:54;POST/DELETE;52 - 18 - d
-52;writeMessage;ChatController;2020-04-11 18:46:54;GET;52 - 18
-52;writeMessage;ChatController;2020-04-11 19:17:16;GET;52 - 18
-52;writeMessage;ChatController;2020-04-11 19:18:05;GET;52 - 18
+18;writeMessage;ChatController;2020-04-11 19:22:24;GET;18
+18;writeMessage;ChatController;2020-04-11 19:22:47;GET;18 - 52
+18;writeMessage;ChatController;2020-04-11 19:23:18;GET;18
+18;writeMessage;ChatController;2020-04-11 19:23:20;GET;18 - 52
+18;writeMessage;ChatController;2020-04-11 19:23:37;GET;18
+18;writeMessage;ChatController;2020-04-11 19:23:39;GET;18 - 52
+18;writeMessage;ChatController;2020-04-11 19:24:17;GET;18
+18;writeMessage;ChatController;2020-04-11 19:24:24;GET;18 - 52
+18;writeMessage;ChatController;2020-04-11 19:24:43;GET;18
+18;writeMessage;ChatController;2020-04-11 19:24:46;GET;18
+18;writeMessage;ChatController;2020-04-11 19:24:50;GET;18 - 52
+18;writeMessage;ChatController;2020-04-11 19:34:10;GET;18
+18;writeMessage;ChatController;2020-04-11 19:34:18;GET;18 - 52
+18;writeMessage;ChatController;2020-04-11 19:34:55;GET;18
+18;writeMessage;ChatController;2020-04-11 19:37:02;GET;18
+18;writeMessage;ChatController;2020-04-11 19:40:23;GET;18
+18;writeMessage;ChatController;2020-04-11 19:41:10;GET;18
+18;writeMessage;ChatController;2020-04-11 19:42:33;GET;18
+18;writeMessage;ChatController;2020-04-11 19:46:30;GET;18
+18;writeMessage;ChatController;2020-04-11 19:49:03;GET;18
+18;writeMessage;ChatController;2020-04-11 19:50:07;GET;18
+18;writeMessage;ChatController;2020-04-11 19:50:22;GET;18
+18;writeMessage;ChatController;2020-04-11 19:55:01;GET;18
+18;writeMessage;ChatController;2020-04-11 19:55:24;POST/DELETE;18 - 40 - 
+18;writeMessage;ChatController;2020-04-11 19:55:24;GET;18 - 40
+18;writeMessage;ChatController;2020-04-11 19:55:25;GET;18
+18;writeMessage;ChatController;2020-04-11 19:55:29;GET;18 - 40
+18;writeMessage;ChatController;2020-04-11 19:55:37;POST/DELETE;18 - 40 - hallo
+18;writeMessage;ChatController;2020-04-11 19:55:38;GET;18 - 40
+18;writeMessage;ChatController;2020-04-11 20:01:54;GET;18
+18;writeMessage;ChatController;2020-04-11 20:01:58;GET;18 - 52
+18;writeMessage;ChatController;2020-04-11 20:03:32;GET;18
+18;writeMessage;ChatController;2020-04-11 20:03:35;GET;18 - 40
+18;writeMessage;ChatController;2020-04-11 20:04:14;GET;18
+18;writeMessage;ChatController;2020-04-11 20:04:29;GET;18
+18;writeMessage;ChatController;2020-04-11 20:07:40;POST/DELETE;18 - 40 - Opprett chat
+18;writeMessage;ChatController;2020-04-11 20:07:40;GET;18 - 40
+18;writeMessage;ChatController;2020-04-11 20:08:22;GET;18
+18;writeMessage;ChatController;2020-04-11 20:09:02;GET;18
+18;writeMessage;ChatController;2020-04-11 20:09:13;GET;18
+18;writeMessage;ChatController;2020-04-11 20:10:31;GET;18
+18;writeMessage;ChatController;2020-04-11 20:12:39;GET;18
+18;writeMessage;ChatController;2020-04-11 20:12:52;POST/DELETE;18 - 40 - Opprett chat
+18;writeMessage;ChatController;2020-04-11 20:12:52;GET;18 - 40
+18;writeMessage;ChatController;2020-04-11 20:12:52;GET;18
+18;writeMessage;ChatController;2020-04-11 21:42:01;GET;18
+18;writeMessage;ChatController;2020-04-11 21:42:10;GET;18
+18;writeMessage;ChatController;2020-04-11 21:42:16;GET;18 - 52

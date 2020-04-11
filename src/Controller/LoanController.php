@@ -145,7 +145,6 @@ class LoanController extends AbstractController
 
         return $this->json($oRequestIds, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
-            ObjectNormalizer::GROUPS => ['groups' => 'loanStatus', 'asset'],
             ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
                 return $object->getId();
             }
@@ -167,7 +166,7 @@ class LoanController extends AbstractController
 
         return $this->json($oRequestIds, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
-            ObjectNormalizer::GROUPS => ['groups' => 'loanStatus', 'asset'],
+            ObjectNormalizer::GROUPS => ['groups' => 'loanRequest', 'asset'],
             ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
                 return $object->getId();
             }
