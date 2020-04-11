@@ -1,2 +1,7 @@
 
 54;getMyAssets;AssetController;2020-04-11 19:51:27;GET;54
+54;getMyAssets;AssetController;2020-04-11 19:57:34;GET;54
+54;getMyAssets;AssetController;2020-04-11 19:58:53;GET;54
+54;getMyAssets;AssetController;2020-04-11 20:00:36;GET;54
+54;editAsset;AssetController;2020-04-11 20:07:48;POST/DELETE;54 - 36 - 3 - Trompet - Nesten ny trompet - 1 - 1
+54;editAsset;AssetController;2020-04-11 20:08:20;POST/DELETE;54 - 36 - 3 - Trompet - Nesten ny trompet - 1 - 1

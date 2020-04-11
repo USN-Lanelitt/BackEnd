@@ -188,11 +188,11 @@ class AssetController extends AbstractController{
         }
 
         $content = json_decode($request->getContent());
-        $iUserId = $content->userId;
-        $iTypeId = $content->typeId;
+        $iUserId = $content->users->id;
+        $iTypeId = $content->assetType->id;
         $sAssetName = $content->assetName;
         $tDescription = $content->description;
-        $iCondition = $content->condition;
+        $iCondition = $content->assetCondition;
         $bPublic=$content->public;
 
         //*
