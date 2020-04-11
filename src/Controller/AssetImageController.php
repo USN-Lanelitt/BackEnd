@@ -30,6 +30,11 @@ class AssetImageController extends AbstractController{
         if(empty($assetImage)){
             return new JsonResponse($assetImage);
         }
+
+        //Logging funksjon
+        $info=($assetId);
+        UtilController::logging(-1, "getMainImage", "AssetImageController", "$info",0);
+
         return $this->json($assetImage, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
             ObjectNormalizer::ATTRIBUTES => ['imageUrl'],
@@ -105,6 +110,10 @@ class AssetImageController extends AbstractController{
         {
             $this->logger->info("Sorry, there was an error uploading your file.");
         }
+
+        //Logging funksjon
+        $info=($assetId." - ".$sNewfilename." - ".$bMainImage);
+        UtilController::logging($userId, "addImage", "AssetImageController", "$info",1);
 
         return new JsonResponse($aReturn);
 

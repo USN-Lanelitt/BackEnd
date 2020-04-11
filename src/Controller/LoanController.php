@@ -79,6 +79,10 @@ class LoanController extends AbstractController
             $entityManager->persist($oLoan);
             $entityManager->flush();
 
+            //Logging funksjon
+            $info=($oUser." - ".$oAsset." - ".$oLoan." - ".$oLoan." - ".$oLoan);
+            UtilController::logging($iUserId, "sendLoanRequest", "LoanController", "$info",1);
+
             return new JsonResponse('Låneforhold er opprettet');
         }
         return new JsonResponse('Låneforholdet finnes fra før');
@@ -113,6 +117,10 @@ class LoanController extends AbstractController
         //Henter alle låne-objektene med status "sent"
         $oRequestIds = $this->getDoctrine()->getRepository(Loans::class)->findBy(array('id'=> $iIds));
 
+        //Logging funksjon
+        $info=("null");
+        UtilController::logging($iUserId, "getLoanRequest", "LoanController", "$info",0);
+
         return $this->json($oRequestIds, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
             ObjectNormalizer::GROUPS => ['groups' => 'loanRequest'],
@@ -131,6 +139,10 @@ class LoanController extends AbstractController
         //Henter alle låne-objektene der bruker har sendt en forespørsel
         $oRequestIds = $this->getDoctrine()->getRepository(Loans::class)->findAllStatusSent($iUserId);
 
+        //Logging funksjon
+        $info=("null");
+        UtilController::logging($iUserId, "getLoanStatusSent", "LoanController", "$info",0);
+
         return $this->json($oRequestIds, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
             ObjectNormalizer::GROUPS => ['groups' => 'loanStatus', 'asset'],
@@ -148,6 +160,10 @@ class LoanController extends AbstractController
 
         //Henter alle låne-objektene der bruker har sendt en forespørsel
         $oRequestIds = $this->getDoctrine()->getRepository(Loans::class)->findAllStatusDenied($iUserId);
+
+        //Logging funksjon
+        $info=("null");
+        UtilController::logging($iUserId, "getLoanStatusDenied", "LoanController", "$info",0);
 
         return $this->json($oRequestIds, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -171,6 +187,10 @@ class LoanController extends AbstractController
         $oStatusDenied = $this->getDoctrine()->getRepository(RequestStatus::class)->find(2);
 
         $entityManager = $this->getDoctrine()->getManager();
+
+        //Logging funksjon
+        $info=($iLoanId." - ".$iStatus);
+        UtilController::logging($iUserId, "replyLoanRequest", "LoanController", "$info",0);
 
         //Hvis lånet har status "sent
         if($oLoan->getStatusLoan() == $oStatusSent){
@@ -200,6 +220,10 @@ class LoanController extends AbstractController
 
         //Henter alle låne-objekter bruker har sendt med status = accepted
         $oRequestIds = $this->getDoctrine()->getRepository(Loans::class)->findBy(array('users'=> $iUserId, 'statusLoan'=> $oStatusAccepted));
+
+        //Logging funksjon
+        $info=($iUserId);
+        UtilController::logging($iUserId, "getAcceptedRequests", "LoanController", "$info",0);
 
         return $this->json($oRequestIds, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -233,6 +257,10 @@ class LoanController extends AbstractController
         //Henter alle låne-objektene med status "sent"
         $oRequestIds = $this->getDoctrine()->getRepository(Loans::class)->findBy(array('id'=> $iIds));
 
+        //Logging funksjon
+        $info=($iUserId);
+        UtilController::logging($iUserId, "getLoans", "LoanController", "$info",0);
+
         return $this->json($oRequestIds, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
             ObjectNormalizer::GROUPS => ['groups' => 'loanRequest'],
@@ -242,6 +270,7 @@ class LoanController extends AbstractController
         ]);
     }
 
+    /*John*/
     public function getAllUnavailableDates(){
         $assetId = 15;
         $aIds = $this->getDoctrine()->getRepository(Loans::class)->findAllAssetLoans($assetId);
@@ -260,6 +289,10 @@ class LoanController extends AbstractController
                 //}
            // }
         }
+
+        //Logging funksjon
+        $info=("null");
+        UtilController::logging(-1, "getAllUnavailableDates", "LoanController", "$info",0);
 
         return $this->json($aUnavailableDate, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -299,6 +332,11 @@ class LoanController extends AbstractController
             }
 
         }
+
+        //Logging funksjon
+        $info=($assetId);
+        UtilController::logging(-1, "assetAvailability", "LoanController", "$info",0);
+
         return new JsonResponse($ikkeLedig);
     }
 

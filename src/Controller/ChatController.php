@@ -36,6 +36,9 @@ class ChatController extends AbstractController{
 
         $users=$this->getDoctrine()->getRepository(Users::class)->findBy(array('id'=>$iIds));
 
+        $info=($userId);
+        UtilController::logging($userId, "writeMessage", "ChatController", "$info",0);
+
         return $this->json($users, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
             ObjectNormalizer::GROUPS => ['groups' => 'userInfo'],
@@ -51,6 +54,10 @@ class ChatController extends AbstractController{
         $chatMessages=$this->getDoctrine()->getRepository(Chat::class)->findBy(array('user1' => array($userId1,$userId2), 'user2' => array($userId1,$userId2)));
 
         //if tom, returner tom
+
+        //Logging funksjon
+        $info=($userId1." - ".$userId2);
+        UtilController::logging($userId1, "writeMessage", "ChatController", "$info",0);
 
         //returner chat sortert på tidspunkt sendt
         return $this->json($chatMessages, Response::HTTP_OK, [], [
@@ -79,6 +86,10 @@ class ChatController extends AbstractController{
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($chat);
         $entityManager->flush();
+
+        //Logging funksjon
+        $info=($userId1." - ".$userId2." - ".$message);
+        UtilController::logging($userId1, "writeMessage", "ChatController", "$info",1);
 
         return $this->getChat($userId1, $userId2);
     }

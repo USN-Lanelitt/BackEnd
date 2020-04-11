@@ -65,6 +65,10 @@ class UnwantedBehaviorReportsController extends AbstractController
         $entityManager->persist($report);
         $entityManager->flush();
 
+        //Logging funksjon
+        $info=($iUserId." - ".$iUserId2." - ".$sSubject." - ".$sComment);
+        UtilController::logging($iUserId, "report", "UnwantedBehaviorReportsController", "$info",1);
+
         return new JsonResponse('sendt klage på person');
 
         $this->logger->info('madereport');
@@ -73,6 +77,10 @@ class UnwantedBehaviorReportsController extends AbstractController
 
     function getReports(){
         $oReports = $this->getDoctrine()->getRepository(UnwantedBehaviorReports::class)->findAll();
+
+        //Logging funksjon
+        $info=("null");
+        UtilController::logging(-1, "getReports", "UnwantedBehaviorReportsController", "$info",0);
 
         return $this->json($oReports, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -88,6 +96,11 @@ class UnwantedBehaviorReportsController extends AbstractController
         //Henter antall brukere
         $oReports = $this->getDoctrine()->getRepository(UnwantedBehaviorReports::class)->findAll();
         $reportAmount=count($oReports);
+
+
+        //Logging funksjon
+        $info=($reportAmount);
+        UtilController::logging(-1, "getReportAmount", "UnwantedBehaviorReportsController", "$info",0);
 
         return new JsonResponse($reportAmount);
     }

@@ -45,6 +45,9 @@ class AssetController extends AbstractController{
         //Henter alle objektene
         $assets = $this->getDoctrine()->getRepository(Assets::class)->findBy(array('id' => $iIds));
 
+        //Logging funksjon
+        $info=($userId1." - ".$userId2);
+        UtilController::logging($userId1, "getUsersAssets", "AssetController", "$info",0);
 
         return $this->json($assets, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -75,6 +78,11 @@ class AssetController extends AbstractController{
         $assets = $this->getDoctrine()->getRepository(Assets::class)->findBy(array('id' => $iIds));
 
 
+        //Logging funksjon
+        $info=($userId." - ".$search);
+        UtilController::logging($userId, "getAssetSearch", "AssetController", "$info",0);
+
+
         return $this->json($assets, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
             ObjectNormalizer::GROUPS => ['groups' => 'asset'],
@@ -101,6 +109,11 @@ class AssetController extends AbstractController{
         if($d1){
             $d2="empty";
         }
+
+        //Logging funksjon
+        $info=($userId);
+        UtilController::logging($userId, "getMyAssets", "AssetController", "$info",0);
+
         return $this->json($aAssets, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
             ObjectNormalizer::GROUPS => ['groups' => 'asset'],
@@ -116,6 +129,11 @@ class AssetController extends AbstractController{
         if(empty($asset)){
             return new JsonResponse($asset);
         }
+
+
+        //Logging funksjon
+        $info=($assetId);
+        UtilController::logging(-1, "getAsset", "AssetController", "$info",0);
 
         return $this->json($asset, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -154,6 +172,11 @@ class AssetController extends AbstractController{
         $entityManager->persist($asset);
         $entityManager->flush();
 
+
+        //Logging funksjon
+        $info=($iUserId." - ".$iTypeId." - ".$sAssetName." - ".$tDescription." - ".$iCondition." - ".$bPublic);
+        UtilController::logging($iUserId, "addAsset", "AssetController", "$info",1);
+
         return new JsonResponse("Eiendel lagd til");
     }
 
@@ -189,6 +212,10 @@ class AssetController extends AbstractController{
         $entityManager->flush();
         //*/
 
+        //Logging funksjon
+        $info=($userId." - ".$assetId." - ".$iTypeId." - ".$sAssetName." - ".$tDescription." - ".$iCondition." - ".$bPublic);
+        UtilController::logging($iUserId, "editAsset", "AssetController", "$info",1);
+
         return $this->json($asset, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
             ObjectNormalizer::GROUPS => ['groups' => 'asset'],
@@ -202,9 +229,16 @@ class AssetController extends AbstractController{
 
         $oAsset=$this->getDoctrine()->getRepository(Assets::class)->find($assetId);
 
+        $user=$oAsset->getUsers();
+        $userId=$user->getId();
+
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($oAsset);
         $entityManager->flush();
+
+        //Logging funksjon
+        $info=($userId." - ".$assetId);
+        UtilController::logging($userId, "removeAsset", "AssetController", "$info",1);
 
         return new JsonResponse("Eiendel slettet");
     }
@@ -213,6 +247,9 @@ class AssetController extends AbstractController{
         $assets=$this->getDoctrine()->getRepository(Assets::class)->findBy(array('users'=>$userId));
         $assetAmount=count($assets);
 
+        //Logging funksjon
+        $info=($userId." - ".$assetAmount);
+        UtilController::logging(-1, "getIndividAssetAmount", "AssetController", "$info",0);
 
         return new JsonResponse($assetAmount);
     }
@@ -220,6 +257,10 @@ class AssetController extends AbstractController{
 
         $assets=$this->getDoctrine()->getRepository(Assets::class)->findAll();
         $assetAmount=count($assets);
+
+        //Logging funksjon
+        $info=($assetAmount);
+        UtilController::logging(-1, "getAssetAmount", "AssetController", "$info",0);
 
         return new JsonResponse($assetAmount);
     }

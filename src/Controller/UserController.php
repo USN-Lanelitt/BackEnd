@@ -45,6 +45,7 @@ class UserController extends AbstractController
         $sPhone      = $content->phone;
         $sPassword   = password_hash($content->password, PASSWORD_DEFAULT);
 
+
         // Sjekke om e-post finnes i databasen
         $oUserExist = $this->getDoctrine()->getRepository(Users::class)->findOneBy(['email'=>$sEmail]);
 
@@ -93,6 +94,11 @@ class UserController extends AbstractController
             $entityManager->persist($oUser);
             $entityManager->flush();
 
+            //Logging funksjon
+            $loggUserId=$oUser->getId();
+            $info=($loggUserId." - ".$sFirstname." - ".$sMiddlename." - ".$sLastname." - ".$sBirthdate." - ".$sEmail." - ".$sPhone);
+            UtilController::logging($loggUserId, "registerUser", "UserController", "$info",1);
+
             // Hente ut individid
             //$iUserId = $oUser->getId();
 
@@ -124,7 +130,7 @@ class UserController extends AbstractController
 
         $arrayCollection = array();
         $sHashPassword = "";
-
+        $loggId="";//til logging
         foreach($oUser as $oU) {
             $arrayCollection[] = array(
                 'id' => $oU->getId(),
@@ -136,7 +142,9 @@ class UserController extends AbstractController
                 // ... Same for each property you want
             );
             $sHashPassword =  $oU->getPassword();
+            $loggId.=$oU->getId();//til logging
         }
+
 
         // sjekke passord.
         if ( ! password_verify($sPassword, $sHashPassword))
@@ -162,7 +170,13 @@ class UserController extends AbstractController
             $arrayCollection['code'] = 200;
         }
 
+
         $this->logger->info(json_encode($arrayCollection));
+
+        //Logging funksjon
+        $timeStamp=new \DateTime();
+        $info=($loggId." - ".$sUsername." - ".$timeStamp->format('Y-m-d H:i:s'));
+        UtilController::logging($loggId, "login", "UserController", "$info",0);
 
         return new JsonResponse($arrayCollection);
     }
@@ -199,6 +213,10 @@ class UserController extends AbstractController
             $oUser->setPassword($sNewPassword);
             $aCode['code'] = 200;
         }
+
+        //Logging funksjon
+        $info=($iUserId);
+        UtilController::logging($iUserId, "updatePassword", "UserController", "$info",1);
 
         return new JsonResponse($aCode);
     }
@@ -250,6 +268,10 @@ class UserController extends AbstractController
             $this->logger->info("Sorry, there was an error uploading your file.");
         }
 
+        //Logging funksjon
+        $info=($iUserId." - ".$sNewfilename);
+        UtilController::logging($iUserId, "profileImageUpload", "UserController", "$info",1);
+
         return new JsonResponse($aReturn);
     }
 
@@ -257,6 +279,10 @@ class UserController extends AbstractController
     {
         //Henter alla brukere
         $oUsers = $this->getDoctrine()->getRepository(Users::class)->findAll();
+
+        //Logging funksjon
+        $info=("null");
+        UtilController::logging(-1, "getUsers", "UserController", "$info",0);
 
         //Skriver ut alle objektene
         return $this->json($oUsers, Response::HTTP_OK, [], [
@@ -273,6 +299,10 @@ class UserController extends AbstractController
         //Henter antall brukere
         $oUsers = $this->getDoctrine()->getRepository(Users::class)->findAll();
         $userAmount=count($oUsers);
+
+        //Logging funksjon
+        $info=("null");
+        UtilController::logging(-1, "getUserAmount", "UserController", "$info",0);
 
         return new JsonResponse($userAmount);
     }
@@ -360,6 +390,11 @@ class UserController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($oUser);
         $entityManager->flush();
+
+        //Logging funksjon
+        $loggUserId=$oUser->getId();
+        $info=($loggUserId." - ".$sFirstname." - ".$sMiddlename." - ".$sLastname." - ".$sEmail." - ".$sUsertype." - ".$iActive." - ".$iNewsSubscription);
+        UtilController::logging($loggUserId, "editUser", "UserController", "$info",1);
 
         return new JsonResponse("endret");
     }

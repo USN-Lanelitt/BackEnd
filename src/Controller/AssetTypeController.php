@@ -21,6 +21,10 @@ class AssetTypeController extends AbstractController{
     public function getAssetCategories(){
         $assetCategory=$this->getDoctrine()->getRepository(AssetCategories::class)->findAll();
 
+        //Logging funksjon
+        $info=($assetCategory->getId());
+        UtilController::logging(-1, "getAssetCategories", "AssetTypeController", "$info",0);
+
         return $this->json($assetCategory, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
             ObjectNormalizer::ATTRIBUTES => ['id', 'categoryName'],
@@ -33,6 +37,10 @@ class AssetTypeController extends AbstractController{
     public function getAssetTypes($iCatId){
         $assetType=$this->getDoctrine()->getRepository(AssetTypes::class)->findBy(array('assetCategories'=>$iCatId));
 
+        //Logging funksjon
+        $info=($iCatId);
+        UtilController::logging(-1, "getAssetTypes", "AssetTypeController", "$info",0);
+
         return $this->json($assetType, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
             ObjectNormalizer::ATTRIBUTES => ['id', 'assetType'],
@@ -44,6 +52,10 @@ class AssetTypeController extends AbstractController{
 
     public function getAllAssetTypes(){
         $assetType=$this->getDoctrine()->getRepository(AssetTypes::class)->findAll();
+
+        //Logging funksjon
+        $info="null";
+        UtilController::logging(-1, "getAllAssetTypes", "AssetTypeController", "$info",0);
 
         return $this->json($assetType, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,

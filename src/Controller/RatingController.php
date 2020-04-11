@@ -49,6 +49,10 @@ class RatingController extends AbstractController{
         $entityManager->persist($rating);
         $entityManager->flush();
 
+        //Logging funksjon
+        $info=($userId." - ".$assetId." - ".$newRating);
+        UtilController::logging($userId, "rateAsset", "RatingController", "$info",1);
+
         return new JsonResponse("Fullført tilbakemelding");
     }
     public function getAssetRating($assetId){
@@ -58,6 +62,10 @@ class RatingController extends AbstractController{
         $stmt->execute();
 
         $ratings=$stmt->fetchAll();
+
+        //Logging funksjon
+        $info=("null");
+        UtilController::logging(-1, "getAssetRating", "RatingController", "$info",0);
 
         return new JsonResponse($ratings);
 
