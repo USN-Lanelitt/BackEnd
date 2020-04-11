@@ -42,6 +42,11 @@ getAssetSearch:
   controller: App\Controller\AssetController::getAssetSearch
   methods: GET
 
+getAssetType:
+  path: /assets/getAssetType/{userId}/{typeId}
+  controller: App\Controller\AssetController::getAssetType
+  methods: GET
+
 getMyAssets:
   path: /assets/getMyAsset/{userId}
   controller: App\Controller\AssetController::getMyAssets
