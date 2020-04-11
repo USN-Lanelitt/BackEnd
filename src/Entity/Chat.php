@@ -83,7 +83,7 @@ class Chat
     public function getTimestampSent(): string
     {
         $temp=$this->timestampSent;
-        return $temp->format('Y-m-d H:i:s');
+        return $temp->format('D H:i');
     }
 
     public function setTimestampSent(\DateTimeInterface $timestampSent): self
