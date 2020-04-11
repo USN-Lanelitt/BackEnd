@@ -53,20 +53,43 @@ class ChatController extends AbstractController{
         //hent chatt fra DB basert på brukerid1 og brukerid2
         $chatMessages=$this->getDoctrine()->getRepository(Chat::class)->findBy(array('user1' => array($userId1,$userId2), 'user2' => array($userId1,$userId2)));
 
-        //if tom, returner tom
+        //if tom, oppret chat
+        if(empty($chatMessages)){
 
-        //Logging funksjon
-        $info=($userId1." - ".$userId2);
-        UtilController::logging($userId1, "writeMessage", "ChatController", "$info",0);
+            $user1=$this->getDoctrine()->getRepository(Users::class)->find($userId1);
+            $user2=$this->getDoctrine()->getRepository(Users::class)->find($userId2);
 
-        //returner chat sortert på tidspunkt sendt
-        return $this->json($chatMessages, Response::HTTP_OK, [], [
-            ObjectNormalizer::SKIP_NULL_VALUES => true,
-            ObjectNormalizer::GROUPS => ['groups' => 'chat'],
-            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
-                return $object->getId();
-            }
-        ]);
+            $chat=new Chat();
+            $chat->setUser1($user1);
+            $chat->setUser2($user2);
+            $chat->setMessage($user1->getFirstName()." opprettet en chat med deg.");
+            $chat->setTimestampSent(new \DateTime());
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($chat);
+            $entityManager->flush();
+
+            //Logging funksjon
+            $info=($userId1." - ".$userId2." - "."Opprett chat");
+            UtilController::logging($userId1, "writeMessage", "ChatController", "$info",1);
+
+            return $this->getChat($userId1, $userId2);
+
+        }
+        else{
+            //Logging funksjon
+            $info=($userId1." - ".$userId2);
+            UtilController::logging($userId1, "writeMessage", "ChatController", "$info",0);
+
+            //returner chat sortert på tidspunkt sendt
+            return $this->json($chatMessages, Response::HTTP_OK, [], [
+                ObjectNormalizer::SKIP_NULL_VALUES => true,
+                ObjectNormalizer::GROUPS => ['groups' => 'chat'],
+                ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                    return $object->getId();
+                }
+            ]);
+        }
     }
 
     public function writeMessage(Request $request, $userId1, $userId2){
@@ -75,7 +98,6 @@ class ChatController extends AbstractController{
 
         $user1=$this->getDoctrine()->getRepository(Users::class)->find($userId1);
         $user2=$this->getDoctrine()->getRepository(Users::class)->find($userId2);
-
 
         $chat=new Chat();
         $chat->setUser1($user1);

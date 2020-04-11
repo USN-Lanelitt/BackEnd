@@ -33,6 +33,8 @@ class UtilController extends AbstractController
         }
         return $randstring;
     }
+
+
     public static function logging($userId, $functionName, $controllerName, $info, $change){
         $loggingLevel=8;
         $cSV=";";
@@ -50,7 +52,6 @@ class UtilController extends AbstractController
         //Nivå 2 logger kun set funksjoner, logger $info, logger alt til en fil
         //Nivå 3 logger kun set funksjoner, logger ikke $info, logger tilhørende controller fil
         //Nivå 4 logger kun set funksjoner, logger $info, logger tilhørende controller fil
-
         if($loggingLevel<=4&&$loggingLevel>0&&$change==1){
             if($loggingLevel<=2){
                 if($loggingLevel==2){
