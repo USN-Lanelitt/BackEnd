@@ -1,2 +1,2 @@
 
-52;getMyAssets;AssetController;2020-04-11 04:34:16;GET;52
+54;getMyAssets;AssetController;2020-04-11 19:51:27;GET;54

@@ -1,10 +1,2 @@
 
--1;getAllAssetTypes;AssetTypeController;2020-04-11 04:24:56;GET;null
--1;getAllAssetTypes;AssetTypeController;2020-04-11 04:25:23;GET;null
--1;getAllAssetTypes;AssetTypeController;2020-04-11 04:26:11;GET;null
--1;getAllAssetTypes;AssetTypeController;2020-04-11 04:27:10;GET;null
--1;getAllAssetTypes;AssetTypeController;2020-04-11 04:37:38;GET;null
--1;getAllAssetTypes;AssetTypeController;2020-04-11 04:37:47;GET;null
--1;getAllAssetTypes;AssetTypeController;2020-04-11 17:12:10;GET;null
--1;getAllAssetTypes;AssetTypeController;2020-04-11 17:12:22;GET;null
--1;getAllAssetTypes;AssetTypeController;2020-04-11 17:39:52;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-11 19:51:44;GET;null

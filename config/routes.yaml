@@ -60,7 +60,7 @@ addAsset:
 editAsset:
   path: /assets/editAsset/{userId}/{assetId}
   controller: App\Controller\AssetController::editAsset
-  methods: GET
+  methods: PUT
 
 getMainImage:
   path: /assetsImage/getMainImage/{assetId}
