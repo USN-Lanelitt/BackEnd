@@ -33,3 +33,8 @@
 52;writeMessage;ChatController;2020-04-11 18:16:00;POST/DELETE;52 - 4 - Opprett chat
 52;writeMessage;ChatController;2020-04-11 18:16:40;POST/DELETE;52 - 4 - Opprett chat
 52;writeMessage;ChatController;2020-04-11 18:16:40;GET;52 - 4
+52;writeMessage;ChatController;2020-04-11 18:17:52;POST/DELETE;52 - 35 - Opprett chat
+52;writeMessage;ChatController;2020-04-11 18:17:52;GET;52 - 35
+52;writeMessage;ChatController;2020-04-11 18:21:15;GET;52
+52;writeMessage;ChatController;2020-04-11 18:21:17;GET;52 - 51
+52;writeMessage;ChatController;2020-04-11 18:21:21;GET;52 - 18

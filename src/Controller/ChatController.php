@@ -51,7 +51,9 @@ class ChatController extends AbstractController{
     public function getChat($userId1, $userId2){
 
         //hent chatt fra DB basert på brukerid1 og brukerid2
-        $chatMessages=$this->getDoctrine()->getRepository(Chat::class)->findBy(array('user1' => array($userId1,$userId2), 'user2' => array($userId1,$userId2)));
+        $chatMessages=$this->getDoctrine()->getRepository(Chat::class)->findBy(
+            array('user1' => array($userId1,$userId2), 'user2' => array($userId1,$userId2)),
+            array('id' => 'ASC'));
 
         //if tom, oppret chat
         if(empty($chatMessages)){

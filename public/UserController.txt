@@ -8,3 +8,4 @@
 52;login;UserController;2020-04-11 04:37:47;GET;52 - John@er.best - 2020-04-11 04:37:47
 -1;getUsers;UserController;2020-04-11 17:12:10;GET;null
 52;login;UserController;2020-04-11 17:12:21;GET;52 - John@er.best - 2020-04-11 17:12:21
+-1;getUsers;UserController;2020-04-11 18:21:15;GET;null
