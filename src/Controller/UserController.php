@@ -223,16 +223,21 @@ class UserController extends AbstractController
 
     public function profileimageUpload(Request $request)
     {
-        $aReturn['code'] = 400;
-        $aReturn['image'] = "";
+        $this->logger->info($request);
         $sImage            = $request->files->get('file');
         $iUserId           = $request->request->get('userId');
-        $ImageOriginalName = $sImage->getClientOriginalName();
-        //$this->logger->info($sImage->getClientOriginalExtension());
 
-        // lage nytt bilde navn
+        $aReturn['code'] = 400;
+        $aReturn['image'] = "";
+
+        $iLength = 5; // antall tegn i navnet på filnanvet på bilde
+        $sImageNameRandom = UtilController::randomString($iLength);
+
+        $ImageOriginalName = $sImage->getClientOriginalName();
+
+        // lage nytt bildenavn
         $aTemp = explode(".", $ImageOriginalName);
-        $sNewfilename = $iUserId.'_profileImage.'.end($aTemp);
+        $sNewfilename = $iUserId.'_'.$sImageNameRandom.'.'.end($aTemp);
 
         $sTargetDir = "../../FrontEnd/public/profileImages/";
 
@@ -252,19 +257,22 @@ class UserController extends AbstractController
 
         if (move_uploaded_file($sImage, $sTargetFile)) {
             $this->logger->info("The file ". basename($ImageOriginalName). " has been uploaded.");
-            $aReturn['code'] = 200;
-            $aReturn['image'] = $sNewfilename;
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $oUsers = $entityManager->getRepository(Users::class)->find($iUserId);
-            if (!$oUsers) {
+            $oUser = $this->getDoctrine()->getRepository(Users::class)->find($iUserId);
+            if (!$oUser) {
                 throw $this->createNotFoundException(
                     'No product found for id '.$iUserId
                 );
             }
-            $oUsers->setProfileImage($sNewfilename);
+            $oUser->setProfileImage($sNewfilename);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($oUser);
             $entityManager->flush();
-        } else {
+
+            $aReturn['code'] = 200;
+            $aReturn['image'] = $sNewfilename;
+        }
+        else
+        {
             $this->logger->info("Sorry, there was an error uploading your file.");
         }
 

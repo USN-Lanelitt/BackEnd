@@ -62,13 +62,13 @@ class AssetImageController extends AbstractController{
         $aReturn['code']  = 400;
         $aReturn['image'] = "";
 
-        $iLength = 5; // antall tegn i navnet på filnanvet npå bilde
+        $iLength = 5; // antall tegn i navnet på filnanvet på bilde
         $sImageNameRandom = UtilController::randomString($iLength);
 
         $ImageOriginalName = $sImage->getClientOriginalName();
         //$this->logger->info($sImage->getClientOriginalExtension());
 
-        // lage nytt bilde navn
+        // lage nytt bildenavn
         $aTemp = explode(".", $ImageOriginalName);
         $sNewfilename = $assetId.'_'.$sImageNameRandom.'.'.end($aTemp);
 
