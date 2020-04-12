@@ -152,6 +152,20 @@ getLogg:
   controller: App\Controller\UtilController::getLogg
   methods: GET
 
+getLevels:
+  path: /getLevels
+  controller: App\Controller\UtilController::getLevels
+  methods: GET
+
+getLevel:
+  path: /getLevel
+  controller: App\Controller\UtilController::getLevel
+  methods: GET
+
+setLevel:
+  path: /setLevel/{newLevel}
+  controller: App\Controller\UtilController::setLevel
+  methods: POST
 #---------------------------------------------UserConnections--Nicole Bendu---------------------------------------------
 
 getUsers:

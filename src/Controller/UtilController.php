@@ -2,10 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\LogingLevels;
 use App\Entity\Users;
+use App\Entity\Variables;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+
 
 class UtilController extends AbstractController
 {
@@ -35,9 +40,56 @@ class UtilController extends AbstractController
         }
         return $randstring;
     }
-    public static function getLogg($userId, $loggName){
 
-        //$loggName="logg";
+    static $loggingLevel;
+    static $aLoggLevel=array(0=>"0: No Logging",   1=>"1: Simple change log, 1 file", 2=>"2: Detailed change log, 1 file",
+                                                3=>"3: Simple change log, multiple files", 4=>"4: Detailed change log, multiple files",
+                                                5=>"5: Simple change and get log, 1 file", 6=>"6: Detailed change and get log, 1 file",
+                                                7=>"7: Simple change and get log, multiple files", 8=>"8: Detailed change and get log, multiple files");
+
+    public function getLevels(){
+        $levels= $this->getDoctrine()->getRepository(LogingLevels::class)->findAll();
+
+        return $this->json($levels, Response::HTTP_OK, [], [
+            ObjectNormalizer::SKIP_NULL_VALUES => true,
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            }
+        ]);
+    }
+    public function setLevel($newLevel){
+        $varId=1;
+        $level = $this->getDoctrine()->getRepository(Variables::class)->find($varId);
+        $levels = $this->getDoctrine()->getRepository(LogingLevels::class)->find($newLevel);
+        $level->setValue($levels);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($level);
+        $entityManager->flush();
+
+        return $this->json($level, Response::HTTP_OK, [], [
+            ObjectNormalizer::SKIP_NULL_VALUES => true,
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            }
+        ]);
+    }
+    public function getLevel(){
+        $level = $this->getDoctrine()->getRepository(Variables::class)->find(1);
+
+        return $this->json($level, Response::HTTP_OK, [], [
+            ObjectNormalizer::SKIP_NULL_VALUES => true,
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            }
+        ]);
+    }
+
+    public function getLogg($userId, $loggName){
+
+        $oUser = $this->getDoctrine()->getRepository(Users::class)->find($userId);
+
+        $loggName="logg";
         $myfile = fopen("$loggName.txt", "r") or die("Unable to open file!");
         $logg=array();
         $teller=0;
@@ -49,9 +101,12 @@ class UtilController extends AbstractController
         return new JsonResponse($logg);
 
     }
-    public static function logging($userId, $functionName, $controllerName, $info, $change){
-        $loggName="logg";
-        $loggingLevel=8;
+    public function logging($userId, $functionName, $controllerName, $info, $change){
+
+        $level = $this->getDoctrine()->getRepository(Variables::class)->find(1);
+
+        $loggingLevel=$level->getValue();
+        $loggName="log";
         $cSV=";";
         $timeStamp=new \DateTime();
         $data=("\n".$userId.$cSV.$functionName.$cSV.$controllerName.$cSV.$timeStamp->format('Y-m-d H:i:s'));
