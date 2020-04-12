@@ -220,16 +220,6 @@ getLoanRequest:
     controller: App\Controller\LoanController::getLoanRequest
     methods:    GET
 
-getLoanStatusSent:
-  path: /user/{iUserId}/loanRequest/sent
-  controller: App\Controller\LoanController::getLoanStatusSent
-  methods: GET
-
-getLoanStatusDenied:
-  path: /user/{iUserId}/loanRequest/denied
-  controller: App\Controller\LoanController::getLoanStatusDenied
-  methods: GET
-
 replyLoanRequests:
   path: /user/{iUserId}/loanRequest/{iLoanId}/{iStatus}
   controller: App\Controller\LoanController::replyLoanRequest
@@ -238,6 +228,16 @@ replyLoanRequests:
 getAcceptedRequest:
   path: /user/{iUserId}/loanAccepted
   controller: App\Controller\LoanController::getAcceptedRequests
+  methods: GET
+
+getSentRequest:
+  path: /user/{iUserId}/loanSent
+  controller: App\Controller\LoanController::getSentRequests
+  methods: GET
+
+getDeniedRequest:
+  path: /user/{iUserId}/loanDenied
+  controller: App\Controller\LoanController::getDeniedRequests
   methods: GET
   
 getLoans:

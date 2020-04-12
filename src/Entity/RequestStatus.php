@@ -19,7 +19,7 @@ class RequestStatus
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"loanStatus"})
+     * @Groups({"loanStatus", "loanRequest"})
      */
     private $status;
 
