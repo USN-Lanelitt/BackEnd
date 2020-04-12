@@ -144,6 +144,11 @@ class UserConnectionsController extends AbstractController
             return new JsonResponse();
         }
 
+
+        if(empty($iFriendId)){
+            return new JsonResponse();
+        }
+
         $statusSent = 0;
 
         //Henter user objektene
