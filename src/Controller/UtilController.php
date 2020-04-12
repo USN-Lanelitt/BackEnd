@@ -103,9 +103,10 @@ class UtilController extends AbstractController
     }
     public function logging($userId, $functionName, $controllerName, $info, $change){
 
-        $level = $this->getDoctrine()->getRepository(Variables::class)->find(1);
-
-        $loggingLevel=$level->getValue();
+//THIS NO WORK YET
+//        $level = $this->getDoctrine()->getRepository(Variables::class)->find(1);
+//        $loggingLevel=$level->getValue();
+        $loggingLevel=4;
         $loggName="log";
         $cSV=";";
         $timeStamp=new \DateTime();
