@@ -29,13 +29,13 @@ class Users
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"loanStatus", "asset", "friendInfo", "friendRequestInfo", "reportInfo", "userInfo"})
+     * @Groups({"loanStatus", "asset", "friendInfo", "friendRequestInfo", "reportInfo", "userInfo", "loanRequest"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"loanStatus", "friendInfo", "loanRequest", "friendRequestInfo", "reportInfo", "userInfo"})
+     * @Groups({"loanStatus", "friendInfo", "loanRequest", "friendRequestInfo", "reportInfo", "userInfo", "chat"})
      */
     private $firstName;
 
@@ -47,7 +47,7 @@ class Users
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"loanStatus", "friendInfo", "loanRequest", "friendRequestInfo", "reportInfo", "userInfo"})
+     * @Groups({"loanStatus", "friendInfo", "loanRequest", "friendRequestInfo", "reportInfo", "userInfo", "chat"})
      */
     private $lastName;
 

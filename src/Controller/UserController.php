@@ -45,6 +45,7 @@ class UserController extends AbstractController
         $sPhone      = $content->phone;
         $sPassword   = password_hash($content->password, PASSWORD_DEFAULT);
 
+
         // Sjekke om e-post finnes i databasen
         $oUserExist = $this->getDoctrine()->getRepository(Users::class)->findOneBy(['email'=>$sEmail]);
 
@@ -93,6 +94,11 @@ class UserController extends AbstractController
             $entityManager->persist($oUser);
             $entityManager->flush();
 
+            //Logging funksjon
+            $loggUserId=$oUser->getId();
+            $info=($loggUserId." - ".$sFirstname." - ".$sMiddlename." - ".$sLastname." - ".$sBirthdate." - ".$sEmail." - ".$sPhone);
+            UtilController::logging($loggUserId, "registerUser", "UserController", "$info",1);
+
             // Hente ut individid
             //$iUserId = $oUser->getId();
 
@@ -124,7 +130,7 @@ class UserController extends AbstractController
 
         $arrayCollection = array();
         $sHashPassword = "";
-
+        $loggId="";//til logging
         foreach($oUser as $oU) {
             $arrayCollection[] = array(
                 'id' => $oU->getId(),
@@ -136,7 +142,9 @@ class UserController extends AbstractController
                 // ... Same for each property you want
             );
             $sHashPassword =  $oU->getPassword();
+            $loggId.=$oU->getId();//til logging
         }
+
 
         // sjekke passord.
         if ( ! password_verify($sPassword, $sHashPassword))
@@ -162,7 +170,13 @@ class UserController extends AbstractController
             $arrayCollection['code'] = 200;
         }
 
+
         $this->logger->info(json_encode($arrayCollection));
+
+        //Logging funksjon
+        $timeStamp=new \DateTime();
+        $info=($loggId." - ".$sUsername." - ".$timeStamp->format('Y-m-d H:i:s'));
+        UtilController::logging($loggId, "login", "UserController", "$info",0);
 
         return new JsonResponse($arrayCollection);
     }
@@ -175,10 +189,15 @@ class UserController extends AbstractController
 
         // Hente ut data fra overføring fra React
         $content = json_decode($request->getContent());
+        $this->logger->info($content);
         $iUserId        = (int)$content->userId;
         $sOldPassword   = $content->currentPassword;
         $sNewPassword   = password_hash($content->newPassword, PASSWORD_DEFAULT);
         $sHashPassword  = "";
+
+        $this->logger->info($sOldPassword);
+        $this->logger->info($sNewPassword);
+
 
         $oRepository = $this->getDoctrine()->getRepository(Users::class);
         $oUser = $oRepository->findBy([ 'id' => $iUserId ]);
@@ -195,6 +214,10 @@ class UserController extends AbstractController
             $aCode['code'] = 200;
         }
 
+        //Logging funksjon
+        $info=($iUserId);
+        UtilController::logging($iUserId, "updatePassword", "UserController", "$info",1);
+
         return new JsonResponse($aCode);
     }
 
@@ -202,23 +225,23 @@ class UserController extends AbstractController
     {
         $aReturn['code'] = 400;
         $aReturn['image'] = "";
-        $sImage = $request->files->get('file');
-        $iId    = $request->request->get('userId');
+        $sImage            = $request->files->get('file');
+        $iUserId           = $request->request->get('userId');
         $ImageOriginalName = $sImage->getClientOriginalName();
         //$this->logger->info($sImage->getClientOriginalExtension());
 
-        // lage nutt bilde navn
-        $temp = explode(".", $ImageOriginalName);
-        $newfilename = $iId.'_profileimage.' . end($temp);
+        // lage nytt bilde navn
+        $aTemp = explode(".", $ImageOriginalName);
+        $sNewfilename = $iUserId.'_profileImage.'.end($aTemp);
 
-        $target_dir = "../../FrontEnd/public/profileImages/";
+        $sTargetDir = "../../FrontEnd/public/profileImages/";
 
-        $target_file = $target_dir . $newfilename;
-        $this->logger->info($target_file);
+        $sTargetFile = $sTargetDir . $sNewfilename;
+        $this->logger->info($sTargetFile);
 
-        $check = getimagesize($sImage);
-        if($check !== false) {
-            $this->logger->info("File is an image - " . $check["mime"] . ".");
+        $aCheck = getimagesize($sImage);
+        if($aCheck !== false) {
+            $this->logger->info("File is an image - " . $aCheck["mime"] . ".");
             $uploadOk = 1;
         } else {
             $this->logger->info("File is not an image.");
@@ -227,15 +250,27 @@ class UserController extends AbstractController
             return new JsonResponse($aReturn);
         }
 
-        if (move_uploaded_file($sImage, $target_file)) {
+        if (move_uploaded_file($sImage, $sTargetFile)) {
             $this->logger->info("The file ". basename($ImageOriginalName). " has been uploaded.");
             $aReturn['code'] = 200;
-            $aReturn['image'] = $newfilename;
-            $oUser = new Users();
-            $oUser->setProfileImage($newfilename);
+            $aReturn['image'] = $sNewfilename;
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $oUsers = $entityManager->getRepository(Users::class)->find($iUserId);
+            if (!$oUsers) {
+                throw $this->createNotFoundException(
+                    'No product found for id '.$iUserId
+                );
+            }
+            $oUsers->setProfileImage($sNewfilename);
+            $entityManager->flush();
         } else {
             $this->logger->info("Sorry, there was an error uploading your file.");
         }
+
+        //Logging funksjon
+        $info=($iUserId." - ".$sNewfilename);
+        UtilController::logging($iUserId, "profileImageUpload", "UserController", "$info",1);
 
         return new JsonResponse($aReturn);
     }
@@ -245,6 +280,10 @@ class UserController extends AbstractController
         //Henter alla brukere
         $oUsers = $this->getDoctrine()->getRepository(Users::class)->findAll();
 
+        //Logging funksjon
+        $info=("null");
+        UtilController::logging(-1, "getUsers", "UserController", "$info",0);
+
         //Skriver ut alle objektene
         return $this->json($oUsers, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -253,6 +292,19 @@ class UserController extends AbstractController
                 return $object->getId();
             }
         ]);
+    }
+
+    public function getUserAmount()
+    {
+        //Henter antall brukere
+        $oUsers = $this->getDoctrine()->getRepository(Users::class)->findAll();
+        $userAmount=count($oUsers);
+
+        //Logging funksjon
+        $info=("null");
+        UtilController::logging(-1, "getUserAmount", "UserController", "$info",0);
+
+        return new JsonResponse($userAmount);
     }
 
     public function editUser(Request $request, $iUserId)
@@ -266,7 +318,7 @@ class UserController extends AbstractController
         $sMiddlename = $content->middlename;
         $sLastname = $content->lastname;
         $sEmail      = $content->email;
-        $sUsertype= $content->usertype;
+        $sUsertype = $content->usertype;
         $iActive= $content->active;
         $iNewsSubscription = $content->newsSubscription;
 
@@ -339,7 +391,13 @@ class UserController extends AbstractController
         $entityManager->persist($oUser);
         $entityManager->flush();
 
+        //Logging funksjon
+        $loggUserId=$oUser->getId();
+        $info=($loggUserId." - ".$sFirstname." - ".$sMiddlename." - ".$sLastname." - ".$sEmail." - ".$sUsertype." - ".$iActive." - ".$iNewsSubscription);
+        UtilController::logging($loggUserId, "editUser", "UserController", "$info",1);
+
         return new JsonResponse("endret");
     }
 }
+
 

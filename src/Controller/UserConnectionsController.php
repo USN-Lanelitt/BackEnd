@@ -39,6 +39,10 @@ class UserConnectionsController extends AbstractController
         //Ser om de er venner
         $oFriend = $this->getDoctrine()->getRepository(UserConnections::class)->findFriend($iUserId, $iFriendId);
 
+        //Logging funksjon
+        $info=($iUserId." - ".$iFriendId);
+        UtilController::logging($iUserId, "getFriend", "UserConnectionsController", "$info",0);
+
         //Skriver ut alle objektene
         return $this->json($oFriend, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -56,6 +60,10 @@ class UserConnectionsController extends AbstractController
         }
 
         $oFriends = $this->getDoctrine()->getRepository(UserConnections::class)->findFriends($iUserId);
+
+        //Logging funksjon
+        $info=($iUserId);
+        UtilController::logging($iUserId, "getFriends", "UserConnectionsController", "$info",0);
 
         //Skriver ut alle objektene
         return $this->json($oFriends, Response::HTTP_OK, [], [
@@ -99,6 +107,11 @@ class UserConnectionsController extends AbstractController
 
             $this->logger->info('sendFriendRequest');
         }
+
+        //Logging funksjon
+        $info=($iUserId." - ".$iFriendId);
+        UtilController::logging($iUserId, "sendFriendRequest", "UserConnectionsController", "$info",1);
+
         return new JsonResponse('forespørsel er allerede sendt');
     }
 
@@ -109,6 +122,10 @@ class UserConnectionsController extends AbstractController
 
         //Henter alle venneforespørsler
         $users = $this->getDoctrine()->getRepository(UserConnections::class)->findFriendRequest($iUserId);
+
+        //Logging funksjon
+        $info=($iUserId);
+        UtilController::logging($iUserId, "getFriendRequest", "UserConnectionsController", "$info",0);
 
         //Skriver ut alle objektene
         return $this->json($users, Response::HTTP_OK, [], [
@@ -141,6 +158,10 @@ class UserConnectionsController extends AbstractController
 
         //Henter forespørselen
         $oUserConn = $this->getDoctrine()->getRepository(UserConnections::class)->findOneBy(array('user1'=> $iFriendId, 'user2'=> $iUserId, 'requestStatus'=>$statusSent));
+
+        //Logging funksjon
+        $info=($iUserId." - ".$iFriendId." - ".$iStatus);
+        UtilController::logging($iUserId, "replyFriendRequest", "UserConnectionsController", "$info",1);
 
         //Sjekker om forespørsel har blitt sendt
         if ($oUserConn) {
@@ -195,6 +216,10 @@ class UserConnectionsController extends AbstractController
         $ids = array_column($oConnectionId, 'id');
         $this->logger->info(json_encode($ids));
 
+        //Logging funksjon
+        $info=($iUserId." - ".$iFriendId);
+        UtilController::logging($iUserId, "deleteFriendship", "UserConnectionsController", "$info",1);
+
         //Sjekker om vennskapet finnes
         if ($oConnectionId) {
             $id1 = $ids[0];
@@ -233,6 +258,10 @@ class UserConnectionsController extends AbstractController
 
         //Henter alle objektene
         $users = $this->getDoctrine()->getRepository(Users::class)->findBy(array('id' => $iIds));
+
+        //Logging funksjon
+        $info=($iUserId." - ".$sSearch);
+        UtilController::logging($iUserId, "getUserSearch", "UserConnectionsController", "$info",0);
 
         return $this->json($users, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,

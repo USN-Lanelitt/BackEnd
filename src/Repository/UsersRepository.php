@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Users;
+use App\Entity\Chat;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -48,13 +49,41 @@ class UsersRepository extends ServiceEntityRepository
     }
     */
 
-    public function findEmail($email)
+
+    public function findEmail($sEmail)
     {
         return $this->createQueryBuilder('u')
-            ->andWhere('u.email = :email')
-            ->setParameter('email', $email)
-            ->getQuery()
-            ->getResult()
-            ;
+                    ->andWhere('u.email = :email')
+                    ->setParameter('email', $sEmail)
+                    ->getQuery()
+                    ->getResult();
     }
+
+    public function updateProfileImage($iUserId, $sNewfilename)
+    {
+        return $this->createQueryBuilder('u')
+                    ->update()
+                    ->set('u.profile_image', 'profile_image')
+                    ->setParameter('profile_image', $sNewfilename)
+                    ->where('u.id', 'userid')
+                    ->setParameter('userid', $iUserId)
+                    ->getQuery()
+                    ->execute();
+    }
+    /*public function  findChatUser($userId){
+        $subQuery= $this->_em->createQueryBuilder()
+                        ->select('DISTINCT c.user2_id')
+                        ->from('chat', 'c')
+                        ->where('c.user1_id=userId')
+                        ->setParameter('userId', $userId)
+                        ->getQuery()
+                        ->getArrayResult();
+        $query=$this->createQueryBuilder('u');
+
+        $query ->andWhere($query->expr()->in('u.id',$subQuery))
+                ->getQuery()
+                ->getArrayResult();
+
+        return $query;
+    }*/
 }

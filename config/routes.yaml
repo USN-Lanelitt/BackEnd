@@ -31,10 +31,20 @@ updatePassword:
   controller: App\Controller\UserController::updatePassword
   methods: POST
 
+getUserAmount:
+  path: /users/amount
+  controller: App\Controller\UserController::getUserAmount
+  methods: GET
+
 #---------------------------------------------------John-Berge Grimaas--------------------------------------------------
 getAssetSearch:
   path: /assets/search/{userId}/{search}
   controller: App\Controller\AssetController::getAssetSearch
+  methods: GET
+
+getAssetType:
+  path: /assets/getAssetType/{userId}/{typeId}
+  controller: App\Controller\AssetController::getAssetType
   methods: GET
 
 getMyAssets:
@@ -55,7 +65,7 @@ addAsset:
 editAsset:
   path: /assets/editAsset/{userId}/{assetId}
   controller: App\Controller\AssetController::editAsset
-  methods: GET
+  methods: PUT
 
 getMainImage:
   path: /assetsImage/getMainImage/{assetId}
@@ -92,6 +102,70 @@ removeAsset:
   controller: App\Controller\AssetController::removeAsset
   methods: DELETE
 
+getIndividAssetAmount:
+  path: /assets/IndividAssetAmount/{userId}
+  controller: App\Controller\AssetController::getIndividAssetAmount
+  methods: GET
+
+getAssetAmount:
+  path: /assets/AssetAmount
+  controller: App\Controller\AssetController::getAssetAmount
+  methods: GET
+
+getChat:
+  path: /users/chat/{userId1}/{userId2}
+  controller: App\Controller\ChatController::getChat
+  methods: GET
+
+writeMessage:
+  path: /users/writeMessage/{userId1}/{userId2}
+  controller: App\Controller\ChatController::writeMessage
+  methods: POST
+
+getChats:
+  path: /users/getChats/{userId}
+  controller: App\Controller\ChatController::getChats
+  methods: GET
+
+getUsersAssets:
+  path: /assets/getUsersAssets/{userId1}/{userId2}
+  controller: App\Controller\AssetController::getUsersAssets
+  methods: GET
+
+getAssetRating:
+  path: /assets/RatingController/getAssetRating/{assetId}
+  controller: App\Controller\RatingController::getAssetRating
+  methods: GET
+
+rateAsset:
+  path: /assets/RatingController/rateAsset/{userId}/{assetId}/{newRating}
+  controller: App\Controller\RatingController::rateAsset
+  methods: POST
+
+logging:
+  path: /logging/{userId}/{functionName}
+  controller: App\Controller\UtilController::logging
+  methods: POST
+
+getLogg:
+  path: /logging/{userId}/{loggName}
+  controller: App\Controller\UtilController::getLogg
+  methods: GET
+
+getLevels:
+  path: /getLevels
+  controller: App\Controller\UtilController::getLevels
+  methods: GET
+
+getLevel:
+  path: /getLevel
+  controller: App\Controller\UtilController::getLevel
+  methods: GET
+
+setLevel:
+  path: /setLevel/{newLevel}
+  controller: App\Controller\UtilController::setLevel
+  methods: POST
 #---------------------------------------------UserConnections--Nicole Bendu---------------------------------------------
 
 getUsers:
@@ -133,6 +207,7 @@ getUserSearch:
   path: /user/{iUserId}/search/{sSearch}
   controller: App\Controller\UserConnectionsController::getUserSearch
   methods:    GET
+
 
 #---------------------------------------------------Loans--Nicole Bendu-------------------------------------------------
 sendLoanRequest:
@@ -180,5 +255,10 @@ makeReport:
 getReports:
   path: /getReports
   controller: App\Controller\UnwantedBehaviorReportsController::getReports
+  methods: GET
+
+getReportAmount:
+  path: /report/amount
+  controller: App\Controller\UnwantedBehaviorReportsController::getReportAmount
   methods: GET
 
