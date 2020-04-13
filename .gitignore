@@ -11,4 +11,13 @@
 /src/Controller/SendMailController.php
 /composer.lock
 /symfony.lock
+/public/AssetController.txt
+/public/AssetImageController.txt
+/public/AssetTypeController.txt
+/public/ChatController.txt
+/public/LoanController.txt
+/public/log.txt
+/public/UnwantedBehaviorReportsController.txt
+/public/UserConnectionsController.txt
+/public/UserController.txt
 ###< symfony/framework-bundle ###

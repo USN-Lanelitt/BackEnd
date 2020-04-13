@@ -108,9 +108,10 @@ class Loans
         return $this;
     }
 
-    public function getDateStart(): ?\DateTimeInterface
+    public function getDateStart(): string
     {
-        return $this->dateStart;
+        $temp=$this->dateStart;
+        return $temp->format('d.m.Y');
     }
 
     public function setDateStart(\DateTimeInterface $dateStart): self
@@ -120,9 +121,10 @@ class Loans
         return $this;
     }
 
-    public function getDateEnd(): ?\DateTimeInterface
+    public function getDateEnd(): string
     {
-        return $this->dateEnd;
+        $temp=$this->dateEnd;
+        return $temp->format('d.m.Y');
     }
 
     public function setDateEnd(\DateTimeInterface $dateEnd): self

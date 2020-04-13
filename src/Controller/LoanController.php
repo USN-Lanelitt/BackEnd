@@ -67,7 +67,6 @@ class LoanController extends AbstractController
         //hvis ikke låneforholdet finnes
         if (empty($oConnectionId)){
 
-
             //Oppretter lånefohold
             $oLoan = new Loans();
             $oLoan->setUsers($oUser);
@@ -81,7 +80,13 @@ class LoanController extends AbstractController
 
             //Logging funksjon
             $info=($oUser." - ".$oAsset." - ".$oLoan." - ".$oLoan." - ".$oLoan);
-            UtilController::logging($iUserId, "sendLoanRequest", "LoanController", "$info",1);
+            $this->forward('App\Controller\UtilController:logging',[
+                'userId'=>$iUserId,
+                'functionName'=>'sendLoanRequest',
+                'controllerName'=>'LoanController',
+                'info'=>$info,
+                'change'=>1
+            ]);
 
             return new JsonResponse('Låneforhold er opprettet');
         }
@@ -119,7 +124,14 @@ class LoanController extends AbstractController
 
         //Logging funksjon
         $info=("null");
-        UtilController::logging($iUserId, "getLoanRequest", "LoanController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$iUserId,
+            'functionName'=>'getLoanRequest',
+            'controllerName'=>'LoanController',
+            'info'=>$info,
+            'change'=>0
+        ]);
+
 
         return $this->json($oRequestIds, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -130,48 +142,6 @@ class LoanController extends AbstractController
         ]);
     }
 
-    public function getLoanStatusSent($iUserId) { //Henter forespørsler bruker har sendt med status sent
-        //Sjekker $iUserId
-        if(empty($iUserId)){
-            return new JsonResponse();
-        }
-
-        //Henter alle låne-objektene der bruker har sendt en forespørsel
-        $oRequestIds = $this->getDoctrine()->getRepository(Loans::class)->findAllStatusSent($iUserId);
-
-        //Logging funksjon
-        $info=("null");
-        UtilController::logging($iUserId, "getLoanStatusSent", "LoanController", "$info",0);
-
-        return $this->json($oRequestIds, Response::HTTP_OK, [], [
-            ObjectNormalizer::SKIP_NULL_VALUES => true,
-            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
-                return $object->getId();
-            }
-        ]);
-    }
-
-    public function getLoanStatusDenied($iUserId) { //Henter forespørsler bruker har sendt med status avvist
-        //Sjekker $iUserId
-        if(empty($iUserId)){
-            return new JsonResponse();
-        }
-
-        //Henter alle låne-objektene der bruker har sendt en forespørsel
-        $oRequestIds = $this->getDoctrine()->getRepository(Loans::class)->findAllStatusDenied($iUserId);
-
-        //Logging funksjon
-        $info=("null");
-        UtilController::logging($iUserId, "getLoanStatusDenied", "LoanController", "$info",0);
-
-        return $this->json($oRequestIds, Response::HTTP_OK, [], [
-            ObjectNormalizer::SKIP_NULL_VALUES => true,
-            ObjectNormalizer::GROUPS => ['groups' => 'loanRequest', 'asset'],
-            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
-                return $object->getId();
-            }
-        ]);
-    }
 
     public function replyLoanRequest($iUserId, $iLoanId, $iStatus) {
         //Sjekker $iUserId
@@ -189,7 +159,13 @@ class LoanController extends AbstractController
 
         //Logging funksjon
         $info=($iLoanId." - ".$iStatus);
-        UtilController::logging($iUserId, "replyLoanRequest", "LoanController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$iUserId,
+            'functionName'=>'replyLoanRequest',
+            'controllerName'=>'LoanController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         //Hvis lånet har status "sent
         if($oLoan->getStatusLoan() == $oStatusSent){
@@ -222,7 +198,13 @@ class LoanController extends AbstractController
 
         //Logging funksjon
         $info=($iUserId);
-        UtilController::logging($iUserId, "getAcceptedRequests", "LoanController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$iUserId,
+            'functionName'=>'getAcceptedRequests',
+            'controllerName'=>'LoanController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         return $this->json($oRequestIds, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -233,6 +215,45 @@ class LoanController extends AbstractController
         ]);
     }
 
+    public function getSentRequests($iUserId) { //Henter alle forespørsler brukeren har sendt som ikke har blitt behandlet
+        //Sjekker $iUserId
+        if(empty($iUserId)){
+            return new JsonResponse();
+        }
+
+        $oStatusSent = $this->getDoctrine()->getRepository(RequestStatus::class)->find(0);
+
+        //Henter alle låne-objekter bruker har sendt med status = sent
+        $oRequestIds = $this->getDoctrine()->getRepository(Loans::class)->findBy(array('users'=> $iUserId, 'statusLoan'=> $oStatusSent));
+
+        return $this->json($oRequestIds, Response::HTTP_OK, [], [
+            ObjectNormalizer::SKIP_NULL_VALUES => true,
+            ObjectNormalizer::GROUPS => ['groups' => 'loanStatus', 'asset'],
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            }
+        ]);
+    }
+
+    public function getDeniedRequests($iUserId) { //Henter alle avviste forespørsler brukeren har sendt
+        //Sjekker $iUserId
+        if(empty($iUserId)){
+            return new JsonResponse();
+        }
+
+        $oStatusDenied = $this->getDoctrine()->getRepository(RequestStatus::class)->find(2);
+
+        //Henter alle låne-objekter bruker har sendt med status = denied
+        $oRequestIds = $this->getDoctrine()->getRepository(Loans::class)->findBy(array('users'=> $iUserId, 'statusLoan'=> $oStatusDenied));
+
+        return $this->json($oRequestIds, Response::HTTP_OK, [], [
+            ObjectNormalizer::SKIP_NULL_VALUES => true,
+            ObjectNormalizer::GROUPS => ['groups' => 'loanStatus', 'asset'],
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            }
+        ]);
+    }
     public function getLoans($iUserId){ //Henter alle lån bruker har godkjent
         //Sjekker $iUserId
         if(empty($iUserId)){
@@ -241,7 +262,7 @@ class LoanController extends AbstractController
 
         $iStatusAccepted = 1;
 
-        //Henter alle id'ene til lånene med eiendelen eid av brukeren med status "sent"
+        //Henter alle id'ene til lånene med eiendelen eid av brukeren med status "accepted"
         $conn = $this->getDoctrine()->getConnection();
         $sql = "SELECT id FROM loans 
                 WHERE status_loan_id = $iStatusAccepted
@@ -258,7 +279,13 @@ class LoanController extends AbstractController
 
         //Logging funksjon
         $info=($iUserId);
-        UtilController::logging($iUserId, "getLoans", "LoanController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$iUserId,
+            'functionName'=>'getLoans',
+            'controllerName'=>'LoanController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         return $this->json($oRequestIds, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -291,7 +318,13 @@ class LoanController extends AbstractController
 
         //Logging funksjon
         $info=("null");
-        UtilController::logging(-1, "getAllUnavailableDates", "LoanController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>-1,
+            'functionName'=>'getAllUnavailableDates',
+            'controllerName'=>'LoanController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         return $this->json($aUnavailableDate, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -334,7 +367,13 @@ class LoanController extends AbstractController
 
         //Logging funksjon
         $info=($assetId);
-        UtilController::logging(-1, "assetAvailability", "LoanController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>-1,
+            'functionName'=>'assetAvailability',
+            'controllerName'=>'LoanController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         return new JsonResponse($ikkeLedig);
     }
