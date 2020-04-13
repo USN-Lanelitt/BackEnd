@@ -210,9 +210,10 @@ class AssetController extends AbstractController{
     public function addAsset(Request $request){
         $ut="\n\n**************************************************************************\n\n";
         $this->logger->info($ut);
-        $content = json_decode($request->getContent());
+
 
         /*
+        $content = json_decode($request->getContent());
         $iUserId = $content->userId;
         $iTypeId = $content->typeId;
         $sAssetName = $content->assetName;

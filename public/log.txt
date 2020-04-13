@@ -190,3 +190,10 @@
 -1;getAllAssetTypes;AssetTypeController;2020-04-13 22:20:43;GET;null
 null;getAssetType;AssetController;2020-04-13 22:21:03;GET;null - 1
 
+
+52;addAsset;AssetController;2020-04-14 00:30:09;POST/DELETE
+52;addAsset;AssetController;2020-04-14 00:30:14;POST/DELETE
+52;addImage;AssetImageController;2020-04-14 00:30:14;POST/DELETE
+52;addAsset;AssetController;2020-04-14 00:36:05;POST/DELETE
+52;addAsset;AssetController;2020-04-14 00:36:19;POST/DELETE
+52;addImage;AssetImageController;2020-04-14 00:36:19;POST/DELETE
