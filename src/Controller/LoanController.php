@@ -80,7 +80,13 @@ class LoanController extends AbstractController
 
             //Logging funksjon
             $info=($oUser." - ".$oAsset." - ".$oLoan." - ".$oLoan." - ".$oLoan);
-            UtilController::logging($iUserId, "sendLoanRequest", "LoanController", "$info",1);
+            $this->forward('App\Controller\UtilController:logging',[
+                'userId'=>$iUserId,
+                'functionName'=>'sendLoanRequest',
+                'controllerName'=>'LoanController',
+                'info'=>$info,
+                'change'=>1
+            ]);
 
             return new JsonResponse('Låneforhold er opprettet');
         }
@@ -118,7 +124,14 @@ class LoanController extends AbstractController
 
         //Logging funksjon
         $info=("null");
-        UtilController::logging($iUserId, "getLoanRequest", "LoanController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$iUserId,
+            'functionName'=>'getLoanRequest',
+            'controllerName'=>'LoanController',
+            'info'=>$info,
+            'change'=>0
+        ]);
+
 
         return $this->json($oRequestIds, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -146,7 +159,13 @@ class LoanController extends AbstractController
 
         //Logging funksjon
         $info=($iLoanId." - ".$iStatus);
-        UtilController::logging($iUserId, "replyLoanRequest", "LoanController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$iUserId,
+            'functionName'=>'replyLoanRequest',
+            'controllerName'=>'LoanController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         //Hvis lånet har status "sent
         if($oLoan->getStatusLoan() == $oStatusSent){
@@ -179,7 +198,13 @@ class LoanController extends AbstractController
 
         //Logging funksjon
         $info=($iUserId);
-        UtilController::logging($iUserId, "getAcceptedRequests", "LoanController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$iUserId,
+            'functionName'=>'getAcceptedRequests',
+            'controllerName'=>'LoanController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         return $this->json($oRequestIds, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -254,7 +279,13 @@ class LoanController extends AbstractController
 
         //Logging funksjon
         $info=($iUserId);
-        UtilController::logging($iUserId, "getLoans", "LoanController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$iUserId,
+            'functionName'=>'getLoans',
+            'controllerName'=>'LoanController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         return $this->json($oRequestIds, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -287,7 +318,13 @@ class LoanController extends AbstractController
 
         //Logging funksjon
         $info=("null");
-        UtilController::logging(-1, "getAllUnavailableDates", "LoanController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>-1,
+            'functionName'=>'getAllUnavailableDates',
+            'controllerName'=>'LoanController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         return $this->json($aUnavailableDate, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -330,7 +367,13 @@ class LoanController extends AbstractController
 
         //Logging funksjon
         $info=($assetId);
-        UtilController::logging(-1, "assetAvailability", "LoanController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>-1,
+            'functionName'=>'assetAvailability',
+            'controllerName'=>'LoanController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         return new JsonResponse($ikkeLedig);
     }

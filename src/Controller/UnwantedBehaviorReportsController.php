@@ -67,7 +67,13 @@ class UnwantedBehaviorReportsController extends AbstractController
 
         //Logging funksjon
         $info=($iUserId." - ".$iUserId2." - ".$sSubject." - ".$sComment);
-        UtilController::logging($iUserId, "report", "UnwantedBehaviorReportsController", "$info",1);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$iUserId,
+            'functionName'=>'report',
+            'controllerName'=>'UnwantedBehaviorReportsController',
+            'info'=>$info,
+            'change'=>1
+        ]);
 
         return new JsonResponse('sendt klage på person');
 
@@ -80,7 +86,13 @@ class UnwantedBehaviorReportsController extends AbstractController
 
         //Logging funksjon
         $info=("null");
-        UtilController::logging(-1, "getReports", "UnwantedBehaviorReportsController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>-1,
+            'functionName'=>'getReports',
+            'controllerName'=>'UnwantedBehaviorReportsController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         return $this->json($oReports, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -100,7 +112,13 @@ class UnwantedBehaviorReportsController extends AbstractController
 
         //Logging funksjon
         $info=($reportAmount);
-        UtilController::logging(-1, "getReportAmount", "UnwantedBehaviorReportsController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>-1,
+            'functionName'=>'getReportAmount',
+            'controllerName'=>'UnwantedBehaviorReportsController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         return new JsonResponse($reportAmount);
     }

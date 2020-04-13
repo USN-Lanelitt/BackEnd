@@ -97,7 +97,13 @@ class UserController extends AbstractController
             //Logging funksjon
             $loggUserId=$oUser->getId();
             $info=($loggUserId." - ".$sFirstname." - ".$sMiddlename." - ".$sLastname." - ".$sBirthdate." - ".$sEmail." - ".$sPhone);
-            UtilController::logging($loggUserId, "registerUser", "UserController", "$info",1);
+            $this->forward('App\Controller\UtilController:logging',[
+                'userId'=>$loggUserId,
+                'functionName'=>'registerUser',
+                'controllerName'=>'UserController',
+                'info'=>$info,
+                'change'=>1
+            ]);
 
             // Hente ut individid
             //$iUserId = $oUser->getId();
@@ -176,7 +182,13 @@ class UserController extends AbstractController
         //Logging funksjon
         $timeStamp=new \DateTime();
         $info=($loggId." - ".$sUsername." - ".$timeStamp->format('Y-m-d H:i:s'));
-        UtilController::logging($loggId, "login", "UserController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$loggId,
+            'functionName'=>'login',
+            'controllerName'=>'UserController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         return new JsonResponse($arrayCollection);
     }
@@ -216,7 +228,13 @@ class UserController extends AbstractController
 
         //Logging funksjon
         $info=($iUserId);
-        UtilController::logging($iUserId, "updatePassword", "UserController", "$info",1);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$iUserId,
+            'functionName'=>'updatePassword',
+            'controllerName'=>'UserController',
+            'info'=>$info,
+            'change'=>1
+        ]);
 
         return new JsonResponse($aCode);
     }
@@ -278,7 +296,13 @@ class UserController extends AbstractController
 
         //Logging funksjon
         $info=($iUserId." - ".$sNewfilename);
-        UtilController::logging($iUserId, "profileImageUpload", "UserController", "$info",1);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$iUserId,
+            'functionName'=>'profileImageUpload',
+            'controllerName'=>'UserController',
+            'info'=>$info,
+            'change'=>1
+        ]);
 
         return new JsonResponse($aReturn);
     }
@@ -290,7 +314,13 @@ class UserController extends AbstractController
 
         //Logging funksjon
         $info=("null");
-        UtilController::logging(-1, "getUsers", "UserController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>-1,
+            'functionName'=>'getUsers',
+            'controllerName'=>'UserController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         //Skriver ut alle objektene
         return $this->json($oUsers, Response::HTTP_OK, [], [
@@ -310,7 +340,13 @@ class UserController extends AbstractController
 
         //Logging funksjon
         $info=("null");
-        UtilController::logging(-1, "getUserAmount", "UserController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>-1,
+            'functionName'=>'getUserAmount',
+            'controllerName'=>'UserController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         return new JsonResponse($userAmount);
     }
@@ -402,7 +438,13 @@ class UserController extends AbstractController
         //Logging funksjon
         $loggUserId=$oUser->getId();
         $info=($loggUserId." - ".$sFirstname." - ".$sMiddlename." - ".$sLastname." - ".$sEmail." - ".$sUsertype." - ".$iActive." - ".$iNewsSubscription);
-        UtilController::logging($loggUserId, "editUser", "UserController", "$info",1);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$loggUserId,
+            'functionName'=>'editUser',
+            'controllerName'=>'UserController',
+            'info'=>$info,
+            'change'=>1
+        ]);
 
         return new JsonResponse("endret");
     }

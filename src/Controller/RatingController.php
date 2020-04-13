@@ -51,7 +51,13 @@ class RatingController extends AbstractController{
 
         //Logging funksjon
         $info=($userId." - ".$assetId." - ".$newRating);
-        UtilController::logging($userId, "rateAsset", "RatingController", "$info",1);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$userId,
+            'functionName'=>'rateAsset',
+            'controllerName'=>'RatingController',
+            'info'=>$info,
+            'change'=>1
+        ]);
 
         return new JsonResponse("Fullført tilbakemelding");
     }
@@ -65,7 +71,13 @@ class RatingController extends AbstractController{
 
         //Logging funksjon
         $info=("null");
-        UtilController::logging(-1, "getAssetRating", "RatingController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>-1,
+            'functionName'=>'getAssetRating',
+            'controllerName'=>'RatingController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         return new JsonResponse($ratings);
 

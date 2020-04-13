@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\LogingLevels;
 use App\Entity\Users;
 use App\Entity\Variables;
+use App\Repository\VariablesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -76,20 +77,16 @@ class UtilController extends AbstractController
     }
     public function getLevel(){
         $level = $this->getDoctrine()->getRepository(Variables::class)->find(1);
-
-        return $this->json($level, Response::HTTP_OK, [], [
-            ObjectNormalizer::SKIP_NULL_VALUES => true,
-            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
-                return $object->getId();
-            }
-        ]);
+        $level=$level->getValue();
+        $level=$level->getId();
+        return new JsonResponse($level);
     }
 
-    public function getLogg($userId, $loggName){
+    public function getLogg($userId){
 
         $oUser = $this->getDoctrine()->getRepository(Users::class)->find($userId);
 
-        $loggName="logg";
+        $loggName="log";
         $myfile = fopen("$loggName.txt", "r") or die("Unable to open file!");
         $logg=array();
         $teller=0;
@@ -103,10 +100,10 @@ class UtilController extends AbstractController
     }
     public function logging($userId, $functionName, $controllerName, $info, $change){
 
-//THIS NO WORK YET
-//        $level = $this->getDoctrine()->getRepository(Variables::class)->find(1);
-//        $loggingLevel=$level->getValue();
-        $loggingLevel=4;
+        $level = $this->getDoctrine()->getRepository(Variables::class)->find(1);
+        $var=$level->getValue();
+        $loggingLevel=$var->getId();
+        //$loggingLevel=8;
         $loggName="log";
         $cSV=";";
         $timeStamp=new \DateTime();

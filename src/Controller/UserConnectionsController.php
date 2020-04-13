@@ -41,7 +41,13 @@ class UserConnectionsController extends AbstractController
 
         //Logging funksjon
         $info=($iUserId." - ".$iFriendId);
-        UtilController::logging($iUserId, "getFriend", "UserConnectionsController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$iUserId,
+            'functionName'=>'getFriend',
+            'controllerName'=>'UserConnectionsController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         //Skriver ut alle objektene
         return $this->json($oFriend, Response::HTTP_OK, [], [
@@ -63,7 +69,13 @@ class UserConnectionsController extends AbstractController
 
         //Logging funksjon
         $info=($iUserId);
-        UtilController::logging($iUserId, "getFriends", "UserConnectionsController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$iUserId,
+            'functionName'=>'getFriends',
+            'controllerName'=>'UserConnectionsController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         //Skriver ut alle objektene
         return $this->json($oFriends, Response::HTTP_OK, [], [
@@ -110,7 +122,13 @@ class UserConnectionsController extends AbstractController
 
         //Logging funksjon
         $info=($iUserId." - ".$iFriendId);
-        UtilController::logging($iUserId, "sendFriendRequest", "UserConnectionsController", "$info",1);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$iUserId,
+            'functionName'=>'sendFriendRequest',
+            'controllerName'=>'UserConnectionsController',
+            'info'=>$info,
+            'change'=>1
+        ]);
 
         return new JsonResponse('forespørsel er allerede sendt');
     }
@@ -125,7 +143,13 @@ class UserConnectionsController extends AbstractController
 
         //Logging funksjon
         $info=($iUserId);
-        UtilController::logging($iUserId, "getFriendRequest", "UserConnectionsController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$iUserId,
+            'functionName'=>'getFriendRequest',
+            'controllerName'=>'UserConnectionsController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         //Skriver ut alle objektene
         return $this->json($users, Response::HTTP_OK, [], [
@@ -161,7 +185,13 @@ class UserConnectionsController extends AbstractController
 
         //Logging funksjon
         $info=($iUserId." - ".$iFriendId." - ".$iStatus);
-        UtilController::logging($iUserId, "replyFriendRequest", "UserConnectionsController", "$info",1);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$iUserId,
+            'functionName'=>'replyFriendRequest',
+            'controllerName'=>'UserConnectionsController',
+            'info'=>$info,
+            'change'=>1
+        ]);
 
         //Sjekker om forespørsel har blitt sendt
         if ($oUserConn) {
@@ -218,7 +248,13 @@ class UserConnectionsController extends AbstractController
 
         //Logging funksjon
         $info=($iUserId." - ".$iFriendId);
-        UtilController::logging($iUserId, "deleteFriendship", "UserConnectionsController", "$info",1);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$iUserId,
+            'functionName'=>'deleteFriendship',
+            'controllerName'=>'UserConnectionsController',
+            'info'=>$info,
+            'change'=>1
+        ]);
 
         //Sjekker om vennskapet finnes
         if ($oConnectionId) {
@@ -261,7 +297,13 @@ class UserConnectionsController extends AbstractController
 
         //Logging funksjon
         $info=($iUserId." - ".$sSearch);
-        UtilController::logging($iUserId, "getUserSearch", "UserConnectionsController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$iUserId,
+            'functionName'=>'getUserSearch',
+            'controllerName'=>'UserConnectionsController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         return $this->json($users, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,

@@ -11,5 +11,182 @@
 44;addAsset;AssetController;2020-04-13 13:11:21;POST/DELETE44 - 2 - blomst - blooooo - 1 - 1
 44;addImage;AssetImageController;2020-04-13 13:11:21;POST/DELETE0 - 0_kcjPY.jpg - 
 44;profileImageUpload;UserController;2020-04-13 13:12:04;POST/DELETE44 - 44_h4fzU.jpg
-44;addAsset;AssetController;2020-04-13 18:34:35;POST/DELETE44 - 1 - ww - wwwwww - 1 - 1
-44;addImage;AssetImageController;2020-04-13 18:34:36;POST/DELETE0 - 0_JWvVR.jpg - 
+-1;getAssetTypes;AssetTypeController;2020-04-13 14:39:49;GET
+-1;getAssetTypes;AssetTypeController;2020-04-13 14:39:49;GET
+-1;getAssetTypes;AssetTypeController;2020-04-13 14:52:43;GET;1
+-1;getAssetTypes;AssetTypeController;2020-04-13 14:55:50;GET;1
+-1;getAssetTypes;AssetTypeController;2020-04-13 14:58:44;GET;1
+-1;getUsers;UserController;2020-04-13 16:08:20;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 16:08:21;GET;null
+52;login;UserController;2020-04-13 16:09:18;GET;52 - John@er.best - 2020-04-13 16:09:18
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 16:09:19;GET;null
+52;writeMessage;ChatController;2020-04-13 16:09:28;GET;52
+52;getFriends;UserConnectionsController;2020-04-13 16:11:14;GET;52
+52;getChats;ChatController;2020-04-13 16:15:30;GET;52
+52;getChat;ChatController;2020-04-13 16:15:36;GET;52 - 40
+52;getChat;ChatController;2020-04-13 16:15:54;GET;52 - 40
+52;getFriends;UserConnectionsController;2020-04-13 16:16:27;GET;52
+52;getChats;ChatController;2020-04-13 16:16:39;GET;52
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 16:16:41;GET;null
+52;getAssetType;AssetController;2020-04-13 16:16:51;GET;52 - 1
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 16:17:20;GET;null
+52;getFriendRequest;UserConnectionsController;2020-04-13 16:17:36;GET;52
+-1;getUserAmount;UserController;2020-04-13 16:17:58;GET;null
+-1;getAssetAmount;AssetController;2020-04-13 16:17:58;GET;27
+-1;getUsers;UserController;2020-04-13 16:17:58;GET;null
+-1;getReportAmount;UnwantedBehaviorReportsController;2020-04-13 16:17:59;GET;4
+-1;getReports;UnwantedBehaviorReportsController;2020-04-13 16:17:59;GET;null
+-1;getUserAmount;UserController;2020-04-13 16:18:00;GET;null
+-1;getAssetAmount;AssetController;2020-04-13 16:18:00;GET;27
+-1;getReportAmount;UnwantedBehaviorReportsController;2020-04-13 16:18:01;GET;4
+-1;getUserAmount;UserController;2020-04-13 16:18:01;GET;null
+-1;getAssetAmount;AssetController;2020-04-13 16:18:01;GET;27
+-1;getReportAmount;UnwantedBehaviorReportsController;2020-04-13 16:18:02;GET;4
+-1;getUserAmount;UserController;2020-04-13 16:46:50;GET;null
+-1;getReportAmount;UnwantedBehaviorReportsController;2020-04-13 16:46:50;GET;4
+-1;getAssetAmount;AssetController;2020-04-13 16:46:51;GET;27
+52;getFriendRequest;UserConnectionsController;2020-04-13 16:46:52;GET;52
+52;getFriendRequest;UserConnectionsController;2020-04-13 18:38:33;GET;52
+-1;getUsers;UserController;2020-04-13 18:38:34;GET;null
+-1;getUsers;UserController;2020-04-13 18:42:19;GET;null
+52;getFriendRequest;UserConnectionsController;2020-04-13 18:42:19;GET;52
+-1;getUsers;UserController;2020-04-13 18:45:20;GET;null
+52;getFriendRequest;UserConnectionsController;2020-04-13 18:45:20;GET;52
+52;login;UserController;2020-04-13 18:52:56;GET;52 - John@er.best - 2020-04-13 18:52:56
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 18:52:57;GET;null
+52;getMyAssets;AssetController;2020-04-13 18:53:01;GET;52
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 18:53:04;GET;null
+-1;getUsers;UserController;2020-04-13 18:54:10;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 18:54:11;GET;null
+52;login;UserController;2020-04-13 19:15:22;GET;52 - John@er.best - 2020-04-13 19:15:22
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 19:15:23;GET;null
+52;getMyAssets;AssetController;2020-04-13 19:15:27;GET;52
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 19:15:29;GET;null
+-1;getUsers;UserController;2020-04-13 19:20:08;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 19:20:08;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 19:23:27;GET;null
+-1;getUsers;UserController;2020-04-13 19:23:27;GET;null
+-1;getUsers;UserController;2020-04-13 19:27:42;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 19:27:42;GET;null
+52;addAsset;AssetController;2020-04-13 19:28:41;POST/DELETE;52 - 3 - 1 - 1 - 1 - 1
+52;getMyAssets;AssetController;2020-04-13 19:28:42;GET;52
+-1;getUsers;UserController;2020-04-13 19:30:47;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 19:30:47;GET;null
+-1;getUsers;UserController;2020-04-13 19:32:16;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 19:32:16;GET;null
+52;getMyAssets;AssetController;2020-04-13 19:32:22;GET;52
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 19:32:24;GET;null
+52;addAsset;AssetController;2020-04-13 19:33:20;POST/DELETE;52 - 8 - reeeee - reeeeee - 1 - 1
+52;getMyAssets;AssetController;2020-04-13 19:33:22;GET;52
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 19:34:16;GET;null
+52;addAsset;AssetController;2020-04-13 19:34:20;POST/DELETE;52 - 6 - 33 - 333333 - 1 - true
+52;getMyAssets;AssetController;2020-04-13 19:34:22;GET;52
+-1;getUsers;UserController;2020-04-13 19:36:04;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 19:36:04;GET;null
+52;getMyAssets;AssetController;2020-04-13 19:36:20;GET;52
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 19:36:21;GET;null
+52;addAsset;AssetController;2020-04-13 19:36:37;POST/DELETE;52 - 2 - dsds - dsdsd - 1 - true
+52;getMyAssets;AssetController;2020-04-13 19:36:38;GET;52
+-1;getUsers;UserController;2020-04-13 19:37:04;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 19:37:04;GET;null
+52;getMyAssets;AssetController;2020-04-13 19:37:09;GET;52
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 19:38:39;GET;null
+52;addAsset;AssetController;2020-04-13 19:39:12;POST/DELETE;52 - 6 - klays - dsdsds - 1 - true
+52;addImage;AssetImageController;2020-04-13 19:39:12;POST/DELETE;83 - 83_cXmil.png - 
+52;getMyAssets;AssetController;2020-04-13 19:39:14;GET;52
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 19:51:10;GET;null
+52;addAsset;AssetController;2020-04-13 19:51:26;POST/DELETE;52 - 2 - dude - dade - 1 - true
+52;addAsset;AssetController;2020-04-13 19:51:34;POST/DELETE;52 - 2 - dude - dade - 1 - true
+52;addAsset;AssetController;2020-04-13 19:52:24;POST/DELETE;52 - 2 - dude - dade - 1 - true
+52;getMyAssets;AssetController;2020-04-13 19:52:26;GET;52
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 19:52:32;GET;null
+52;addAsset;AssetController;2020-04-13 19:52:36;POST/DELETE;52 - 3 - sd - sd - 1 - true
+52;addAsset;AssetController;2020-04-13 20:01:43;POST/DELETE;52 - 3 - sd - sd - 1 - true
+52;addAsset;AssetController;2020-04-13 20:02:13;POST/DELETE;52 - 3 - sd - sd - 1 - true
+52;addAsset;AssetController;2020-04-13 20:05:34;POST/DELETE;52 - 3 - sd - sd - 1 - true
+52;addAsset;AssetController;2020-04-13 20:06:06;POST/DELETE;52 - 3 - sd - sd - 1 - true
+52;addAsset;AssetController;2020-04-13 20:06:14;POST/DELETE;52 - 3 - sd - sd - 1 - true
+52;addAsset;AssetController;2020-04-13 20:10:11;POST/DELETE;52 - 3 - sd - sd - 1 - true
+52;getMyAssets;AssetController;2020-04-13 20:10:12;GET;52
+-1;getUsers;UserController;2020-04-13 20:15:26;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:15:28;GET;null
+52;getMyAssets;AssetController;2020-04-13 20:15:33;GET;52
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:15:35;GET;null
+-1;getUsers;UserController;2020-04-13 20:16:01;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:16:02;GET;null
+-1;getUsers;UserController;2020-04-13 20:16:10;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:16:11;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:16:40;GET;null
+-1;getUsers;UserController;2020-04-13 20:16:40;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:16:54;GET;null
+-1;getUsers;UserController;2020-04-13 20:16:54;GET;null
+-1;getUsers;UserController;2020-04-13 20:17:01;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:17:02;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:17:28;GET;null
+-1;getUsers;UserController;2020-04-13 20:17:28;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:17:34;GET;null
+-1;getUsers;UserController;2020-04-13 20:17:35;GET;null
+-1;getUsers;UserController;2020-04-13 20:17:49;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:17:49;GET;null
+-1;getUsers;UserController;2020-04-13 20:18:10;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:18:11;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:18:26;GET;null
+-1;getUsers;UserController;2020-04-13 20:18:27;GET;null
+-1;getUsers;UserController;2020-04-13 20:18:55;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:18:55;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:19:07;GET;null
+-1;getUsers;UserController;2020-04-13 20:19:08;GET;null
+-1;getUsers;UserController;2020-04-13 20:19:11;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:19:11;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:19:38;GET;null
+-1;getUsers;UserController;2020-04-13 20:19:38;GET;null
+52;addAsset;AssetController;2020-04-13 20:19:42;POST/DELETE;52 - 2 - 1 - 1 - 1 - true
+52;getMyAssets;AssetController;2020-04-13 20:19:43;GET;52
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:20:25;GET;null
+52;addAsset;AssetController;2020-04-13 20:20:32;POST/DELETE;52 - 6 - 2 - 2 - 1 - true
+52;getMyAssets;AssetController;2020-04-13 20:20:34;GET;52
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:20:35;GET;null
+52;addAsset;AssetController;2020-04-13 20:20:39;POST/DELETE;52 - 7 - 1 - 2 - 1 - true
+52;getMyAssets;AssetController;2020-04-13 20:20:41;GET;52
+-1;getUsers;UserController;2020-04-13 20:21:28;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:21:28;GET;null
+52;getMyAssets;AssetController;2020-04-13 20:22:24;GET;52
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:22:32;GET;null
+52;addAsset;AssetController;2020-04-13 20:22:34;POST/DELETE;52 - 0 -  -  - 1 - true
+52;getMyAssets;AssetController;2020-04-13 20:22:36;GET;52
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:23:23;GET;null
+52;addAsset;AssetController;2020-04-13 20:23:24;POST/DELETE;52 - 0 -  -  - 1 - true
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:24:59;GET;null
+-1;getUsers;UserController;2020-04-13 20:24:59;GET;null
+52;addAsset;AssetController;2020-04-13 20:25:03;POST/DELETE;52 - 2 - 2 - 2 - 1 - true
+52;addAsset;AssetController;2020-04-13 20:25:03;POST/DELETE;52 - 2 - 2 - 2 - 1 - true
+-1;getUsers;UserController;2020-04-13 20:25:26;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:25:26;GET;null
+52;addAsset;AssetController;2020-04-13 20:25:31;POST/DELETE;52 - 3 - w - w - 1 - true
+52;addAsset;AssetController;2020-04-13 20:26:32;POST/DELETE;52 - 3 - w - w - 1 - true
+-1;getUsers;UserController;2020-04-13 20:28:16;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:28:17;GET;null
+-1;getUsers;UserController;2020-04-13 20:28:33;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:28:34;GET;null
+-1;getUsers;UserController;2020-04-13 20:31:43;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:31:43;GET;null
+-1;getUsers;UserController;2020-04-13 20:31:47;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:31:48;GET;null
+-1;getUsers;UserController;2020-04-13 20:33:04;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:33:05;GET;null
+-1;getUsers;UserController;2020-04-13 20:35:21;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:35:22;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:36:02;GET;null
+-1;getUsers;UserController;2020-04-13 20:36:02;GET;null
+52;addAsset;AssetController;2020-04-13 20:36:03;POST/DELETE;52 - 0 -  -  - 1 - true
+52;addAsset;AssetController;2020-04-13 20:36:15;POST/DELETE;52 - 6 - 2 - 2 - 1 - true
+-1;getUsers;UserController;2020-04-13 20:39:11;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:39:12;GET;null
+-1;getUsers;UserController;2020-04-13 20:48:16;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:48:16;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 20:48:44;GET;null
+-1;getUsers;UserController;2020-04-13 20:48:44;GET;null
+-1;getUsers;UserController;2020-04-13 22:20:42;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-13 22:20:43;GET;null
+null;getAssetType;AssetController;2020-04-13 22:21:03;GET;null - 1
+
