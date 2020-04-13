@@ -39,7 +39,7 @@ class ChatController extends AbstractController{
         $info=($userId);
         $this->forward('App\Controller\UtilController:logging',[
             'userId'=>$userId,
-            'functionName'=>'writeMessage',
+            'functionName'=>'getChats',
             'controllerName'=>'ChatController',
             'info'=>$info,
             'change'=>0
@@ -95,7 +95,7 @@ class ChatController extends AbstractController{
             $info=($userId1." - ".$userId2);
             $this->forward('App\Controller\UtilController:logging',[
                 'userId'=>$userId1,
-                'functionName'=>'writeMessage',
+                'functionName'=>'getChat',
                 'controllerName'=>'ChatController',
                 'info'=>$info,
                 'change'=>0

@@ -111,3 +111,23 @@
 44;profileImageUpload;UserController;2020-04-13 11:29:23;POST/DELETE44 - 44_9q8T2.jpg
 44;profileImageUpload;UserController;2020-04-13 12:12:11;POST/DELETE44 - 44_Ldm78.jpg
 44;profileImageUpload;UserController;2020-04-13 13:12:04;POST/DELETE44 - 44_h4fzU.jpg
+-1;getUsers;UserController;2020-04-13 16:08:20;GET;null
+52;login;UserController;2020-04-13 16:09:18;GET;52 - John@er.best - 2020-04-13 16:09:18
+-1;getUserAmount;UserController;2020-04-13 16:17:58;GET;null
+-1;getUsers;UserController;2020-04-13 16:17:58;GET;null
+-1;getUserAmount;UserController;2020-04-13 16:18:00;GET;null
+-1;getUserAmount;UserController;2020-04-13 16:18:01;GET;null
+-1;getUserAmount;UserController;2020-04-13 16:46:50;GET;null
+-1;getUsers;UserController;2020-04-13 18:38:34;GET;null
+-1;getUsers;UserController;2020-04-13 18:42:19;GET;null
+-1;getUsers;UserController;2020-04-13 18:45:20;GET;null
+52;login;UserController;2020-04-13 18:52:56;GET;52 - John@er.best - 2020-04-13 18:52:56
+-1;getUsers;UserController;2020-04-13 18:54:10;GET;null
+52;login;UserController;2020-04-13 19:15:22;GET;52 - John@er.best - 2020-04-13 19:15:22
+-1;getUsers;UserController;2020-04-13 19:20:08;GET;null
+-1;getUsers;UserController;2020-04-13 19:23:27;GET;null
+-1;getUsers;UserController;2020-04-13 19:27:42;GET;null
+-1;getUsers;UserController;2020-04-13 19:30:47;GET;null
+-1;getUsers;UserController;2020-04-13 19:32:16;GET;null
+-1;getUsers;UserController;2020-04-13 19:36:04;GET;null
+-1;getUsers;UserController;2020-04-13 19:37:04;GET;null
