@@ -189,3 +189,4 @@
 -1;getUsers;UserController;2020-04-13 22:20:42;GET;null
 -1;getAllAssetTypes;AssetTypeController;2020-04-13 22:20:43;GET;null
 null;getAssetType;AssetController;2020-04-13 22:21:03;GET;null - 1
+

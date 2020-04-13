@@ -62,3 +62,4 @@
 52;addAsset;AssetController;2020-04-13 20:36:03;POST/DELETE;52 - 0 -  -  - 1 - true
 52;addAsset;AssetController;2020-04-13 20:36:15;POST/DELETE;52 - 6 - 2 - 2 - 1 - true
 null;getAssetType;AssetController;2020-04-13 22:21:03;GET;null - 1
+
