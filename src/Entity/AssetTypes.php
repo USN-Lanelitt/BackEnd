@@ -28,7 +28,6 @@ class AssetTypes
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\AssetCategories", inversedBy="assetTypes")
-     * @Groups({"asset"})
      */
     private $assetCategories;
 
@@ -39,6 +38,7 @@ class AssetTypes
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"asset"})
      */
     private $imgUrl;
 
