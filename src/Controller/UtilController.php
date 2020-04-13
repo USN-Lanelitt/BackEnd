@@ -78,20 +78,15 @@ class UtilController extends AbstractController
     public function getLevel(){
         $level = $this->getDoctrine()->getRepository(Variables::class)->find(1);
         $level=$level->getValue();
-
-        return $this->json($level, Response::HTTP_OK, [], [
-            ObjectNormalizer::SKIP_NULL_VALUES => true,
-            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
-                return $object->getId();
-            }
-        ]);
+        $level=$level->getId();
+        return new JsonResponse($level);
     }
 
     public function getLogg($userId){
 
         $oUser = $this->getDoctrine()->getRepository(Users::class)->find($userId);
 
-        $loggName="logg";
+        $loggName="log";
         $myfile = fopen("$loggName.txt", "r") or die("Unable to open file!");
         $logg=array();
         $teller=0;

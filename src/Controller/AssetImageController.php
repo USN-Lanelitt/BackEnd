@@ -64,6 +64,12 @@ class AssetImageController extends AbstractController{
         $bMainImage = boolval($oRequest->request->get('mainImage;'));
         $this->logger->info($bMainImage);
 
+       /* if(empty($sImage)){
+            $this->logger->info("KEKEKEKEKEKEKE");
+            $sImage     =fopen("Default.jpg", "r");
+            $this->logger->info("KEKEKEKEKEKEKE");
+        }*/
+
 
         $aReturn['code']  = 400;
         $aReturn['image'] = "";
