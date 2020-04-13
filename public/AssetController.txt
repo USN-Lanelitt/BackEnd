@@ -8,3 +8,7 @@
 18;getMyAssets;AssetController;2020-04-11 22:56:01;GET;18
 18;getMyAssets;AssetController;2020-04-11 23:27:01;GET;18
 18;getMyAssets;AssetController;2020-04-11 23:31:37;GET;18
+44;addAsset;AssetController;2020-04-13 12:58:18;POST/DELETE44 - 1 - bbbb - bbbbbbb - 1 - 1
+44;addAsset;AssetController;2020-04-13 12:59:55;POST/DELETE44 - 1 - ttt - ttttttttt - 1 - 1
+44;addAsset;AssetController;2020-04-13 13:04:17;POST/DELETE44 - 2 - bbbbb - bbbbbbbbbb - 1 - 1
+44;addAsset;AssetController;2020-04-13 13:11:21;POST/DELETE44 - 2 - blomst - blooooo - 1 - 1
