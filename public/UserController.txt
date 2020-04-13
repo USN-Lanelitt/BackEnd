@@ -106,3 +106,4 @@
 -1;getUsers;UserController;2020-04-12 00:16:15;GET;null
 -1;getUsers;UserController;2020-04-12 00:17:25;GET;null
 -1;getUsers;UserController;2020-04-12 01:45:28;GET;null
+18;editUser;UserController;2020-04-12 22:32:19;POST/DELETE18 - nicole - '' - bendu - 450203961 - n@m.com - 45020396 - 
