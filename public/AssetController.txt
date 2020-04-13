@@ -12,3 +12,4 @@
 44;addAsset;AssetController;2020-04-13 12:59:55;POST/DELETE44 - 1 - ttt - ttttttttt - 1 - 1
 44;addAsset;AssetController;2020-04-13 13:04:17;POST/DELETE44 - 2 - bbbbb - bbbbbbbbbb - 1 - 1
 44;addAsset;AssetController;2020-04-13 13:11:21;POST/DELETE44 - 2 - blomst - blooooo - 1 - 1
+44;addAsset;AssetController;2020-04-13 18:34:35;POST/DELETE44 - 1 - ww - wwwwww - 1 - 1
