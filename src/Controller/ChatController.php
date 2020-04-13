@@ -37,7 +37,13 @@ class ChatController extends AbstractController{
         $users=$this->getDoctrine()->getRepository(Users::class)->findBy(array('id'=>$iIds));
 
         $info=($userId);
-        UtilController::logging($userId, "writeMessage", "ChatController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$userId,
+            'functionName'=>'writeMessage',
+            'controllerName'=>'ChatController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         return $this->json($users, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -73,7 +79,13 @@ class ChatController extends AbstractController{
 
             //Logging funksjon
             $info=($userId1." - ".$userId2." - "."Opprett chat");
-            UtilController::logging($userId1, "writeMessage", "ChatController", "$info",1);
+            $this->forward('App\Controller\UtilController:logging',[
+                'userId'=>$userId1,
+                'functionName'=>'writeMessage',
+                'controllerName'=>'ChatController',
+                'info'=>$info,
+                'change'=>1
+        ]);
 
             return $this->getChat($userId1, $userId2);
 
@@ -81,7 +93,13 @@ class ChatController extends AbstractController{
         else{
             //Logging funksjon
             $info=($userId1." - ".$userId2);
-            UtilController::logging($userId1, "writeMessage", "ChatController", "$info",0);
+            $this->forward('App\Controller\UtilController:logging',[
+                'userId'=>$userId1,
+                'functionName'=>'writeMessage',
+                'controllerName'=>'ChatController',
+                'info'=>$info,
+                'change'=>0
+        ]);
 
             //returner chat sortert på tidspunkt sendt
             return $this->json($chatMessages, Response::HTTP_OK, [], [
@@ -113,7 +131,13 @@ class ChatController extends AbstractController{
 
         //Logging funksjon
         $info=($userId1." - ".$userId2." - ".$message);
-        UtilController::logging($userId1, "writeMessage", "ChatController", "$info",1);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$userId1,
+            'functionName'=>'writeMessage',
+            'controllerName'=>'ChatController',
+            'info'=>$info,
+            'change'=>1
+        ]);
 
         return $this->getChat($userId1, $userId2);
     }

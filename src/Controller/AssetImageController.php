@@ -33,7 +33,13 @@ class AssetImageController extends AbstractController{
 
         //Logging funksjon
         $info=($assetId);
-        UtilController::logging(-1, "getMainImage", "AssetImageController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>-1,
+            'functionName'=>'getMainImage',
+            'controllerName'=>'AssetImageController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         return $this->json($assetImage, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -113,7 +119,13 @@ class AssetImageController extends AbstractController{
 
         //Logging funksjon
         $info=($assetId." - ".$sNewfilename." - ".$bMainImage);
-        UtilController::logging($userId, "addImage", "AssetImageController", "$info",1);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$userId,
+            'functionName'=>'addImage',
+            'controllerName'=>'AssetImageController',
+            'info'=>$info,
+            'change'=>1
+        ]);
 
         return new JsonResponse($aReturn);
 

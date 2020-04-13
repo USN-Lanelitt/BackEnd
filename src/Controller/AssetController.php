@@ -47,7 +47,13 @@ class AssetController extends AbstractController{
 
         //Logging funksjon
         $info=($userId1." - ".$userId2);
-        UtilController::logging($userId1, "getUsersAssets", "AssetController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$userId1,
+            'functionName'=>'getUsersAssets',
+            'controllerName'=>'AssetController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         return $this->json($assets, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -80,7 +86,13 @@ class AssetController extends AbstractController{
 
         //Logging funksjon
         $info=($userId." - ".$typeId);
-        UtilController::logging($userId, "getAssetType", "AssetController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$userId,
+            'functionName'=>'getAssetType',
+            'controllerName'=>'AssetController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
 
         return $this->json($assets, Response::HTTP_OK, [], [
@@ -113,7 +125,13 @@ class AssetController extends AbstractController{
 
         //Logging funksjon
         $info=($userId." - ".$search);
-        UtilController::logging($userId, "getAssetSearch", "AssetController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$userId,
+            'functionName'=>'getAssetSearch',
+            'controllerName'=>'AssetController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
 
         return $this->json($assets, Response::HTTP_OK, [], [
@@ -145,7 +163,13 @@ class AssetController extends AbstractController{
 
         //Logging funksjon
         $info=($userId);
-        UtilController::logging($userId, "getMyAssets", "AssetController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$userId,
+            'functionName'=>'getMyAssets',
+            'controllerName'=>'AssetController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         return $this->json($aAssets, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -166,7 +190,13 @@ class AssetController extends AbstractController{
 
         //Logging funksjon
         $info=($assetId);
-        UtilController::logging(-1, "getAsset", "AssetController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>-1,
+            'functionName'=>'getAsset',
+            'controllerName'=>'AssetController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         return $this->json($asset, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -208,7 +238,13 @@ class AssetController extends AbstractController{
 
         //Logging funksjon
         $info=($iUserId." - ".$iTypeId." - ".$sAssetName." - ".$tDescription." - ".$iCondition." - ".$bPublic);
-        UtilController::logging($iUserId, "addAsset", "AssetController", "$info",1);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$iUserId,
+            'functionName'=>'addAsset',
+            'controllerName'=>'AssetController',
+            'info'=>$info,
+            'change'=>1
+            ]);
 
         $this->forward('App\Controller\AssetImageController::getMainImage',['assetId'=>1]);
 
@@ -249,7 +285,13 @@ class AssetController extends AbstractController{
 
         //Logging funksjon
         $info=($userId." - ".$assetId." - ".$iTypeId." - ".$sAssetName." - ".$tDescription." - ".$iCondition." - ".$bPublic);
-        UtilController::logging($iUserId, "editAsset", "AssetController", "$info",1);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$iUserId,
+            'functionName'=>'editAsset',
+            'controllerName'=>'AssetController',
+            'info'=>$info,
+            'change'=>1
+        ]);
 
         return $this->json($asset, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -273,7 +315,13 @@ class AssetController extends AbstractController{
 
         //Logging funksjon
         $info=($userId." - ".$assetId);
-        UtilController::logging($userId, "removeAsset", "AssetController", "$info",1);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>$userId,
+            'functionName'=>'removeAsset',
+            'controllerName'=>'AssetController',
+            'info'=>$info,
+            'change'=>1
+        ]);
 
         return new JsonResponse("Eiendel slettet");
     }
@@ -284,7 +332,13 @@ class AssetController extends AbstractController{
 
         //Logging funksjon
         $info=($userId." - ".$assetAmount);
-        UtilController::logging(-1, "getIndividAssetAmount", "AssetController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>-1,
+            'functionName'=>'getIndividAssetAmount',
+            'controllerName'=>'AssetController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         return new JsonResponse($assetAmount);
     }
@@ -295,7 +349,13 @@ class AssetController extends AbstractController{
 
         //Logging funksjon
         $info=($assetAmount);
-        UtilController::logging(-1, "getAssetAmount", "AssetController", "$info",0);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>-1,
+            'functionName'=>'getAssetAmount',
+            'controllerName'=>'AssetController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         return new JsonResponse($assetAmount);
     }

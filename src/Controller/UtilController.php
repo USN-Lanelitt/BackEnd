@@ -77,6 +77,7 @@ class UtilController extends AbstractController
     }
     public function getLevel(){
         $level = $this->getDoctrine()->getRepository(Variables::class)->find(1);
+        $level=$level->getValue();
 
         return $this->json($level, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -102,20 +103,12 @@ class UtilController extends AbstractController
         return new JsonResponse($logg);
 
     }
-    private static $entityManager;
-
-    public static function setEntityManager($entityManager)
-    {
-        self::$entityManager = $entityManager;
-    }
     public function logging($userId, $functionName, $controllerName, $info, $change){
 
-//THIS NO WORK YET
-        //$level =VariablesRepository::find(1);
-        //$level = $this->getDoctrine()->getRepository(Variables::class)->find(1);
-        //$level=self::getLevel();
-        //$loggingLevel=$level->getValue();
-        $loggingLevel=4;
+        $level = $this->getDoctrine()->getRepository(Variables::class)->find(1);
+        $var=$level->getValue();
+        $loggingLevel=$var->getId();
+        //$loggingLevel=8;
         $loggName="log";
         $cSV=";";
         $timeStamp=new \DateTime();

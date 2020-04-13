@@ -11,3 +11,8 @@
 44;addAsset;AssetController;2020-04-13 13:11:21;POST/DELETE44 - 2 - blomst - blooooo - 1 - 1
 44;addImage;AssetImageController;2020-04-13 13:11:21;POST/DELETE0 - 0_kcjPY.jpg - 
 44;profileImageUpload;UserController;2020-04-13 13:12:04;POST/DELETE44 - 44_h4fzU.jpg
+-1;getAssetTypes;AssetTypeController;2020-04-13 14:39:49;GET
+-1;getAssetTypes;AssetTypeController;2020-04-13 14:39:49;GET
+-1;getAssetTypes;AssetTypeController;2020-04-13 14:52:43;GET;1
+-1;getAssetTypes;AssetTypeController;2020-04-13 14:55:50;GET;1
+-1;getAssetTypes;AssetTypeController;2020-04-13 14:58:44;GET;1
