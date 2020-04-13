@@ -210,6 +210,8 @@ class AssetController extends AbstractController{
         $info=($iUserId." - ".$iTypeId." - ".$sAssetName." - ".$tDescription." - ".$iCondition." - ".$bPublic);
         UtilController::logging($iUserId, "addAsset", "AssetController", "$info",1);
 
+        $this->forward('App\Controller\AssetImageController::getMainImage',['assetId'=>1]);
+
         return new JsonResponse("Eiendel lagd til");
     }
 

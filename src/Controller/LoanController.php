@@ -120,6 +120,7 @@ class LoanController extends AbstractController
         $info=("null");
         UtilController::logging($iUserId, "getLoanRequest", "LoanController", "$info",0);
 
+
         return $this->json($oRequestIds, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
             ObjectNormalizer::GROUPS => ['groups' => 'loanRequest'],

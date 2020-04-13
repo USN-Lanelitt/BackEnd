@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\LogingLevels;
 use App\Entity\Users;
 use App\Entity\Variables;
+use App\Repository\VariablesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -85,7 +86,7 @@ class UtilController extends AbstractController
         ]);
     }
 
-    public function getLogg($userId, $loggName){
+    public function getLogg($userId){
 
         $oUser = $this->getDoctrine()->getRepository(Users::class)->find($userId);
 
@@ -101,11 +102,19 @@ class UtilController extends AbstractController
         return new JsonResponse($logg);
 
     }
+    private static $entityManager;
+
+    public static function setEntityManager($entityManager)
+    {
+        self::$entityManager = $entityManager;
+    }
     public function logging($userId, $functionName, $controllerName, $info, $change){
 
 //THIS NO WORK YET
-//        $level = $this->getDoctrine()->getRepository(Variables::class)->find(1);
-//        $loggingLevel=$level->getValue();
+        //$level =VariablesRepository::find(1);
+        //$level = $this->getDoctrine()->getRepository(Variables::class)->find(1);
+        //$level=self::getLevel();
+        //$loggingLevel=$level->getValue();
         $loggingLevel=4;
         $loggName="log";
         $cSV=";";

@@ -148,7 +148,7 @@ logging:
   methods: POST
 
 getLogg:
-  path: /logging/{userId}/{loggName}
+  path: /logging/{userId}
   controller: App\Controller\UtilController::getLogg
   methods: GET
 
