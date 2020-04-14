@@ -257,7 +257,7 @@ class UserController extends AbstractController
         $aTemp = explode(".", $ImageOriginalName);
         $sNewfilename = $iUserId.'_'.$sImageNameRandom.'.'.end($aTemp);
 
-        $sTargetDir = "../../FrontEnd/public/profileImages/";
+        $sTargetDir = "../../FrontEnd/profileImages/";
 
         $sTargetFile = $sTargetDir . $sNewfilename;
         $this->logger->info($sTargetFile);

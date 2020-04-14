@@ -84,7 +84,7 @@ class AssetImageController extends AbstractController{
         $aTemp = explode(".", $ImageOriginalName);
         $sNewfilename = $assetId.'_'.$sImageNameRandom.'.'.end($aTemp);
 
-        $sTargetDir = "../../FrontEnd/public/AssetImages/";
+        $sTargetDir = "../../FrontEnd/AssetImages/";
 
         $sTargetFile = $sTargetDir . $sNewfilename;
         $this->logger->info($sTargetFile);
