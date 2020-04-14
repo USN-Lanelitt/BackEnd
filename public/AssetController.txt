@@ -64,4 +64,3 @@
 null;getAssetType;AssetController;2020-04-13 22:21:03;GET;null - 1
 
 
-44;addAsset;AssetController;2020-04-14 14:03:52;POST/DELETE

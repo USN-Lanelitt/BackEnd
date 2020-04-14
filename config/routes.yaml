@@ -124,6 +124,11 @@ getUsersAssets:
   path: /assets/getUsersAssets/{userId1}/{userId2}
   controller: App\Controller\AssetController::getUsersAssets
   methods: GET
+  
+setPublished:
+  path: /setPublished/{userId}/{assetId}/{published}
+  controller: App\Controller\AssetController::setPublished
+  methods: POST
 
 #---------------------------------------------Chat--John-Berge Grimaas--------------------------------------------------
 
@@ -143,6 +148,7 @@ getChats:
   methods: GET
 
 #-------------------------------------------Rating--John-Berge Grimaas--------------------------------------------------
+
 
 getAverageAssetRating:
   path: /assets/{assetId}/AverageRating
