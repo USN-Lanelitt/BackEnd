@@ -22,6 +22,7 @@ class SendMailController extends AbstractController
     {
         //$this->logger->info($sSubject);
 
+        // her skal brukernavn og passord
 
         // Create the Mailer using your created Transport
         /*$mailer = new \Swift_Mailer($transport);
