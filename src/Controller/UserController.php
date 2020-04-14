@@ -109,12 +109,12 @@ class UserController extends AbstractController
             //$iUserId = $oUser->getId();
 
             // Send ut velkomst e-post
-            /*$sSubject = "Velkommen til Lånelitt";
+            $sSubject = "Velkommen til Lånelitt";
             $sBody  = "Hei ".$sFirstname."<br /><br />";
             $sBody .= "<h4>Velkommen til lånelitt.no</h4><br /><br />";
             $sBody .= "Mvh Lånelitt teamet";
             $sEmailToName = UtilController::makeName($sFirstname,$sMiddlename,$sLastname);
-            SendEmailController::sendEmail($sSubject, $sBody, $sEmail, $sEmailToName);*/
+            SendEmailController::sendEmail($sSubject, $sBody, $sEmail, $sEmailToName);
         }
 
         return new JsonResponse($aReturn);
@@ -144,7 +144,13 @@ class UserController extends AbstractController
                 'middlename' => $oU->getMiddlename(),
                 'lastname' => $oU->getLastname(),
                 'email' => $oU->getEmail(),
-                'phone' => $oU->getPhone()
+                'phone' => $oU->getPhone(),
+                'profileImage' => $oU->getProfileImage(),
+                'nicname' => $oU->getNickname(),
+                'address' => $oU->getAddress(),
+                'address2' => $oU->getAddress2(),
+                'zipcode' => $oU->getZipCode()
+                //'city' => $oU->,
                 // ... Same for each property you want
             );
             $sHashPassword =  $oU->getPassword();
@@ -245,6 +251,10 @@ class UserController extends AbstractController
         $sImage            = $request->files->get('file');
         $iUserId           = $request->request->get('userId');
 
+        // Slette bilder som finnes fra før
+        $mask = '../../FrontEnd/profileImages/'.$iUserId.'_*.*';
+        array_map('unlink', glob($mask));
+
         $aReturn['code'] = 400;
         $aReturn['image'] = "";
 
@@ -257,7 +267,7 @@ class UserController extends AbstractController
         $aTemp = explode(".", $ImageOriginalName);
         $sNewfilename = $iUserId.'_'.$sImageNameRandom.'.'.end($aTemp);
 
-        $sTargetDir = "../../FrontEnd/public/profileImages/";
+        $sTargetDir = "../../FrontEnd/profileImages/";
 
         $sTargetFile = $sTargetDir . $sNewfilename;
         $this->logger->info($sTargetFile);
