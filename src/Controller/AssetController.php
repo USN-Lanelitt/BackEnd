@@ -33,6 +33,7 @@ class AssetController extends AbstractController{
         $conn=$this->getDoctrine()->getConnection();
         $sql="SELECT id FROM assets 
               WHERE users_id LIKE $userId2
+              AND published 
               AND (users_id IN (SELECT user2_id FROM user_connections WHERE user1_id LIKE $userId1) OR (users_id LIKE $userId1 OR public LIKE TRUE))";
         $stmt=$conn->prepare($sql);
         $stmt->execute();
@@ -72,6 +73,7 @@ class AssetController extends AbstractController{
         $conn=$this->getDoctrine()->getConnection();
         $sql="SELECT id FROM assets 
               WHERE asset_type_id LIKE $typeId /**/   
+              AND published 
               AND (users_id IN (SELECT user2_id FROM user_connections WHERE user1_id LIKE $userId) OR (users_id LIKE $userId OR public LIKE TRUE))";
         $stmt=$conn->prepare($sql);
         $stmt->execute();
@@ -109,7 +111,8 @@ class AssetController extends AbstractController{
 
         $conn=$this->getDoctrine()->getConnection();
         $sql="SELECT id FROM assets 
-              WHERE UPPER(asset_name) LIKE UPPER('%$search%') /**/   
+              WHERE UPPER(asset_name) LIKE UPPER('%$search%') /**/ 
+              AND published 
               AND (users_id IN (SELECT user2_id FROM user_connections WHERE user1_id LIKE $userId) OR (users_id LIKE $userId OR public LIKE TRUE))";
         $stmt=$conn->prepare($sql);
         $stmt->execute();
@@ -243,6 +246,7 @@ class AssetController extends AbstractController{
         $asset->setDescription($tDescription);
         $asset->setAssetCondition($iCondition);
         $asset->setPublic($bPublic);
+        $asset->setPublished(false);
 
 
         $entityManager = $this->getDoctrine()->getManager();
@@ -266,49 +270,7 @@ class AssetController extends AbstractController{
             '$oRequest'=>$request]);
 
         return new JsonResponse($id);
-    }/*
-    public function addAsset(Request $request){
-        $ut="\n\n**************************************************************************\n\n";
-        $this->logger->info($ut);
-        $content = json_decode($request->getContent());
-
-        $iUserId = $content->userId;
-        $iTypeId = $content->typeId;
-        $sAssetName = $content->assetName;
-        $tDescription = $content->description;
-        $iCondition = $content->condition;
-        $bPublic=$content->public;
-
-        $user=$this->getDoctrine()->getRepository(Users::class)->find($iUserId);
-        $oAssetType=$this->getDoctrine()->getRepository(AssetTypes::class)->find($iTypeId);
-
-        $asset=new Assets();
-        $asset->setUsers($user);
-        $asset->setAssetType($oAssetType);
-        $asset->setAssetname($sAssetName);
-        $asset->setDescription($tDescription);
-        $asset->setAssetCondition($iCondition);
-        $asset->setPublic($bPublic);
-
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($asset);
-        $entityManager->flush();
-
-
-        //Logging funksjon
-        $info=($iUserId." - ".$iTypeId." - ".$sAssetName." - ".$tDescription." - ".$iCondition." - ".$bPublic);
-        $this->forward('App\Controller\UtilController:logging',[
-            'userId'=>$iUserId,
-            'functionName'=>'addAsset',
-            'controllerName'=>'AssetController',
-            'info'=>$info,
-            'change'=>1
-        ]);
-
-
-        return new JsonResponse("Eiendel lagd til");
-    }*/
+    }
     public function editAsset(Request $request, $userId, $assetId){
         $asset=$this->getDoctrine()->getRepository(Assets::class)->findOneBy(array('id'=>$assetId, 'users'=>$userId));
 
@@ -359,6 +321,24 @@ class AssetController extends AbstractController{
             }
         ]);
 
+    }
+    public function setPublished($userId, $assetId, $published){
+
+        $asset=$this->getDoctrine()->getRepository(Assets::class)->find($assetId);
+        $user=$asset->getUsers();
+        if(!($user->getId()==$userId)){
+            return new JsonResponse("Not correct user");
+        }
+        $asset->setPublished($published);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($asset);
+        $entityManager->flush();
+        $publisert="publisert";
+        if(!$published){
+            $publisert="upublisert";
+        }
+        return new JsonResponse("Eiendel ".$publisert);
     }
     public function removeAsset($assetId){
 

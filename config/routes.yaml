@@ -166,6 +166,12 @@ setLevel:
   path: /setLevel/{newLevel}
   controller: App\Controller\UtilController::setLevel
   methods: POST
+
+setPublished:
+  path: /setPublished/{userId}/{assetId}/{published}
+  controller: App\Controller\AssetController::setPublished
+  methods: POST
+
 #---------------------------------------------UserConnections--Nicole Bendu---------------------------------------------
 
 getUsers:

@@ -14,17 +14,19 @@ class AssetImages
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"asset","assetImage"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"loanStatus"})
+     * @Groups({"loanStatus", "asset","assetImage"})
      */
     private $imageUrl;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"asset","assetImage"})
      */
     private $mainImage;
 
