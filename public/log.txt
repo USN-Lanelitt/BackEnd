@@ -199,3 +199,7 @@ null;getAssetType;AssetController;2020-04-13 22:21:03;GET;null - 1
 52;addImage;AssetImageController;2020-04-14 00:36:19;POST/DELETE
 52;addAsset;AssetController;2020-04-14 01:29:28;POST/DELETE
 52;addImage;AssetImageController;2020-04-14 01:29:28;POST/DELETE
+52;writeMessage;ChatController;2020-04-15 00:47:00;POST/DELETE52 - 44 - Opprett chat
+52;writeMessage;ChatController;2020-04-15 00:47:33;POST/DELETE52 - 44 - hallo
+52;writeMessage;ChatController;2020-04-15 00:49:03;POST/DELETE52 - 44 - yo
+52;writeMessage;ChatController;2020-04-15 00:53:39;POST/DELETE52 - 54 - hallo

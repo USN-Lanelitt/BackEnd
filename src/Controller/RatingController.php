@@ -61,7 +61,7 @@ class RatingController extends AbstractController{
 
         return new JsonResponse("Fullført tilbakemelding");
     }
-    public function getAvrageAssetRating($assetId){
+    public function getAverageAssetRating($assetId){
         $conn=$this->getDoctrine()->getConnection();
         $sql="SELECT SUM(rating_asset)/COUNT(rating_asset) AS rating FROM rating_loans WHERE loans_id in (SELECT id FROM loans WHERE assets_id=$assetId)";
         $stmt=$conn->prepare($sql);
