@@ -109,12 +109,12 @@ class UserController extends AbstractController
             //$iUserId = $oUser->getId();
 
             // Send ut velkomst e-post
-            /*$sSubject = "Velkommen til Lånelitt";
+            $sSubject = "Velkommen til Lånelitt";
             $sBody  = "Hei ".$sFirstname."<br /><br />";
             $sBody .= "<h4>Velkommen til lånelitt.no</h4><br /><br />";
             $sBody .= "Mvh Lånelitt teamet";
             $sEmailToName = UtilController::makeName($sFirstname,$sMiddlename,$sLastname);
-            SendEmailController::sendEmail($sSubject, $sBody, $sEmail, $sEmailToName);*/
+            SendEmailController::sendEmail($sSubject, $sBody, $sEmail, $sEmailToName);
         }
 
         return new JsonResponse($aReturn);
