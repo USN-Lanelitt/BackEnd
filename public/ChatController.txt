@@ -110,8 +110,3 @@
 52;getChat;ChatController;2020-04-13 16:15:36;GET;52 - 40
 52;getChat;ChatController;2020-04-13 16:15:54;GET;52 - 40
 52;getChats;ChatController;2020-04-13 16:16:39;GET;52
-44;writeMessage;ChatController;2020-04-14 13:20:30;POST/DELETE
-44;writeMessage;ChatController;2020-04-14 13:34:23;POST/DELETE
-44;writeMessage;ChatController;2020-04-14 13:34:51;POST/DELETE
-44;writeMessage;ChatController;2020-04-14 13:35:03;POST/DELETE
-44;writeMessage;ChatController;2020-04-14 13:57:02;POST/DELETE

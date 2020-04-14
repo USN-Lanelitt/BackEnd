@@ -1,6 +1,0 @@
-
--1;getReportAmount;UnwantedBehaviorReportsController;2020-04-13 16:17:59;GET;4
--1;getReports;UnwantedBehaviorReportsController;2020-04-13 16:17:59;GET;null
--1;getReportAmount;UnwantedBehaviorReportsController;2020-04-13 16:18:01;GET;4
--1;getReportAmount;UnwantedBehaviorReportsController;2020-04-13 16:18:02;GET;4
--1;getReportAmount;UnwantedBehaviorReportsController;2020-04-13 16:46:50;GET;4
