@@ -144,7 +144,13 @@ class UserController extends AbstractController
                 'middlename' => $oU->getMiddlename(),
                 'lastname' => $oU->getLastname(),
                 'email' => $oU->getEmail(),
-                'phone' => $oU->getPhone()
+                'phone' => $oU->getPhone(),
+                'profileImage' => $oU->getProfileImage(),
+                'nicname' => $oU->getNickname(),
+                'address' => $oU->getAddress(),
+                'address2' => $oU->getAddress2(),
+                'zipcode' => $oU->getZipCode()
+                //'city' => $oU->,
                 // ... Same for each property you want
             );
             $sHashPassword =  $oU->getPassword();
@@ -244,6 +250,10 @@ class UserController extends AbstractController
         $this->logger->info($request);
         $sImage            = $request->files->get('file');
         $iUserId           = $request->request->get('userId');
+
+        // Slette bilder som finnes fra før
+        $mask = '../../FrontEnd/profileImages/'.$iUserId.'_*.*';
+        array_map('unlink', glob($mask));
 
         $aReturn['code'] = 400;
         $aReturn['image'] = "";
