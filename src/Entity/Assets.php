@@ -52,7 +52,7 @@ class Assets
     private $assetType;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\AssetImages", mappedBy="assets")
+     * @ORM\OneToMany(targetEntity="App\Entity\AssetImages", mappedBy="assets", cascade={"remove"})
      * @Groups({"asset"})
      */
     private $assetImages;

@@ -32,6 +32,7 @@ class AssetImages
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Assets", inversedBy="assetImages")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $assets;
 
