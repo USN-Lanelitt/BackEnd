@@ -88,3 +88,5 @@
 -1;getAllAssetTypes;AssetTypeController;2020-04-13 20:48:16;GET;null
 -1;getAllAssetTypes;AssetTypeController;2020-04-13 20:48:44;GET;null
 -1;getAllAssetTypes;AssetTypeController;2020-04-13 22:20:43;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-14 21:16:39;GET;null
+-1;getAllAssetTypes;AssetTypeController;2020-04-14 21:16:40;GET;null
