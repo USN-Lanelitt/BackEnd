@@ -34,9 +34,11 @@ class RatingController extends AbstractController{
     public function rateAsset(Request $request, $userId, $loanId, $newRating){
 
         $content = json_decode($request->getContent());
-        $comment="No comment";
         if(!empty($content)){
             $comment= $content->comment;
+        }
+        if(empty($comment)){
+            $comment="No comment";
         }
 
         $loan=$this->getDoctrine()->getRepository(Loans::class)->find($loanId);
@@ -89,6 +91,7 @@ class RatingController extends AbstractController{
 
         return new JsonResponse($ratings);
     }
+
     public function getUnratedLoans($iUserId){
         $conn=$this->getDoctrine()->getConnection();
 
@@ -128,6 +131,39 @@ class RatingController extends AbstractController{
     }
 
     public function getMyAssetsRating($iUserId){
+        $conn=$this->getDoctrine()->getConnection();
+        $sql="SELECT id from rating_loans
+            where loans_id in 
+            (select loans.id from loans, assets
+            where loans.assets_id=assets.id
+            and assets.users_id=$iUserId)";
+        $stmt=$conn->prepare($sql);
+        $stmt->execute();
+
+        $iIds=$stmt->fetchAll();
+
+        $iIds = array_column($iIds, 'id');
+
+        $ratings = $this->getDoctrine()->getRepository(RatingLoans::class)->findBy(array('loans' => $iIds));
+
+        //Logging funksjon
+        $info=($iUserId);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>-1,
+            'functionName'=>'getMyAssetsRating',
+            'controllerName'=>'RatingController',
+            'info'=>$info,
+            'change'=>0
+        ]);
+        return $this->json($ratings, Response::HTTP_OK, [], [
+            ObjectNormalizer::SKIP_NULL_VALUES => true,
+            ObjectNormalizer::GROUPS => ['groups' => 'loaned'],
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            }
+        ]);
+    }
+    public function getMyRating($iUserId){
         $conn=$this->getDoctrine()->getConnection();
         $sql="SELECT id from rating_loans
             where loans_id in 
