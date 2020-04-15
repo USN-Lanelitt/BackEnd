@@ -9,6 +9,7 @@ use App\Entity\Loans;
 use App\Entity\UserConnections;
 use App\Entity\RequestStatus;
 use App\Entity\Users;
+use Cassandra\Date;
 use DateInterval;
 use DatePeriod;
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -37,15 +38,17 @@ class LoanController extends AbstractController
 
     public function sendLoanRequest(Request $request, $iUserId, $iAssetId) {
         //Sjekker om requesten har innhold
-        $content=json_decode($request->getContent());
+/*        $content=json_decode($request->getContent());
         if(empty($content)){
-        return new JsonResponse($content);
-        }
+        return new JsonResponse('tom');
+        }*/
 
         //Henter info om lånet
-        $dStart  = $content->StartDate;
-        $dEnd  = $content->endDate;
+/*        $dStart  = $content->StartDate;
+        $dEnd  = $content->endDate;*/
 
+        $dStart = "2018-09-09";
+        $dEnd = "2018-10-09";
         $iStatusSent = 0;
 
         $oUser = $this->getDoctrine()->getRepository(Users::class)->find($iUserId);
@@ -55,17 +58,15 @@ class LoanController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
 
         //Sjekker om låneforholdet finnes fra før
-        $conn = $this->getDoctrine()->getConnection();
-        $sql = "SELECT id FROM loans 
-                WHERE users_id= $iUserId 
-                  AND assets_id = $iAssetId 
+/*        $conn = $this->getDoctrine()->getConnection();
+        $sql = "SELECT id FROM loans
+                WHERE users_id= $iUserId
+                  AND assets_id = $iAssetId
                   AND status_loan_id not like 3";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
-        $oConnectionId = $stmt->fetchAll();
-        
-        //hvis ikke låneforholdet finnes
-        if (empty($oConnectionId)){
+        $oConnectionId = $stmt->fetchAll();*/
+
 
             //Oppretter lånefohold
             $oLoan = new Loans();
@@ -79,7 +80,7 @@ class LoanController extends AbstractController
             $entityManager->flush();
 
             //Logging funksjon
-            $info=($oUser." - ".$oAsset." - ".$oLoan." - ".$oLoan." - ".$oLoan);
+            $info=($iUserId." - ".$iAssetId." - ".$dStart." - ".$dEnd." - "."0");
             $this->forward('App\Controller\UtilController:logging',[
                 'userId'=>$iUserId,
                 'functionName'=>'sendLoanRequest',
@@ -90,8 +91,7 @@ class LoanController extends AbstractController
 
             return new JsonResponse('Låneforhold er opprettet');
         }
-        return new JsonResponse('Låneforholdet finnes fra før');
-    }
+
 
 
     public function getLoanRequest($iUserId){ //Henter alle mottatte forespørsler
