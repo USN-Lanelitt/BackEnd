@@ -103,7 +103,7 @@ class RatingController extends AbstractController{
 
         return $this->json($loans, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
-            ObjectNormalizer::GROUPS => ['groups' => 'loanRequest'],
+            ObjectNormalizer::GROUPS => ['groups' => 'loaned'],
             ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
                 return $object->getId();
             }
