@@ -155,8 +155,13 @@ getAverageAssetRating:
   controller: App\Controller\RatingController::getAverageAssetRating
   methods: GET
 
+getUnratedLoans:
+  path: /unratedLoans/{iUserId}
+  controller: App\Controller\RatingController::getUnratedLoans
+  methods: GET
+
 rateAsset:
-  path: /assets/{assetId}/rateAsset/{userId}/{newRating}
+  path: /assets/{loanId}/rateAsset/{userId}/{newRating}
   controller: App\Controller\RatingController::rateAsset
   methods: POST
 

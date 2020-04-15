@@ -199,7 +199,6 @@ class UserController extends AbstractController
         return new JsonResponse($arrayCollection);
     }
 
-
     public function updatePassword(Request $request)
     {
         $this->logger->info($request);
@@ -252,7 +251,7 @@ class UserController extends AbstractController
         $iUserId           = $request->request->get('userId');
 
         // Slette bilder som finnes fra før
-        $mask = '../../FrontEnd/profileImages/'.$iUserId.'_*.*';
+        $mask = '../../FrontEnd/public/profileImages/'.$iUserId.'_*.*';
         array_map('unlink', glob($mask));
 
         $aReturn['code'] = 400;
@@ -267,7 +266,7 @@ class UserController extends AbstractController
         $aTemp = explode(".", $ImageOriginalName);
         $sNewfilename = $iUserId.'_'.$sImageNameRandom.'.'.end($aTemp);
 
-        $sTargetDir = "../../FrontEnd/profileImages/";
+        $sTargetDir = "../../FrontEnd/public/profileImages/";
 
         $sTargetFile = $sTargetDir . $sNewfilename;
         $this->logger->info($sTargetFile);

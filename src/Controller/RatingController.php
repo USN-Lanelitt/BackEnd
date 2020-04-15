@@ -18,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
@@ -30,12 +31,11 @@ header("Access-Control-Allow-Origin: *");
 class RatingController extends AbstractController{
 
 
-    public function rateAsset($userId, $assetId, $newRating){
+    public function rateAsset($userId, $loanId, $newRating){
 
-        $loan=$this->getDoctrine()->getRepository(Loans::class)->findOneBy(array('assets'=>$assetId, 'users'=>$userId));
+        $loan=$this->getDoctrine()->getRepository(Loans::class)->find($loanId);
 
-        $loanId=$loan->getId();
-        $rating=$this->getDoctrine()->getRepository(RatingLoans::class)->findOneBy(array('loans'=>$loan));
+        $rating=$this->getDoctrine()->getRepository(RatingLoans::class)->findBy(array('loans'=>$loan));
 
         if(empty($loan)||!empty($rating)){
             return new JsonResponse("Ikke lov");
@@ -50,7 +50,7 @@ class RatingController extends AbstractController{
         $entityManager->flush();
 
         //Logging funksjon
-        $info=($userId." - ".$assetId." - ".$newRating);
+        $info=($userId." - ".$loanId." - ".$newRating);
         $this->forward('App\Controller\UtilController:logging',[
             'userId'=>$userId,
             'functionName'=>'rateAsset',
@@ -81,6 +81,34 @@ class RatingController extends AbstractController{
         ]);
 
         return new JsonResponse($ratings);
+    }
+    public function getUnratedLoans($iUserId){
+        $conn=$this->getDoctrine()->getConnection();
+
+        $sql="SELECT loans.id from assets, loans 
+            where loans.assets_id=assets.id 
+            and loans.users_id=$iUserId 
+            and loans.date_end >= CURRENT_DATE()-14
+            and loans.id not in
+            (select loans_id from rating_loans);";
+        $stmt=$conn->prepare($sql);
+        $stmt->execute();
+
+        $loanId=$stmt->fetchAll();
+
+        $iIds = array_column($loanId, 'id');
+
+        $loans = $this->getDoctrine()->getRepository(Loans::class)->findBy(array('id' => $iIds));
+        //returner chat sortert på tidspunkt sendt
+
+        return $this->json($loans, Response::HTTP_OK, [], [
+            ObjectNormalizer::SKIP_NULL_VALUES => true,
+            ObjectNormalizer::GROUPS => ['groups' => 'loanRequest'],
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            }
+        ]);
+
     }
 
     public function getAsssetRating($assetId){
