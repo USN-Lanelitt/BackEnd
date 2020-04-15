@@ -164,6 +164,11 @@ getMyAssetsRating:
   controller: App\Controller\RatingController::getMyAssetsRating
   methods: GET
 
+getMyRating:
+  path: /myRating/{iUserId}
+  controller: App\Controller\RatingController::getMyRating
+  methods: GET
+
 rateAsset:
   path: /assets/{loanId}/rateAsset/{userId}/{newRating}
   controller: App\Controller\RatingController::rateAsset
