@@ -113,7 +113,7 @@ class RatingController extends AbstractController{
         //Logging funksjon
         $info=($iUserId);
         $this->forward('App\Controller\UtilController:logging',[
-            'userId'=>-1,
+            'userId'=>$iUserId,
             'functionName'=>'getUnratedLoans',
             'controllerName'=>'RatingController',
             'info'=>$info,
@@ -144,12 +144,12 @@ class RatingController extends AbstractController{
 
         $iIds = array_column($iIds, 'id');
 
-        $ratings = $this->getDoctrine()->getRepository(RatingLoans::class)->findBy(array('loans' => $iIds));
+        $ratings = $this->getDoctrine()->getRepository(RatingLoans::class)->findBy(array('id' => $iIds));
 
         //Logging funksjon
         $info=($iUserId);
         $this->forward('App\Controller\UtilController:logging',[
-            'userId'=>-1,
+            'userId'=>$iUserId,
             'functionName'=>'getMyAssetsRating',
             'controllerName'=>'RatingController',
             'info'=>$info,
@@ -163,13 +163,15 @@ class RatingController extends AbstractController{
             }
         ]);
     }
+
     public function getMyRating($iUserId){
+
         $conn=$this->getDoctrine()->getConnection();
-        $sql="SELECT id from rating_loans
-            where loans_id in 
-            (select loans.id from loans, assets
-            where loans.assets_id=assets.id
-            and assets.users_id=$iUserId)";
+        $sql="select id from rating_loans
+                where loans_id in
+                (select id from loans
+                where users_id=52)";
+
         $stmt=$conn->prepare($sql);
         $stmt->execute();
 
@@ -177,13 +179,14 @@ class RatingController extends AbstractController{
 
         $iIds = array_column($iIds, 'id');
 
-        $ratings = $this->getDoctrine()->getRepository(RatingLoans::class)->findBy(array('loans' => $iIds));
+        $ratings = $this->getDoctrine()->getRepository(RatingLoans::class)->findBy(array('id' => $iIds));
+
 
         //Logging funksjon
         $info=($iUserId);
         $this->forward('App\Controller\UtilController:logging',[
-            'userId'=>-1,
-            'functionName'=>'getMyAssetsRating',
+            'userId'=>$iUserId,
+            'functionName'=>'getMyRating',
             'controllerName'=>'RatingController',
             'info'=>$info,
             'change'=>0
