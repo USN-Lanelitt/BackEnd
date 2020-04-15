@@ -160,6 +160,11 @@ getUnratedLoans:
   controller: App\Controller\RatingController::getUnratedLoans
   methods: GET
 
+getMyAssetsRating:
+  path: /MyAssetsRating/{iUserId}
+  controller: App\Controller\RatingController::getMyAssetsRating
+  methods: GET
+
 rateAsset:
   path: /assets/{loanId}/rateAsset/{userId}/{newRating}
   controller: App\Controller\RatingController::rateAsset

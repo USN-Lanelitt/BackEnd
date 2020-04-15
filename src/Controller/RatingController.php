@@ -31,7 +31,13 @@ header("Access-Control-Allow-Origin: *");
 class RatingController extends AbstractController{
 
 
-    public function rateAsset($userId, $loanId, $newRating){
+    public function rateAsset(Request $request, $userId, $loanId, $newRating){
+
+        $content = json_decode($request->getContent());
+        $comment="No comment";
+        if(!empty($content)){
+            $comment= $content->comment;
+        }
 
         $loan=$this->getDoctrine()->getRepository(Loans::class)->find($loanId);
 
@@ -44,13 +50,14 @@ class RatingController extends AbstractController{
         $rating=new RatingLoans();
         $rating->setLoans(($loan));
         $rating->setRatingAsset($newRating);
+        $rating->setCommentFromBorrower($comment);
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($rating);
         $entityManager->flush();
 
         //Logging funksjon
-        $info=($userId." - ".$loanId." - ".$newRating);
+        $info=($userId." - ".$loanId." - ".$newRating." - $comment");
         $this->forward('App\Controller\UtilController:logging',[
             'userId'=>$userId,
             'functionName'=>'rateAsset',
@@ -71,10 +78,10 @@ class RatingController extends AbstractController{
         $ratings=doubleval($ratings['rating']);
 
         //Logging funksjon
-        $info=("null");
+        $info=($assetId);
         $this->forward('App\Controller\UtilController:logging',[
             'userId'=>-1,
-            'functionName'=>'getAssetRating',
+            'functionName'=>'getAverageAssetRating',
             'controllerName'=>'RatingController',
             'info'=>$info,
             'change'=>0
@@ -99,7 +106,16 @@ class RatingController extends AbstractController{
         $iIds = array_column($loanId, 'id');
 
         $loans = $this->getDoctrine()->getRepository(Loans::class)->findBy(array('id' => $iIds));
-        //returner chat sortert på tidspunkt sendt
+
+        //Logging funksjon
+        $info=($iUserId);
+        $this->forward('App\Controller\UtilController:logging',[
+            'userId'=>-1,
+            'functionName'=>'getUnratedLoans',
+            'controllerName'=>'RatingController',
+            'info'=>$info,
+            'change'=>0
+        ]);
 
         return $this->json($loans, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -111,25 +127,38 @@ class RatingController extends AbstractController{
 
     }
 
-    public function getAsssetRating($assetId){
+    public function getMyAssetsRating($iUserId){
         $conn=$this->getDoctrine()->getConnection();
-        $sql="SELECT id FROM rating_loans WHERE loans_id in (SELECT id FROM loans WHERE assets_id=$assetId)";
+        $sql="SELECT id from rating_loans
+            where loans_id in 
+            (select loans.id from loans, assets
+            where loans.assets_id=assets.id
+            and assets.users_id=$iUserId)";
         $stmt=$conn->prepare($sql);
         $stmt->execute();
 
-        $ratings=$stmt->fetch();
+        $iIds=$stmt->fetchAll();
+
+        $iIds = array_column($iIds, 'id');
+
+        $ratings = $this->getDoctrine()->getRepository(RatingLoans::class)->findBy(array('loans' => $iIds));
 
         //Logging funksjon
-        $info=("null");
+        $info=($iUserId);
         $this->forward('App\Controller\UtilController:logging',[
             'userId'=>-1,
-            'functionName'=>'getAssetRating',
+            'functionName'=>'getMyAssetsRating',
             'controllerName'=>'RatingController',
             'info'=>$info,
             'change'=>0
         ]);
-
-        return new JsonResponse($ratings);
+        return $this->json($ratings, Response::HTTP_OK, [], [
+            ObjectNormalizer::SKIP_NULL_VALUES => true,
+            ObjectNormalizer::GROUPS => ['groups' => 'loaned'],
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            }
+        ]);
 
     }
 

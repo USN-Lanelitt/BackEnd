@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,23 +14,26 @@ class RatingLoans
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"loaned"})
      */
     private $id;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Loans", cascade={"persist", "remove"})
+     * @Groups({"loaned"})
      */
     private $loans;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $commentLoaner;
+    private $commentFromLoaner;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"loaned"})
      */
-    private $commentBorrower;
+    private $commentFromBorrower;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -43,6 +47,7 @@ class RatingLoans
 
     /**
      * @ORM\Column(type="decimal", nullable=true)
+     * @Groups({"loaned"})
      */
     private $ratingAsset;
 
@@ -63,26 +68,26 @@ class RatingLoans
         return $this;
     }
 
-    public function getCommentLoaner(): ?string
+    public function getCommentFromLoaner(): ?string
     {
-        return $this->commentLoaner;
+        return $this->commentFromLoaner;
     }
 
-    public function setCommentLoaner(?string $commentLoaner): self
+    public function setCommentFromLoaner(?string $commentFromLoaner): self
     {
-        $this->commentLoaner = $commentLoaner;
+        $this->commentFromLoaner = $commentFromLoaner;
 
         return $this;
     }
 
-    public function getCommentBorrower(): ?string
+    public function getCommentFromBorrower(): ?string
     {
-        return $this->commentBorrower;
+        return $this->commentFromBorrower;
     }
 
-    public function setCommentBorrower(?string $commentBorrower): self
+    public function setCommentFromBorrower(?string $commentFromBorrower): self
     {
-        $this->commentBorrower = $commentBorrower;
+        $this->commentFromBorrower = $commentFromBorrower;
 
         return $this;
     }

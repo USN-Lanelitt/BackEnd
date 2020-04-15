@@ -22,7 +22,7 @@ class Loans
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="loans")
-     * @Groups({"loanRequest"})
+     * @Groups({"loanRequest", "loaned"})
      */
     private $users;
 
