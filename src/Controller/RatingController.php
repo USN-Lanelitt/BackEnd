@@ -170,7 +170,7 @@ class RatingController extends AbstractController{
         $sql="select id from rating_loans
                 where loans_id in
                 (select id from loans
-                where users_id=52)";
+                where users_id=$iUserId)";
 
         $stmt=$conn->prepare($sql);
         $stmt->execute();
