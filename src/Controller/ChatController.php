@@ -26,7 +26,7 @@ class ChatController extends AbstractController{
     public function  getChats($userId){
 
         $conn=$this->getDoctrine()->getConnection();
-        $sql="SELECT id FROM users WHERE id IN (SELECT DISTINCT(user2_id) FROM chat where user1_id=$userId)";
+        $sql="SELECT DISTINCT(id) FROM users WHERE id IN (SELECT DISTINCT(user2_id) FROM chat where user1_id=$userId) OR id IN (SELECT DISTINCT(user1_id) FROM chat where user2_id=$userId)";
         $stmt=$conn->prepare($sql);
         $stmt->execute();
 

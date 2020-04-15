@@ -52,7 +52,7 @@ class Assets
     private $assetType;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\AssetImages", mappedBy="assets")
+     * @ORM\OneToMany(targetEntity="App\Entity\AssetImages", mappedBy="assets", cascade={"remove"})
      * @Groups({"asset"})
      */
     private $assetImages;
@@ -67,6 +67,11 @@ class Assets
      * @Groups({"asset"})
      */
     private $public;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $published;
 
     public function __construct()
     {
@@ -209,6 +214,18 @@ class Assets
     public function setPublic(bool $public): self
     {
         $this->public = $public;
+
+        return $this;
+    }
+
+    public function getPublished(): ?bool
+    {
+        return $this->published;
+    }
+
+    public function setPublished(bool $published): self
+    {
+        $this->published = $published;
 
         return $this;
     }
