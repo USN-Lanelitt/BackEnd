@@ -42,7 +42,7 @@ class RatingLoans
     private $ratingOfBorrower;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="decimal", nullable=true)
      */
     private $ratingAsset;
 

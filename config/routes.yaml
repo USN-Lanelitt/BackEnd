@@ -2,6 +2,9 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
+
+#-------------------------------------------User--Finn Gundersen--------------------------------------------------
+
 register:
   path: /api/register
   controller: App\Controller\UserController::registerUser
@@ -31,12 +34,17 @@ updatePassword:
   controller: App\Controller\UserController::updatePassword
   methods: POST
 
+getUsers:
+  path: /users
+  controller: App\Controller\UserController::getUsers
+  methods: GET
+
 getUserAmount:
   path: /users/amount
   controller: App\Controller\UserController::getUserAmount
   methods: GET
 
-#---------------------------------------------------John-Berge Grimaas--------------------------------------------------
+#-------------------------------------------Assets--John-Berge Grimaas--------------------------------------------------
 getAssetSearch:
   path: /assets/search/{userId}/{search}
   controller: App\Controller\AssetController::getAssetSearch
@@ -112,6 +120,18 @@ getAssetAmount:
   controller: App\Controller\AssetController::getAssetAmount
   methods: GET
 
+getUsersAssets:
+  path: /assets/getUsersAssets/{userId1}/{userId2}
+  controller: App\Controller\AssetController::getUsersAssets
+  methods: GET
+  
+setPublished:
+  path: /setPublished/{userId}/{assetId}/{published}
+  controller: App\Controller\AssetController::setPublished
+  methods: POST
+
+#---------------------------------------------Chat--John-Berge Grimaas--------------------------------------------------
+
 getChat:
   path: /users/chat/{userId1}/{userId2}
   controller: App\Controller\ChatController::getChat
@@ -127,10 +147,8 @@ getChats:
   controller: App\Controller\ChatController::getChats
   methods: GET
 
-getUsersAssets:
-  path: /assets/getUsersAssets/{userId1}/{userId2}
-  controller: App\Controller\AssetController::getUsersAssets
-  methods: GET
+#-------------------------------------------Rating--John-Berge Grimaas--------------------------------------------------
+
 
 getAverageAssetRating:
   path: /assets/{assetId}/AverageRating
@@ -138,9 +156,11 @@ getAverageAssetRating:
   methods: GET
 
 rateAsset:
-  path: /assets/RatingController/rateAsset/{userId}/{assetId}/{newRating}
+  path: /assets/{assetId}/rateAsset/{userId}/{newRating}
   controller: App\Controller\RatingController::rateAsset
   methods: POST
+
+#------------------------------------------Logging--John-Berge Grimaas--------------------------------------------------
 
 logging:
   path: /logging/{userId}/{functionName}
@@ -167,17 +187,7 @@ setLevel:
   controller: App\Controller\UtilController::setLevel
   methods: POST
 
-setPublished:
-  path: /setPublished/{userId}/{assetId}/{published}
-  controller: App\Controller\AssetController::setPublished
-  methods: POST
-
 #---------------------------------------------UserConnections--Nicole Bendu---------------------------------------------
-
-getUsers:
-  path: /users
-  controller: App\Controller\UserController::getUsers
-  methods: GET
 
 getFriend:
   path: /user/{iUserId}/friend/{iFriendId}
@@ -214,8 +224,8 @@ getUserSearch:
   controller: App\Controller\UserConnectionsController::getUserSearch
   methods:    GET
 
-
 #---------------------------------------------------Loans--Nicole Bendu-------------------------------------------------
+
 sendLoanRequest:
   path: /user/{iUserId}/asset/{iAssetId}/request
   controller: App\Controller\LoanController::sendLoanRequest

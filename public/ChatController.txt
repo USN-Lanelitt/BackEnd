@@ -110,18 +110,3 @@
 52;getChat;ChatController;2020-04-13 16:15:36;GET;52 - 40
 52;getChat;ChatController;2020-04-13 16:15:54;GET;52 - 40
 52;getChats;ChatController;2020-04-13 16:16:39;GET;52
-52;writeMessage;ChatController;2020-04-15 00:47:00;POST/DELETE52 - 44 - Opprett chat
-52;writeMessage;ChatController;2020-04-15 00:47:33;POST/DELETE52 - 44 - hallo
-52;writeMessage;ChatController;2020-04-15 00:49:03;POST/DELETE52 - 44 - yo
-52;writeMessage;ChatController;2020-04-15 00:53:39;POST/DELETE52 - 54 - hallo
-52;writeMessage;ChatController;2020-04-15 01:08:38;POST/DELETE52 - 44 - fordi jeg er best
-52;writeMessage;ChatController;2020-04-15 01:09:10;POST/DELETE52 - 54 - Da kan vi prate her, så kan ikke nicole høre oss
-52;writeMessage;ChatController;2020-04-15 01:09:24;POST/DELETE52 - 44 - spam
-52;writeMessage;ChatController;2020-04-15 01:09:25;POST/DELETE52 - 44 - spam
-52;writeMessage;ChatController;2020-04-15 01:09:27;POST/DELETE52 - 44 - spam
-52;writeMessage;ChatController;2020-04-15 01:09:27;POST/DELETE52 - 44 - spam
-52;writeMessage;ChatController;2020-04-15 01:09:29;POST/DELETE52 - 44 - spam
-52;writeMessage;ChatController;2020-04-15 01:09:31;POST/DELETE52 - 44 - spam
-52;writeMessage;ChatController;2020-04-15 01:09:32;POST/DELETE52 - 44 - spam
-52;writeMessage;ChatController;2020-04-15 01:09:34;POST/DELETE52 - 44 - spam
-52;writeMessage;ChatController;2020-04-15 01:09:38;POST/DELETE52 - 44 - spam
