@@ -16,7 +16,7 @@ class Assets
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"loanRequest", "asset"})
+     * @Groups({"loanRequest", "asset", "loaned"})
      */
     private $id;
 
