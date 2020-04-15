@@ -16,7 +16,7 @@ class Loans
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"loanStatus", "loanRequest"})
+     * @Groups({"loanStatus", "loanRequest", "loaned"})
      */
     private $id;
 
@@ -28,7 +28,7 @@ class Loans
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Assets", inversedBy="loans")
-     * @Groups({"loanStatus", "loanRequest"})
+     * @Groups({"loanStatus", "loanRequest", "loaned"})
      */
     private $assets;
 
@@ -40,13 +40,13 @@ class Loans
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"loanStatus", "loanRequest"})
+     * @Groups({"loanStatus", "loanRequest", "loaned"})
      */
     private $dateStart;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"loanStatus", "loanRequest"})
+     * @Groups({"loanStatus", "loanRequest", "loaned"})
      */
 
     private $dateEnd;

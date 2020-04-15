@@ -23,13 +23,13 @@ class Assets
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="assets")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"asset"})
+     * @Groups({"asset", "loaned"})
      */
     private $users;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"loanRequest", "asset"})
+     * @Groups({"loanRequest", "asset", "loaned"})
      */
     private $assetName;
 
