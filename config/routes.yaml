@@ -132,9 +132,9 @@ getUsersAssets:
   controller: App\Controller\AssetController::getUsersAssets
   methods: GET
 
-getAvrageAssetRating:
-  path: /assets/RatingController/getAvrageAssetRating/{assetId}
-  controller: App\Controller\RatingController::getAvrageAssetRating
+getAverageAssetRating:
+  path: /assets/{assetId}/AverageRating
+  controller: App\Controller\RatingController::getAverageAssetRating
   methods: GET
 
 rateAsset:
