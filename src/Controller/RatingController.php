@@ -141,7 +141,7 @@ class RatingController extends AbstractController{
 
         $iIds = array_column($iIds, 'id');
 
-        $ratings = $this->getDoctrine()->getRepository(Loans::class)->findBy(array('id' => $iIds));
+        $ratings = $this->getDoctrine()->getRepository(RatingLoans::class)->findBy(array('loans' => $iIds));
 
         //Logging funksjon
         $info=($iUserId);

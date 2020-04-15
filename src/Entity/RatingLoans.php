@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,11 +14,13 @@ class RatingLoans
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"loaned"})
      */
     private $id;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Loans", cascade={"persist", "remove"})
+     * @Groups({"loaned"})
      */
     private $loans;
 
@@ -28,6 +31,7 @@ class RatingLoans
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"loaned"})
      */
     private $commentFromBorrower;
 
@@ -43,6 +47,7 @@ class RatingLoans
 
     /**
      * @ORM\Column(type="decimal", nullable=true)
+     * @Groups({"loaned"})
      */
     private $ratingAsset;
 
