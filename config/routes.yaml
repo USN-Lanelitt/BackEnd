@@ -73,7 +73,7 @@ addAsset:
 editAsset:
   path: /assets/editAsset/{userId}/{assetId}
   controller: App\Controller\AssetController::editAsset
-  methods: POST
+  methods: PUT
 
 getMainImage:
   path: /assetsImage/getMainImage/{assetId}
@@ -108,7 +108,7 @@ getAllAssetTypes:
 removeAsset:
   path: /assets/removeAsset/{assetId}
   controller: App\Controller\AssetController::removeAsset
-  methods: POST
+  methods: DELETE
 
 getIndividAssetAmount:
   path: /assets/IndividAssetAmount/{userId}
