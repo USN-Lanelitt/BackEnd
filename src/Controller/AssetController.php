@@ -15,9 +15,16 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Psr\Log\LoggerInterface;
 
-$request = Request::createFromGlobals();
 
-header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: * ");
+header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+header("Allow: GET, POST, OPTIONS, PUT, DELETE");
+$method = $_SERVER['REQUEST_METHOD'];
+if ($method == "OPTIONS") {
+    die();
+}
+
 
 class AssetController extends AbstractController{
 
@@ -214,16 +221,6 @@ class AssetController extends AbstractController{
         $ut="\n\n**************************************************************************\n\n";
         $this->logger->info($ut);
 
-
-        /*
-        $content = json_decode($request->getContent());
-        $iUserId = $content->userId;
-        $iTypeId = $content->typeId;
-        $sAssetName = $content->assetName;
-        $tDescription = $content->description;
-        $iCondition = $content->condition;
-        $bPublic=$content->public;
-        /*/
         $this->logger->info("*****LALALALAL*******");
 
         $iUserId = $request->request->get('userId');

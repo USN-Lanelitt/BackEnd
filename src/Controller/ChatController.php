@@ -19,7 +19,15 @@ use Psr\Log\LoggerInterface;
 
 $request = Request::createFromGlobals();
 
-header("Access-Control-Allow-Origin: *");
+header('Access-Control-Allow-Origin: *');
+header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+header("Allow: GET, POST, OPTIONS, PUT, DELETE");
+$method = $_SERVER['REQUEST_METHOD'];
+if ($method == "OPTIONS") {
+    die();
+}
+
 
 class ChatController extends AbstractController{
 
@@ -113,6 +121,7 @@ class ChatController extends AbstractController{
     }
 
     public function writeMessage(Request $request, $userId1, $userId2){
+
         $content = json_decode($request->getContent());
         $message = $content->message;
 
