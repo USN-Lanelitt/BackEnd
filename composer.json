@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "monolog/monolog": "^2.0",
+        "nelmio/cors-bundle": "^2.0",
         "symfony/apache-pack": "^1.0",
         "symfony/console": "5.0.*",
         "symfony/dotenv": "5.0.*",
