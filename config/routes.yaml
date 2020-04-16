@@ -149,7 +149,6 @@ getChats:
 
 #-------------------------------------------Rating--John-Berge Grimaas--------------------------------------------------
 
-
 getAverageAssetRating:
   path: /assets/{assetId}/AverageRating
   controller: App\Controller\RatingController::getAverageAssetRating
