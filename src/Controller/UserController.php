@@ -12,7 +12,7 @@ use Symfony\Component\Sw;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Psr\Log\LoggerInterface;
-use \App\Controller\SendEmailController;
+use \App\Controller\SendMailController;
 
 /*header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
@@ -121,7 +121,7 @@ class UserController extends AbstractController
             $sBody .= "<h4>Velkommen til lånelitt.no</h4><br /><br />";
             $sBody .= "Mvh Lånelitt teamet";
             $sEmailToName = UtilController::makeName($sFirstname,$sMiddlename,$sLastname);
-            SendEmailController::sendEmail($sSubject, $sBody, $sEmail, $sEmailToName);
+            SendMailController::sendEmail($sSubject, $sBody, $sEmail, $sEmailToName);
         }
 
         return new JsonResponse($aReturn);
