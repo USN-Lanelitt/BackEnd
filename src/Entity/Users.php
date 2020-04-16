@@ -35,7 +35,7 @@ class Users
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"loanStatus", "friendInfo", "loanRequest", "friendRequestInfo", "reportInfo", "userInfo", "chat", "loaned"})
+     * @Groups({"loanStatus", "friendInfo", "loanRequest", "friendRequestInfo", "reportInfo", "userInfo", "chat", "loaned", "asset"})
      */
     private $firstName;
 
@@ -47,7 +47,7 @@ class Users
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"loanStatus", "friendInfo", "loanRequest", "friendRequestInfo", "reportInfo", "userInfo", "chat", "loaned"})
+     * @Groups({"loanStatus", "friendInfo", "loanRequest", "friendRequestInfo", "reportInfo", "userInfo", "chat", "loaned", "asset"})
      */
     private $lastName;
 
@@ -83,7 +83,7 @@ class Users
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"loanStatus, friendInfo", "loanRequest", "userInfo"})
+     * @Groups({"loanStatus, friendInfo", "loanRequest", "userInfo", "asset"})
      */
     private $nickname;
 
@@ -95,7 +95,7 @@ class Users
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"loanStatus, friendInfo", "userInfo"})
+     * @Groups({"loanStatus, friendInfo", "userInfo", "asset"})
      */
     private $profileImage;
 
