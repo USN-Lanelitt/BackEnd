@@ -222,7 +222,6 @@ class UserController extends AbstractController
         $this->logger->info($sOldPassword);
         $this->logger->info($sNewPassword);
 
-
         $oRepository = $this->getDoctrine()->getRepository(Users::class);
         $oUser = $oRepository->findBy([ 'id' => $iUserId ]);
 
