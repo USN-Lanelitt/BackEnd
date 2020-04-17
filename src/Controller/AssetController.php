@@ -41,7 +41,7 @@ class AssetController extends AbstractController{
         $sql="SELECT id FROM assets 
               WHERE users_id LIKE $userId2
               AND published 
-              AND (users_id IN (SELECT user2_id FROM user_connections WHERE user1_id LIKE $userId1) OR (users_id LIKE $userId1 OR public LIKE TRUE))";
+              AND ((users_id IN (SELECT user2_id FROM user_connections WHERE user1_id LIKE $userId1 AND request_status_id=1)  AND public LIKE TRUE) OR (users_id LIKE $userId1 ))";
         $stmt=$conn->prepare($sql);
         $stmt->execute();
 
