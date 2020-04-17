@@ -154,5 +154,6 @@ class UtilController extends AbstractController
                 file_put_contents("$loggName.txt", $data, FILE_APPEND);
             }
         }
+        return new JsonResponse("test");
     }
 }
