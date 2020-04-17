@@ -46,7 +46,7 @@ class RatingLoans
     private $ratingOfBorrower;
 
     /**
-     * @ORM\Column(type="decimal", nullable=true)
+     * @ORM\Column(type="decimal", precision=2, scale=1, nullable=true)
      * @Groups({"loaned"})
      */
     private $ratingAsset;
@@ -116,12 +116,12 @@ class RatingLoans
         return $this;
     }
 
-    public function getRatingAsset(): ?int
+    public function getRatingAsset(): ?String
     {
         return $this->ratingAsset;
     }
 
-    public function setRatingAsset(?int $ratingAsset): self
+    public function setRatingAsset(?String $ratingAsset): self
     {
         $this->ratingAsset = $ratingAsset;
 
