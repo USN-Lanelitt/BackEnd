@@ -32,6 +32,7 @@ class UserConnectionsController extends AbstractController
         $this->logger=$logger;
     }
 
+
     public function getFriend($iUserId, $iFriendId){
         //Sjekker om requesten har innehold
         //$content=json_decode($request->getContent());
@@ -59,7 +60,7 @@ class UserConnectionsController extends AbstractController
         //Skriver ut alle objektene
         return $this->json($oFriend, Response::HTTP_OK, [], [
             ObjectNormalizer::SKIP_NULL_VALUES => true,
-            //ObjectNormalizer::ATTRIBUTES => ['firstName', 'lastName'],
+            //ObjectNormalizer::ATTRIBUTES => ['id', 'firstName', 'middleName', 'lastName'],
             ObjectNormalizer::GROUPS => ['groups' => 'friendInfo'],
             ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
                 return $object->getId();
@@ -321,4 +322,14 @@ class UserConnectionsController extends AbstractController
         ]);
 
     }
+
+    public function checkConnection($iUserId, $iUserId2){
+        //Sjekker om vennskapet finnes
+        $oUserConn = $this->getDoctrine()->getRepository(UserConnections::class)->findBy(array('user1'=> $iUserId, 'user2'=> $iUserId2));
+        if(empty($oUserConn)){
+            return new JsonResponse(0);
+        }
+        return new  JsonResponse(1);
+    }
+
 }
