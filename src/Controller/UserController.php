@@ -347,6 +347,36 @@ class UserController extends AbstractController
         ]);
     }
 
+    public function getOneUser($iUserId2)
+    {
+        if(empty($iUserId2)){
+            return new JsonResponse('mangler id');
+        }
+
+        //Henter en bruker
+        $oUser = $this->getDoctrine()->getRepository(Users::class)->find($iUserId2);
+
+        //Logging funksjon
+        $info = ($iUserId2);
+        $this->forward('App\Controller\UtilController:logging', [
+            'userId' => -1,
+            'functionName' => 'getUser',
+            'controllerName' => 'UserConnectionsController',
+            'info' => $info,
+            'change' => 0
+        ]);
+
+        //Skriver ut alle objektene
+        return $this->json($oUser, Response::HTTP_OK, [], [
+            ObjectNormalizer::SKIP_NULL_VALUES => true,
+            //ObjectNormalizer::ATTRIBUTES => ['id', 'firstName', 'middleName', 'lastName'],
+            ObjectNormalizer::GROUPS => ['groups' => 'userInfo'],
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            }
+        ]);
+    }
+
     public function getUserAmount()
     {
         //Henter antall brukere

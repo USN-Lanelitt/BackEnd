@@ -39,6 +39,11 @@ getUsers:
   controller: App\Controller\UserController::getUsers
   methods: GET
 
+getUser:
+  path: /user/{iUserId2}
+  controller: App\Controller\UserController::getOneUser
+  methods: GET
+
 getUserAmount:
   path: /users/amount
   controller: App\Controller\UserController::getUserAmount
@@ -238,6 +243,10 @@ getUserSearch:
   controller: App\Controller\UserConnectionsController::getUserSearch
   methods:    GET
 
+checkConnection:
+  path: /user/{iUserId}/{iUserId2}
+  controller: App\Controller\UserConnectionsController::checkConnection
+  methods:    GET
 #---------------------------------------------------Loans--Nicole Bendu-------------------------------------------------
 
 sendLoanRequest:

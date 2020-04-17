@@ -63,6 +63,7 @@ class UserConnectionsRepository extends ServiceEntityRepository
             ;
     }
 
+
     public function findFriends($user)
     {
         //1 = vennskap
