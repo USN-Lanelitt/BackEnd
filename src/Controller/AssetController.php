@@ -118,7 +118,9 @@ class AssetController extends AbstractController{
 
         $conn=$this->getDoctrine()->getConnection();
         $sql="SELECT id FROM assets 
-              WHERE UPPER(asset_name) LIKE UPPER('%$search%') /**/ 
+              WHERE 
+              (UPPER(asset_name) LIKE UPPER('%$search%') OR asset_type_id IN(SELECT id FROM asset_types WHERE asset_type LIKE UPPER('%$search%')))
+              /**/ 
               AND published 
               AND (users_id IN (SELECT user2_id FROM user_connections WHERE user1_id LIKE $userId AND request_status_id=1) OR (users_id LIKE $userId OR public LIKE TRUE))";
         $stmt=$conn->prepare($sql);
