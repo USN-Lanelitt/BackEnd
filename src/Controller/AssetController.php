@@ -41,7 +41,7 @@ class AssetController extends AbstractController{
         $sql="SELECT id FROM assets 
               WHERE users_id LIKE $userId2
               AND published 
-              AND ((users_id IN (SELECT user2_id FROM user_connections WHERE user1_id LIKE $userId1 AND request_status_id=1)  AND public LIKE TRUE) OR (users_id LIKE $userId1 ))";
+              AND ((users_id IN (SELECT user2_id FROM user_connections WHERE user1_id LIKE $userId1 AND request_status_id=1)  OR public LIKE TRUE) OR (users_id LIKE $userId1 ))";
         $stmt=$conn->prepare($sql);
         $stmt->execute();
 
@@ -81,7 +81,7 @@ class AssetController extends AbstractController{
         $sql="SELECT id FROM assets 
               WHERE asset_type_id LIKE $typeId /**/   
               AND published 
-              AND (users_id IN (SELECT user2_id FROM user_connections WHERE user1_id LIKE $userId) OR (users_id LIKE $userId OR public LIKE TRUE))";
+              AND (users_id IN (SELECT user2_id FROM user_connections WHERE user1_id LIKE $userId AND  request_status_id=1) OR (users_id LIKE $userId OR public LIKE TRUE))";
         $stmt=$conn->prepare($sql);
         $stmt->execute();
 
@@ -120,7 +120,7 @@ class AssetController extends AbstractController{
         $sql="SELECT id FROM assets 
               WHERE UPPER(asset_name) LIKE UPPER('%$search%') /**/ 
               AND published 
-              AND (users_id IN (SELECT user2_id FROM user_connections WHERE user1_id LIKE $userId) OR (users_id LIKE $userId OR public LIKE TRUE))";
+              AND (users_id IN (SELECT user2_id FROM user_connections WHERE user1_id LIKE $userId AND request_status_id=1) OR (users_id LIKE $userId OR public LIKE TRUE))";
         $stmt=$conn->prepare($sql);
         $stmt->execute();
 
