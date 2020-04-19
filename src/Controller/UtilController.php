@@ -82,9 +82,7 @@ class UtilController extends AbstractController
         return new JsonResponse($level);
     }
 
-    public function getLogg($userId){
-
-        $oUser = $this->getDoctrine()->getRepository(Users::class)->find($userId);
+    public function getLogg(){
 
         $loggName="log";
         $myfile = fopen("$loggName.txt", "r") or die("Unable to open file!");
