@@ -40,7 +40,7 @@ getUsers:
   methods: GET
 
 getUser:
-  path: /user/{iUserId2}
+  path: /getUser/{iUserId2}
   controller: App\Controller\UserController::getOneUser
   methods: GET
 
