@@ -40,7 +40,7 @@ getUsers:
   methods: GET
 
 getUser:
-  path: /user/{iUserId2}
+  path: /getUser/{iUserId2}
   controller: App\Controller\UserController::getOneUser
   methods: GET
 
@@ -187,7 +187,7 @@ logging:
   methods: POST
 
 getLogg:
-  path: /getLogg/
+  path: /getLogg
   controller: App\Controller\UtilController::getLogg
   methods: GET
 
@@ -244,7 +244,7 @@ getUserSearch:
   methods:    GET
 
 checkConnection:
-  path: /user/{iUserId}/{iUserId2}
+  path: /user/{iUserId}/check/{iUserId2}
   controller: App\Controller\UserConnectionsController::checkConnection
   methods:    GET
 #---------------------------------------------------Loans--Nicole Bendu-------------------------------------------------

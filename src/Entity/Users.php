@@ -53,19 +53,19 @@ class Users
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"userInfo"})
+     * @Groups({"userInfo", "asset"})
      */
     private $address;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"userInfo"})
+     * @Groups({"userInfo", "asset"})
      */
     private $address2;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Zipcode", inversedBy="users")
-     * @Groups({"userInfo"})
+     * @Groups({"userInfo", "asset"})
      */
     private $zipCode;
 
