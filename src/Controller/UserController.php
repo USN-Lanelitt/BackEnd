@@ -401,20 +401,23 @@ class UserController extends AbstractController
         $this->logger->info($request.''.$iUserId);
 
         // Hente ut data fra overføring fra React
-        $content = json_decode($request->getContent());
-        $sNickname  = $content->nickname;
-        $sFirstname  = $content->firstname;
-        $sMiddlename = $content->middlename;
-        $sLastname = $content->lastname;
-        $sEmail      = $content->email;
-        $sUsertype = $content->usertype;
-        $iActive= $content->active;
+        $content           = json_decode($request->getContent());
+        $sNickname         = $content->nickname;
+        $sFirstname        = $content->firstname;
+        $sMiddlename       = $content->middlename;
+        $sLastname         = $content->lastname;
+        //$sEmail            = $content->email;
+        $sPhone            = $content->phone;
+        $sAddress          = $content->address;
+        $sAddress2         = $content->address2;
+        $sZipCode          = $content->zipcode;
+        $sCity             = $content->city;
+        $sUsertype         = $content->usertype;
+        $iActive           = $content->active;
         $iNewsSubscription = $content->newsSubscription;
 
-        //$sAddress  = $content->address;
-        //$sAddress2   = $content->address2;
-        //$sZipCode  = $content->zipCode;
-        //$sPhone = $content->phone;
+        $this->logger->info(__FILE__.' '.__LINE__);
+
         //$sPassword   = password_hash($content->password, PASSWORD_DEFAULT);
         //$iUserterms = $content->userterms;
 
@@ -425,12 +428,13 @@ class UserController extends AbstractController
         $oUser->setFirstName($sFirstname);
         $oUser->setMiddleName($sMiddlename);
         $oUser->setLastName($sLastname);
-        $oUser->setUserType($sUsertype);
+        if (strlen(trim($sUsertype)) > 0) // komer som blank når brukeren endrer sine egne data
+            $oUser->setUserType($sUsertype);
 
-        //$oUser->setAddress($sAddress);
-        //$oUser->setAddress2($sAddress2);
-        //$oUser->setZipCode($sZipCode);
-        //$oUser->setPhone($sPhone);
+        $oUser->setAddress($sAddress);
+        $oUser->setAddress2($sAddress2);
+        $oUser->setZipCode($sZipCode);
+        $oUser->setPhone($sPhone);
         //$oUser->setBirthDate(\DateTime::createFromFormat('d.m.Y', $sBirthdate));
 
         //Setter in verdi for active
@@ -464,13 +468,13 @@ class UserController extends AbstractController
         }*/
 
         //lag en sjekk på epost, har den endret seg, finnes den fra før
-        if($sEmail != $oUser->getEmail() ) {
+        /*if($sEmail != $oUser->getEmail() ) {
             $oEmailExist = $this->getDoctrine()->getRepository(Users::class)->findEmail($sEmail);
 
             if (empty($oEmailExist)) {
                 $oUser->setEmail($sEmail);
             }
-        }
+        }*/
 
         /*if($sPassword != $oUser->getPassword()){
             $oUser->setPassword($sPassword);
@@ -482,7 +486,7 @@ class UserController extends AbstractController
 
         //Logging funksjon
         $loggUserId=$oUser->getId();
-        $info=($loggUserId." - ".$sFirstname." - ".$sMiddlename." - ".$sLastname." - ".$sEmail." - ".$sUsertype." - ".$iActive." - ".$iNewsSubscription);
+        $info=($loggUserId." - ".$sFirstname." - ".$sMiddlename." - ".$sLastname." - ".$sUsertype." - ".$iActive." - ".$iNewsSubscription." - ".$sPhone." - ".$sAddress." - ".$sAddress2." - ".$sZipCode." - ".$sCity);
         $this->forward('App\Controller\UtilController:logging',[
             'userId'=>$loggUserId,
             'functionName'=>'editUser',
