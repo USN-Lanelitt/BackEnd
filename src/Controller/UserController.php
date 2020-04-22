@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Zipcode;
 use phpDocumentor\Reflection\File;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Individuals;
@@ -136,15 +137,23 @@ class UserController extends AbstractController
 
         $oRepository = $this->getDoctrine()->getRepository(Users::class);
 
+        // sjekker om logge inn med e-post eller mobiltelefon
         if(strpos($sUsername, "@") !== false) // logger inn med e-post
             $oUser = $oRepository->findBy([ 'email' => $sUsername ]);
-        else // logger inn med telefonnummer
+        else // logger inn med telefonnummer -- Er ikke i bruk, men ligger hvis skal brukes senere
             $oUser = $oRepository->findBy([ 'phone' => $sUsername ]);
 
         $arrayCollection = array();
         $sHashPassword = "";
-        $loggId="";//til logging
+        $loggId=""; //til logging
+
         foreach($oUser as $oU) {
+            // hente ut zipcode object og gjøre om til 4 siffret string
+            $oZipcode = $oU->getZipCode();
+            $iZipcode = $oZipcode->getId();
+            $sZipcode = sprintf('%04d', $iZipcode);
+            $sCity    = $oZipcode->getCity();
+
             $arrayCollection[] = array(
                 'id' => $oU->getId(),
                 'firstname' => $oU->getFirstname(),
@@ -153,26 +162,35 @@ class UserController extends AbstractController
                 'email' => $oU->getEmail(),
                 'phone' => $oU->getPhone(),
                 'profileImage' => $oU->getProfileImage(),
-                'nicname' => $oU->getNickname(),
+                'nickname' => $oU->getNickname(),
                 'address' => $oU->getAddress(),
                 'address2' => $oU->getAddress2(),
-                'zipcode' => $oU->getZipCode()
-                //'city' => $oU->,
-                // ... Same for each property you want
+                'zipcode' => $sZipcode,
+                'city' => $sCity,
+                'newsletter' => $oU->getNewsSubscription(),
+                'active' => $oU->getActive()
             );
             $sHashPassword =  $oU->getPassword();
             $loggId.=$oU->getId();//til logging
         }
 
+        // sjekke om personen er active bruker
+        if (! $arrayCollection[0]['active'])
+        {
+            $arrayCollection['code'] = 400;
+            return new JsonResponse($arrayCollection);
+        }
 
         // sjekke passord.
         if ( ! password_verify($sPassword, $sHashPassword))
         {
             $this->logger->info('Feil ved innlogging');
+            $arrayCollection['code'] = 400;
         }
         else
         {
             // Generere en 20 char string som lagres på bruker. Brukes for å sjekke om det er riktig logginn ved hver api spørring.
+            // BRUKES IKKE; MEN KAN BRUKES HVIS SKAL LEGGE INN VALIDERING PÅ INNLOGGING DIREKTE FRA SYMFONY
             //$sAuthCode = UtilController::RandomString();
             //$arrayCollection[0]['authCode'] = $sAuthCode;
 
@@ -188,9 +206,6 @@ class UserController extends AbstractController
             //$this->logger->info($sAuthCode);
             $arrayCollection['code'] = 200;
         }
-
-
-        $this->logger->info(json_encode($arrayCollection));
 
         //Logging funksjon
         $timeStamp=new \DateTime();
@@ -406,23 +421,19 @@ class UserController extends AbstractController
         $sFirstname        = $content->firstname;
         $sMiddlename       = $content->middlename;
         $sLastname         = $content->lastname;
-        //$sEmail            = $content->email;
         $sPhone            = $content->phone;
         $sAddress          = $content->address;
         $sAddress2         = $content->address2;
-        $sZipCode          = $content->zipcode;
-        $sCity             = $content->city;
+        $iZipCode          = (int)$content->zipcode;
         $sUsertype         = $content->usertype;
-        $iActive           = $content->active;
-        $iNewsSubscription = $content->newsSubscription;
-
-        $this->logger->info(__FILE__.' '.__LINE__);
-
-        //$sPassword   = password_hash($content->password, PASSWORD_DEFAULT);
-        //$iUserterms = $content->userterms;
+        $bActive           = boolval($content->active);
+        $bNewsSubscription = boolval($content->newsSubscription);
 
         // Sjekke om brukeren finnes i databasen
         $oUser = $this->getDoctrine()->getRepository(Users::class)->find($iUserId);
+        $oZipcode = $this->getDoctrine()->getRepository(Zipcode::class)->find($iZipCode);
+        // Hente ut by for å sende til front
+        $sCity = $oZipcode->getCity();
 
         $oUser->setNickname($sNickname);
         $oUser->setFirstName($sFirstname);
@@ -433,28 +444,25 @@ class UserController extends AbstractController
 
         $oUser->setAddress($sAddress);
         $oUser->setAddress2($sAddress2);
-        $oUser->setZipCode($sZipCode);
+        $oUser->setZipCode($oZipcode);
         $oUser->setPhone($sPhone);
-        //$oUser->setBirthDate(\DateTime::createFromFormat('d.m.Y', $sBirthdate));
 
-        //Setter in verdi for active
-        if($iActive == "true" ) {
-            $true=1;
-            $oUser->setActive($true);
-        }
-        else {
-            $false=0;
-            $oUser->setActive($false);
+        //Setter in verdi for active -- Kun gå inn når settes fra admin , ikke fra edit user selv. da kommer den blank
+        $this->logger->info(__FILE__.' '.__LINE__);
+        if ($bActive || $bActive === false) {
+            if ($bActive) {
+                $oUser->setActive($bActive);
+            } else {
+                $oUser->setActive($bActive);
+            }
         }
 
         //Setter in verdi for NewsSubscription
-        if($iNewsSubscription == "true" ) {
-            $true=1;
-            $oUser->setNewsSubscription($true);
+        if($bNewsSubscription) {
+            $oUser->setNewsSubscription($bNewsSubscription);
         }
         else {
-            $false=0;
-            $oUser->setNewsSubscription($false);
+            $oUser->setNewsSubscription($bNewsSubscription);
         }
 
         //Setter in verdi for Userterms
@@ -486,7 +494,7 @@ class UserController extends AbstractController
 
         //Logging funksjon
         $loggUserId=$oUser->getId();
-        $info=($loggUserId." - ".$sFirstname." - ".$sMiddlename." - ".$sLastname." - ".$sUsertype." - ".$iActive." - ".$iNewsSubscription." - ".$sPhone." - ".$sAddress." - ".$sAddress2." - ".$sZipCode." - ".$sCity);
+        $info=($loggUserId." - ".$sFirstname." - ".$sMiddlename." - ".$sLastname." - ".$sUsertype." - ".$bActive." - ".$bNewsSubscription." - ".$sPhone." - ".$sAddress." - ".$sAddress2." - ".$iZipCode);
         $this->forward('App\Controller\UtilController:logging',[
             'userId'=>$loggUserId,
             'functionName'=>'editUser',
@@ -495,7 +503,21 @@ class UserController extends AbstractController
             'change'=>1
         ]);
 
-        return new JsonResponse("endret");
+        $aReturn = array(
+            'city' => $sCity,
+            'code' => 200
+        );
+        return new JsonResponse($aReturn);
+    }
+
+    public function getZipcode($sZipcode)
+    {
+        //Returnere by ved å hente fra zipcode
+        $this->logger->info($sZipcode);
+        $iZipcode = (int)$sZipcode;
+        $oZipcode = $this->getDoctrine()->getRepository(Zipcode::class)->find($iZipcode);
+        $sCity = $oZipcode->getCity();
+        return new JsonResponse($sCity);
     }
 }
 
