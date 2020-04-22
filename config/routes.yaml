@@ -49,6 +49,11 @@ getUserAmount:
   controller: App\Controller\UserController::getUserAmount
   methods: GET
 
+getZipcode:
+  path: /users/getZipcode/{zipcode}
+  controller: App\Controller\UserController::getZipcode
+  methods: GET
+
 #-------------------------------------------Assets--John-Berge Grimaas--------------------------------------------------
 getAssetSearch:
   path: /assets/search/{userId}/{search}
