@@ -70,6 +70,7 @@ class Assets
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"asset"})
      */
     private $published;
 

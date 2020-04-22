@@ -40,13 +40,18 @@ getUsers:
   methods: GET
 
 getUser:
-  path: /user/{iUserId2}
+  path: /getUser/{iUserId2}
   controller: App\Controller\UserController::getOneUser
   methods: GET
 
 getUserAmount:
   path: /users/amount
   controller: App\Controller\UserController::getUserAmount
+  methods: GET
+
+getZipcode:
+  path: /users/getZipcode/{zipcode}
+  controller: App\Controller\UserController::getZipcode
   methods: GET
 
 #-------------------------------------------Assets--John-Berge Grimaas--------------------------------------------------
@@ -187,7 +192,7 @@ logging:
   methods: POST
 
 getLogg:
-  path: /logging/{userId}
+  path: /getLogg
   controller: App\Controller\UtilController::getLogg
   methods: GET
 
@@ -244,7 +249,7 @@ getUserSearch:
   methods:    GET
 
 checkConnection:
-  path: /user/{iUserId}/{iUserId2}
+  path: /user/{iUserId}/check/{iUserId2}
   controller: App\Controller\UserConnectionsController::checkConnection
   methods:    GET
 #---------------------------------------------------Loans--Nicole Bendu-------------------------------------------------
