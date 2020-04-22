@@ -97,6 +97,7 @@ class UserController extends AbstractController
             $oUser->setEmail($sEmail);
             $oUser->setPhone($sPhone);
             $oUser->setPassword($sPassword);
+            $oUser->setActive(true);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($oUser);
@@ -150,9 +151,13 @@ class UserController extends AbstractController
         foreach($oUser as $oU) {
             // hente ut zipcode object og gjøre om til 4 siffret string
             $oZipcode = $oU->getZipCode();
-            $iZipcode = $oZipcode->getId();
-            $sZipcode = sprintf('%04d', $iZipcode);
-            $sCity    = $oZipcode->getCity();
+            $sZipcode="";
+            $sCity="";
+            if(!empty($iZipcode)){
+                $iZipcode = $oZipcode->getId();
+                $sZipcode = sprintf('%04d', $iZipcode);
+                $sCity    = $oZipcode->getCity();
+            }
 
             $arrayCollection[] = array(
                 'id' => $oU->getId(),
