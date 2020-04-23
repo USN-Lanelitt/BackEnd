@@ -35,6 +35,7 @@ class UserController extends AbstractController
 
     public function registerUser(Request $request)
     {
+
         $bRegistreUser = false;
         $aReturn = array();
         /* STATUS Koder
@@ -52,6 +53,11 @@ class UserController extends AbstractController
         $sEmail      = $content->email;
         $sPhone      = $content->phone;
         $sPassword   = password_hash($content->password, PASSWORD_DEFAULT);
+
+        $sRegex="-,', ";
+        $sFirstname=ucwords(strtolower($sFirstname),$sRegex);
+        $sMiddlename=ucwords(strtolower($sMiddlename),$sRegex);
+        $sLastname=ucwords(strtolower($sLastname),$sRegex);
 
 
         // Sjekke om e-post finnes i databasen
@@ -434,11 +440,20 @@ class UserController extends AbstractController
         $bActive           = boolval($content->active);
         $bNewsSubscription = boolval($content->newsSubscription);
 
+
+        $sRegex="-,', ";
+        $sFirstname=ucwords(strtolower($sFirstname),$sRegex);
+        $sMiddlename=ucwords(strtolower($sMiddlename),$sRegex);
+        $sLastname=ucwords(strtolower($sLastname),$sRegex);
+
         // Sjekke om brukeren finnes i databasen
         $oUser = $this->getDoctrine()->getRepository(Users::class)->find($iUserId);
         $oZipcode = $this->getDoctrine()->getRepository(Zipcode::class)->find($iZipCode);
         // Hente ut by for å sende til front
-        $sCity = $oZipcode->getCity();
+        $sCity="";
+        if(!empty($oZipcode)){
+            $sCity = $oZipcode->getCity();
+        }
 
         $oUser->setNickname($sNickname);
         $oUser->setFirstName($sFirstname);
