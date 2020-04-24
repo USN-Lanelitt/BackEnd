@@ -45,17 +45,17 @@ class LoanController extends AbstractController
 
     public function sendLoanRequest(Request $request, $iUserId, $iAssetId) {
         //Sjekker om requesten har innhold
-/*        $content=json_decode($request->getContent());
+        $content=json_decode($request->getContent());
         if(empty($content)){
         return new JsonResponse('tom');
-        }*/
+        }
 
         //Henter info om lånet
-/*        $dStart  = $content->StartDate;
-        $dEnd  = $content->endDate;*/
+        $dEnd  = $content->endDate;
+        $dStart  = $content->startDate;
 
-        $dStart = "2018-09-09";
-        $dEnd = "2018-10-09";
+        /*$dStart = "2018-09-09";
+        $dEnd = "2018-10-09";*/
         $iStatusSent = 0;
 
         $oUser = $this->getDoctrine()->getRepository(Users::class)->find($iUserId);
