@@ -47,12 +47,16 @@ class LoanController extends AbstractController
         //Sjekker om requesten har innhold
         $content=json_decode($request->getContent());
         if(empty($content)){
-        return new JsonResponse('tom');
+            return new JsonResponse('tom');
         }
 
+        $this->logger->info(json_decode($request));
+
         //Henter info om lånet
-        $dEnd  = $content->endDate;
         $dStart  = $content->startDate;
+        $dEnd  = $content->endDate;
+
+        $this->logger->info("iUserid: " .$iUserId. "assetid: " .$iAssetId. "start: " .$dStart. "end: " .$dEnd);
 
         /*$dStart = "2018-09-09";
         $dEnd = "2018-10-09";*/
