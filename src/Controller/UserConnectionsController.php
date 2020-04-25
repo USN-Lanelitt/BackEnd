@@ -324,8 +324,9 @@ class UserConnectionsController extends AbstractController
     }
 
     public function checkConnection($iUserId, $iUserId2){
+        $statusAccepted = 1;
         //Sjekker om vennskapet finnes
-        $oUserConn = $this->getDoctrine()->getRepository(UserConnections::class)->findBy(array('user1'=> $iUserId, 'user2'=> $iUserId2));
+        $oUserConn = $this->getDoctrine()->getRepository(UserConnections::class)->findBy(array('user1'=> $iUserId, 'user2'=> $iUserId2, 'requestStatus' => $statusAccepted));
         if(empty($oUserConn)){
             return new JsonResponse(0);
         }
