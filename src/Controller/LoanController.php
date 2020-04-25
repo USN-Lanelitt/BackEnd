@@ -58,7 +58,7 @@ class LoanController extends AbstractController
 
         $this->logger->info("iUserid: " .$iUserId. "assetid: " .$iAssetId. "start: " .$dStart. "end: " .$dEnd);
 
-  /*      $dStart = "2018-09-09";
+        /*$dStart = "2018-09-09";
         $dEnd = "2018-10-09";*/
         $iStatusSent = 0;
 
