@@ -6,6 +6,7 @@ use App\Entity\LogingLevels;
 use App\Entity\Users;
 use App\Entity\Variables;
 use App\Repository\VariablesRepository;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +19,12 @@ class UtilController extends AbstractController
     /**
      * @Route("/util", name="util")
      */
+
+    private $logger;
+
+    public function __construct(LoggerInterface $logger){
+        $this->logger=$logger;
+    }
     public function index()
     {
         return $this->json([
@@ -85,7 +92,15 @@ class UtilController extends AbstractController
     public function getLogg(){
 
         $loggName="log";
-        $myfile = fopen("$loggName.txt", "r") or die("Unable to open file!");
+        $this->logger->info(1);
+        if(!file_exists("$loggName.txt")){
+            file_put_contents("$loggName.txt","BrukerId;KontrollerNamn;FunksjonsNamn;Tidspunkt;FunksjonsType;Datainnhold", FILE_APPEND);
+        }
+        $this->logger->info(1.5);
+        $myfile = fopen("$loggName.txt", "r+") or die("Unable to open file!");
+        $this->logger->info(2);
+
+        $this->logger->info(3);
         $logg=array();
         $teller=0;
         while(!feof($myfile)) {
@@ -103,9 +118,15 @@ class UtilController extends AbstractController
         $loggingLevel=$var->getId();
         //$loggingLevel=8;
         $loggName="log";
+
+        $myfile = fopen("$loggName.txt", "r") or die("Unable to open file!");
+        if(!file_exists("$loggName.txt")){
+            file_put_contents("$loggName.txt","BrukerId;KontrollerNamn;FunksjonsNamn;Tidspunkt;FunksjonsType;Datainnhold", FILE_APPEND);
+        }
+
         $cSV=";";
         $timeStamp=new \DateTime();
-        $data=("\n".$userId.$cSV.$functionName.$cSV.$controllerName.$cSV.$timeStamp->format('Y-m-d H:i:s'));
+        $data=("\n".$userId.$cSV.$controllerName.$cSV.$functionName.$cSV.$timeStamp->format('Y-m-d H:i:s'));
         if($change==1){
             $data.=($cSV."POST/DELETE");
         }

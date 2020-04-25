@@ -77,9 +77,10 @@ class UnwantedBehaviorReports
         return $this;
     }
 
-    public function getTimestamp(): ?\DateTimeInterface
+    public function getTimestamp(): string
     {
-        return $this->timestamp;
+        $temp=$this->timestamp;
+        return $temp->format('Y.m.d H:i');
     }
 
     public function setTimestamp(\DateTimeInterface $timestamp): self
