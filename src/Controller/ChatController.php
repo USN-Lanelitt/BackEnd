@@ -42,7 +42,7 @@ class ChatController extends AbstractController{
 
         $iIds = array_column($aUsersId, 'id');
 
-        $users=$this->getDoctrine()->getRepository(Users::class)->findBy(array('id'=>$iIds));
+        $users=$this->getDoctrine()->getRepository(Users::class)->findBy(array('id'=>$iIds), array('firstName'=>'ASC'));
 
         $info=($userId);
         $this->forward('App\Controller\UtilController:logging',[

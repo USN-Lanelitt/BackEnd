@@ -119,10 +119,10 @@ class UtilController extends AbstractController
         //$loggingLevel=8;
         $loggName="log";
 
-        $myfile = fopen("$loggName.txt", "r") or die("Unable to open file!");
-        if(!file_exists("$loggName.txt")){
+        /*if(!file_exists("$loggName.txt")){
             file_put_contents("$loggName.txt","BrukerId;KontrollerNamn;FunksjonsNamn;Tidspunkt;FunksjonsType;Datainnhold", FILE_APPEND);
-        }
+        }*/
+        $myfile = fopen("$loggName.txt", "r") or die("Unable to open file!");
 
         $cSV=";";
         $timeStamp=new \DateTime();

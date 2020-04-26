@@ -115,7 +115,7 @@ class RatingController extends AbstractController{
 
         $iIds = array_column($loanId, 'id');
 
-        $loans = $this->getDoctrine()->getRepository(Loans::class)->findBy(array('id' => $iIds));
+        $loans = $this->getDoctrine()->getRepository(Loans::class)->findBy(array('id' => $iIds), array('id'=>'DESC'));
 
         //Logging funksjon
         $info=($iUserId);
@@ -151,7 +151,7 @@ class RatingController extends AbstractController{
 
         $iIds = array_column($iIds, 'id');
 
-        $ratings = $this->getDoctrine()->getRepository(RatingLoans::class)->findBy(array('id' => $iIds));
+        $ratings = $this->getDoctrine()->getRepository(RatingLoans::class)->findBy(array('id' => $iIds), array('id'=>'DESC'));
 
         //Logging funksjon
         $info=($iUserId);
@@ -186,7 +186,7 @@ class RatingController extends AbstractController{
 
         $iIds = array_column($iIds, 'id');
 
-        $ratings = $this->getDoctrine()->getRepository(RatingLoans::class)->findBy(array('id' => $iIds));
+        $ratings = $this->getDoctrine()->getRepository(RatingLoans::class)->findBy(array('id' => $iIds), array('id'=>'DESC'));
 
 
         //Logging funksjon

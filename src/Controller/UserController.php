@@ -159,7 +159,7 @@ class UserController extends AbstractController
             $oZipcode = $oU->getZipCode();
             $sZipcode="";
             $sCity="";
-            if(!empty($iZipcode)){
+            if(!empty($oZipcode)){
                 $iZipcode = $oZipcode->getId();
                 $sZipcode = sprintf('%04d', $iZipcode);
                 $sCity    = $oZipcode->getCity();
@@ -179,8 +179,10 @@ class UserController extends AbstractController
                 'zipcode' => $sZipcode,
                 'city' => $sCity,
                 'newsletter' => $oU->getNewsSubscription(),
-                'active' => $oU->getActive()
+                'active' => $oU->getActive(),
+                'usertype'=> $oU->getUsertype()
             );
+
             $sHashPassword =  $oU->getPassword();
             $loggId.=$oU->getId();//til logging
         }
@@ -424,22 +426,60 @@ class UserController extends AbstractController
 
     public function editUser(Request $request, $iUserId)
     {
-        $this->logger->info($request.''.$iUserId);
+        $this->logger->info("LOL");
 
         // Hente ut data fra overføring fra React
         $content           = json_decode($request->getContent());
-        $sNickname         = $content->nickname;
+        $this->logger->info($content->usertype);
+        if(!empty($content->nickname)){
+            $sNickname         = $content->nickname;
+        }else{
+            $sNickname="";
+        }
         $sFirstname        = $content->firstname;
-        $sMiddlename       = $content->middlename;
-        $sLastname         = $content->lastname;
-        $sPhone            = $content->phone;
-        $sAddress          = $content->address;
-        $sAddress2         = $content->address2;
-        $iZipCode          = (int)$content->zipcode;
-        $sUsertype         = $content->usertype;
-        $bActive           = boolval($content->active);
-        $bNewsSubscription = boolval($content->newsSubscription);
+        if(!empty($content->middlename)) {
+            $sMiddlename = $content->middlename;
+        }else{
+            $sMiddlename="";
+        }
+        $sLastname = $content->lastname;
+        if(!empty($content->phone)) {
+            $sPhone = $content->phone;
+        }else{
+            $sPhone="";
+        }
+        if(!empty($content->address)) {
+            $sAddress          = $content->address;
+        }else{
+            $sAddress="";
+        }
+        if(!empty($content->address2)) {
+            $sAddress2         = $content->address2;
+        }else{
+            $sAddress2="";
+        }
+        if(!empty($content->zipcode)) {
+            $iZipCode          = (int)$content->zipcode;
+        }else{
+            $iZipCode="";
+        }
+        if(!empty($content->usertype)) {
+            $sUsertype         = $content->usertype;
+        }else{
+            $sUsertype="";
+        }
+        if(!empty($content->active)) {
+            $bActive = boolval($content->active);
+        }else{
+            $bActive="";
+        }
+        if(!empty($content->newsSubscription)) {
+            $bNewsSubscription = boolval($content->newsSubscription);
+        }else{
+            $bNewsSubscription="";
+        }
 
+        $this->logger->info("LOL10");
 
         $sRegex="-,', ";
         $sFirstname=ucwords(strtolower($sFirstname),$sRegex);
@@ -454,18 +494,32 @@ class UserController extends AbstractController
         if(!empty($oZipcode)){
             $sCity = $oZipcode->getCity();
         }
-
-        $oUser->setNickname($sNickname);
+        $this->logger->info("LOL11");
+        if($sNickname!="") {
+            $oUser->setNickname($sNickname);
+        }
         $oUser->setFirstName($sFirstname);
-        $oUser->setMiddleName($sMiddlename);
+        if($sMiddlename!="") {
+            $oUser->setMiddleName($sMiddlename);
+        }
         $oUser->setLastName($sLastname);
-        if (strlen(trim($sUsertype)) > 0) // komer som blank når brukeren endrer sine egne data
-            $oUser->setUserType($sUsertype);
-
-        $oUser->setAddress($sAddress);
-        $oUser->setAddress2($sAddress2);
-        $oUser->setZipCode($oZipcode);
-        $oUser->setPhone($sPhone);
+        if($sUsertype!="") {
+            if (strlen(trim($sUsertype)) > 0) // komer som blank når brukeren endrer sine egne data
+                $oUser->setUserType($sUsertype);
+        }
+        if($sAddress!="") {
+            $oUser->setAddress($sAddress);
+        }
+        if($sAddress2!="") {
+            $oUser->setAddress2($sAddress2);
+        }
+        if($oZipcode!="") {
+            $oUser->setZipCode($oZipcode);
+        }
+        if($sPhone!="") {
+            $oUser->setPhone($sPhone);
+        }
+        $this->logger->info("LOL12");
 
         //Setter in verdi for active -- Kun gå inn når settes fra admin , ikke fra edit user selv. da kommer den blank
         $this->logger->info(__FILE__.' '.__LINE__);
@@ -511,6 +565,7 @@ class UserController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($oUser);
         $entityManager->flush();
+        $this->logger->info("LOL13");
 
         //Logging funksjon
         $loggUserId=$oUser->getId();
