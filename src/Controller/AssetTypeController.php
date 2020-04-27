@@ -15,16 +15,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-/*header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
-header("Allow: GET, POST, OPTIONS, PUT, DELETE");
-$method = $_SERVER['REQUEST_METHOD'];
-if ($method == "OPTIONS") {
-    die();
-}*/
+/*---John-Berge Grimaas---*/
 
 class AssetTypeController extends AbstractController{
+
     public function getAssetCategories(){
         $assetCategory=$this->getDoctrine()->getRepository(AssetCategories::class)->findAll();
 
@@ -47,11 +41,11 @@ class AssetTypeController extends AbstractController{
         ]);
 
     }
-    public function getAssetTypes($iCatId){
-        $assetType=$this->getDoctrine()->getRepository(AssetTypes::class)->findBy(array('assetCategories'=>$iCatId));
+    public function getAssetTypes($iTypeId){
+        $assetType=$this->getDoctrine()->getRepository(AssetTypes::class)->find($iTypeId);
 
         //Logging funksjon
-        $info=($iCatId);
+        $info=($iTypeId);
 
         $this->forward('App\Controller\UtilController:logging',[
             'userId'=>-1,
