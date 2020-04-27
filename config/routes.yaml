@@ -241,7 +241,7 @@ replyFriendRequest:
 deleteFriendship:
   path: /user/{iUserId}/friend/{iFriendId}/delete
   controller: App\Controller\UserConnectionsController::deleteFriendship
-  methods: POST
+  methods: DELETE
 
 getUserSearch:
   path: /user/{iUserId}/search/{sSearch}
