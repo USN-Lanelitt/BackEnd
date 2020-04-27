@@ -101,7 +101,7 @@ assetAvailability:
   methods: GET
 
 getAssetTypes:
-  path: /assets/type/{iCatId}
+  path: /assets/type/{iTypeId}
   controller: App\Controller\AssetTypeController::getAssetTypes
   methods: GET
 
