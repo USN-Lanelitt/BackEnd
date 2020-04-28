@@ -28,6 +28,11 @@ class UserController extends AbstractController
 
     public function registerUser(Request $request)
     {
+        //Sjekker om requesten har innhold
+        $content=json_decode($request->getContent());
+        if(empty($content)){
+            return new JsonResponse('');
+        }
 
         $bRegistreUser = false;
         $aReturn = array();
@@ -133,15 +138,20 @@ class UserController extends AbstractController
         $this->logger->info($sUsername);
         $this->logger->info($sPassword);
 
+
         $arrayCollection['code'] = 400;
 
         $oRepository = $this->getDoctrine()->getRepository(Users::class);
 
-        // sjekker om logge inn med e-post eller mobiltelefon
-        if(strpos($sUsername, "@") !== false) // logger inn med e-post
-            $oUser = $oRepository->findBy([ 'email' => $sUsername ]);
-        else // logger inn med telefonnummer -- Er ikke i bruk, men ligger hvis skal brukes senere
-            $oUser = $oRepository->findBy([ 'phone' => $sUsername ]);
+        // sjekker om logge inn med e-post
+        $oUser = $oRepository->findBy(['email' => $sUsername]);
+
+        //Sjekker om oUser har innhold
+        if (empty($oUser)) {
+            $arrayCollection['code'] = 400;
+            return new JsonResponse($arrayCollection);
+        }
+
 
         $arrayCollection = array();
         $sHashPassword = "";

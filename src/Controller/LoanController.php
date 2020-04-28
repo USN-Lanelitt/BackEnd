@@ -35,11 +35,12 @@ class LoanController extends AbstractController
         $this->logger=$logger;
     }
 
-    public function sendLoanRequest(Request $request, $iUserId, $iAssetId) {
+    public function sendLoanRequest(Request $request, $iUserId, $iAssetId)
+    {
         //Sjekker om requesten har innhold
         $content=json_decode($request->getContent());
         if(empty($content)){
-            return new JsonResponse('tom');
+            return new JsonResponse('');
         }
 
         $this->logger->info(json_decode($request));
