@@ -224,7 +224,9 @@ class AssetController extends AbstractController{
         $tDescription = $request->request->get('description');
         $iCondition = $request->request->get('condition');
         $bPublic = $request->request->get('public');
-
+        if(!$request->files->get('file')){
+            return new JsonResponse(false);
+        }
         $this->logger->info("*****LALALALAL2*******".$iUserId." - ".$sAssetName." - ".$bPublic);
         //*/
 

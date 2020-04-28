@@ -99,6 +99,7 @@ class RatingController extends AbstractController{
             where loans.assets_id=assets.id 
             and loans.users_id=$iUserId 
             and loans.date_end >= CURRENT_DATE()-14
+            and loans.status_loan_id=1
             and loans.id not in
             (select loans_id from rating_loans);";
         $stmt=$conn->prepare($sql);
