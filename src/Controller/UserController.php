@@ -105,6 +105,7 @@ class UserController extends AbstractController
             $oUser->setEmail($sEmail);
             $oUser->setPhone($sPhone);
             $oUser->setPassword($sPassword);
+            $oUser->setUsertype("user");
             $oUser->setActive(true);
 
             $entityManager = $this->getDoctrine()->getManager();
