@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Finn Svoslbru Gundersen
+ */
+
 namespace App\Controller;
 
 use App\Entity\Zipcode;
@@ -26,7 +30,7 @@ class UserController extends AbstractController
         $this->logger = $logger;
     }
 
-    public function registerUser(Request $request)
+    public function registerUser(Request $request) // Finn
     {
         //Sjekker om requesten har innhold
         $content=json_decode($request->getContent());
@@ -133,7 +137,7 @@ class UserController extends AbstractController
         return new JsonResponse($aReturn);
     }
 
-    public function login($sUsername, $sPassword)
+    public function login($sUsername, $sPassword) // Finn
     {
         $this->logger->info($sUsername);
         $this->logger->info($sPassword);
@@ -237,7 +241,7 @@ class UserController extends AbstractController
         return new JsonResponse($arrayCollection);
     }
 
-    public function updatePassword(Request $request)
+    public function updatePassword(Request $request) // Finn - er ikke i bruk
     {
         $this->logger->info($request);
         $aCode['code'] = 400;
@@ -281,7 +285,7 @@ class UserController extends AbstractController
         return new JsonResponse($aCode);
     }
 
-    public function profileimageUpload(Request $request)
+    public function profileimageUpload(Request $request)  // Finn
     {
         $this->logger->info($request);
         $sImage            = $request->files->get('file');

@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Finn
+ */
+
 namespace App\Controller;
 
 use App\Entity\LogingLevels;
@@ -34,13 +38,15 @@ class UtilController extends AbstractController
         ]);
     }
 
-    public static function makeName($sFirstname,$sMiddlename,$sLastname) {
+    public static function makeName($sFirstname,$sMiddlename,$sLastname) // Finn
+    {
+
         if (strlen(trim($sMiddlename)) > 0)
             return ($sFirstname.' '.$sMiddlename.' '.$sLastname);
         return ($sFirstname.' '.$sLastname);
     }
 
-    public static function RandomString($iLength)
+    public static function RandomString($iLength) // Finn
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $randstring = '';
