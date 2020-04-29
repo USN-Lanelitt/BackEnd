@@ -110,6 +110,7 @@ class UserController extends AbstractController
             $oUser->setUsertype("user");
             $oUser->setNewsSubscription($bNewsletter);
             $oUser->setUserterms($bUserterms);
+            $oUser->setProfileImage("profileimage.jpg");
             $oUser->setActive(true);
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -158,7 +159,6 @@ class UserController extends AbstractController
             $arrayCollection['code'] = 400;
             return new JsonResponse($arrayCollection);
         }
-
 
         $arrayCollection = array();
         $sHashPassword = "";
