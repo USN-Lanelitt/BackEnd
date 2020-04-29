@@ -54,6 +54,8 @@ class UserController extends AbstractController
         $sBirthdate  = $content->birthdate;
         $sEmail      = $content->email;
         $sPhone      = $content->phone;
+        $bNewsletter = $content->newsletter;
+        $bUserterms  = $content->terms;
         $sPassword   = password_hash($content->password, PASSWORD_DEFAULT);
 
         $sRegex="-,', ";
@@ -106,6 +108,8 @@ class UserController extends AbstractController
             $oUser->setPhone($sPhone);
             $oUser->setPassword($sPassword);
             $oUser->setUsertype("user");
+            $oUser->setNewsSubscription($bNewsletter);
+            $oUser->setUserterms($bUserterms);
             $oUser->setActive(true);
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -143,9 +147,7 @@ class UserController extends AbstractController
         $this->logger->info($sUsername);
         $this->logger->info($sPassword);
 
-
         $arrayCollection['code'] = 400;
-
         $oRepository = $this->getDoctrine()->getRepository(Users::class);
 
         // sjekker om logge inn med e-post
