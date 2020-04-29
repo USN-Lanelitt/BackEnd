@@ -1,7 +1,8 @@
 <?php
 
 /*
- * Finn Svoslbru Gundersen
+ * Finn har jobbet med denne filen
+ * Nicole har gjort getUsers, getOneUser, getUserAmount
  */
 
 namespace App\Controller;

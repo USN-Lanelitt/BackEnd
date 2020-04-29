@@ -49,7 +49,7 @@ class UsersRepository extends ServiceEntityRepository
     }
     */
 
-
+    /*Finn har gjort findEmail*/
     public function findEmail($sEmail)
     {
         return $this->createQueryBuilder('u')
@@ -58,7 +58,7 @@ class UsersRepository extends ServiceEntityRepository
                     ->getQuery()
                     ->getResult();
     }
-
+    /*Finn har gjort updateProfileImage*/
     public function updateProfileImage($iUserId, $sNewfilename)
     {
         return $this->createQueryBuilder('u')

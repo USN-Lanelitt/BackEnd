@@ -1,5 +1,9 @@
 <?php
 
+/*
+ *John har jobbet med denne filen
+ *
+ */
 namespace App\Controller;
 
 use App\Entity\Assets;
@@ -28,8 +32,6 @@ class AssetController extends AbstractController{
     }
     public function getUsersAssets($userId1, $userId2){
 
-        //Sjekk at tingen ikke er lånt ut
-
         $conn=$this->getDoctrine()->getConnection();
         $sql="SELECT id FROM assets 
               WHERE users_id LIKE $userId2
@@ -37,13 +39,13 @@ class AssetController extends AbstractController{
               AND ((users_id IN (SELECT user2_id FROM user_connections WHERE user1_id LIKE $userId1 AND request_status_id=1)  OR public LIKE TRUE) OR (users_id LIKE $userId1 ))";
         $stmt=$conn->prepare($sql);
         $stmt->execute();
+        /*Spørring som kjøres mot databasen som henter alle idene på eiendelene til userId2 som userId1 har lov til å se*/
 
         $aAssetId = $stmt->fetchAll();
 
         $iIds = array_column($aAssetId, 'id');
-        //$iIds = reset($aAssetId);
 
-        //Henter alle objektene
+        //Henter alle asset objektene som userId1 har lov til å se
         $assets = $this->getDoctrine()->getRepository(Assets::class)->findBy(array('id' => $iIds));
 
         //Logging funksjon
@@ -68,7 +70,6 @@ class AssetController extends AbstractController{
 
     public function getAssetType($userId, $typeId){
 
-        //Sjekk at tingen ikke er lånt ut
 
         $conn=$this->getDoctrine()->getConnection();
         $sql="SELECT id FROM assets 
@@ -77,13 +78,14 @@ class AssetController extends AbstractController{
               AND (users_id IN (SELECT user2_id FROM user_connections WHERE user1_id LIKE $userId AND  request_status_id=1) OR (users_id LIKE $userId OR public LIKE TRUE))";
         $stmt=$conn->prepare($sql);
         $stmt->execute();
+        /*Spørring som kjøres mot databasen som henter alle idene på eiendelene som hører til typeId som userId1 har lov til å se*/
 
         $aAssetId = $stmt->fetchAll();
 
         $iIds = array_column($aAssetId, 'id');
         //$iIds = reset($aAssetId);
 
-        //Henter alle objektene
+        //Henter alle asset objektene som userId1 har lov til å se
         $assets = $this->getDoctrine()->getRepository(Assets::class)->findBy(array('id' => $iIds));
 
         //Logging funksjon
@@ -107,7 +109,6 @@ class AssetController extends AbstractController{
     }
     public function getAssetSearch($userId, $search){
 
-        //Sjekk at tingen ikke er lånt ut
 
         $conn=$this->getDoctrine()->getConnection();
         $sql="SELECT id FROM assets 
@@ -118,13 +119,14 @@ class AssetController extends AbstractController{
               AND (users_id IN (SELECT user2_id FROM user_connections WHERE user1_id LIKE $userId AND request_status_id=1) OR (users_id LIKE $userId OR public LIKE TRUE))";
         $stmt=$conn->prepare($sql);
         $stmt->execute();
+        /*Spørring som kjøres mot databasen som henter alle idene på eiendelene som hører med navn eller type som inneholder 'search' som userId1 har lov til å se*/
 
         $aAssetId = $stmt->fetchAll();
 
         $iIds = array_column($aAssetId, 'id');
         //$iIds = reset($aAssetId);
 
-        //Henter alle objektene
+        //Henter alle asset objektene som userId1 har lov til å se
         $assets = $this->getDoctrine()->getRepository(Assets::class)->findBy(array('id' => $iIds));
 
 
@@ -151,11 +153,13 @@ class AssetController extends AbstractController{
 
     public function getMyAssets($userId){
 
-
+        //henter brukeren fra databasen
         $user=$this->getDoctrine()->getRepository(Users::class)->find($userId);
         if(empty($user)){
+            //returnerer vis brukeren ikke eksisterer
             return new JsonResponse("empty");
         }
+        //henter alle assetene til brukeren
         $assets=$user->getAssets();
         $aAssets = $assets->toArray();
 
@@ -163,6 +167,7 @@ class AssetController extends AbstractController{
         $d1=empty($aAssets);
         $d2="not empty";
         if($d1){
+            //Vis brukeren ikke har assets, return empty
             $d2="empty";
         }
 
