@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+/*John har lagt til groups og endret getTimestamp*/
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ChatRepository")
  */
@@ -81,6 +82,7 @@ class Chat
         return $this;
     }
 
+    /*getTimestampSent er blit endret av John-Berge*/
     public function getTimestampSent(): string
     {
         $temp=$this->timestampSent;

@@ -46,7 +46,7 @@ class UserConnectionsRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }*/
-
+    /*Nicole har gjort findFriend*/
     public function findFriend($user, $friend)
     {
         //1 = vennskap
@@ -63,7 +63,7 @@ class UserConnectionsRepository extends ServiceEntityRepository
             ;
     }
 
-
+    /*Nicole har gjort findFriends*/
     public function findFriends($user)
     {
         //1 = vennskap
@@ -77,7 +77,8 @@ class UserConnectionsRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
-    
+
+    /*Nicole har gjort findFriendRequest*/
     public function findFriendRequest($user)
     {
         //0 = vennskap

@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+/*John og Nicole har lagt til groups og John har endret getDateStart og getDateEnd*/
 /**
  * @ORM\Entity(repositoryClass="App\Repository\LoansRepository")
  */
@@ -107,7 +108,7 @@ class Loans
 
         return $this;
     }
-
+    /*getDateStart er blit endret av John-Berge*/
     public function getDateStart(): string
     {
         $temp=$this->dateStart;
@@ -121,6 +122,7 @@ class Loans
         return $this;
     }
 
+    /*getDateEnd er blit endret av John-Berge*/
     public function getDateEnd(): string
     {
         $temp=$this->dateEnd;

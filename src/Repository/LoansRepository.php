@@ -48,7 +48,7 @@ class LoansRepository extends ServiceEntityRepository
     }
     */
 
-
+    /*Nicole har gjort findAllAssetLoans*/
     public function findAllAssetLoans($assetId)
     {
         $sStatus = "accepted";
@@ -63,6 +63,7 @@ class LoansRepository extends ServiceEntityRepository
             ;
     }
 
+    /*Nicole har gjort findAllStatusSent*/
     public function findAllStatusSent($userId)
     {
         $sStatusSent = 0;
@@ -77,6 +78,7 @@ class LoansRepository extends ServiceEntityRepository
             ;
     }
 
+    /*Nicole har gjort findAllStatusDenied*/
     public function findAllStatusDenied($userId)
     {
         $sStatusSent = 2;
