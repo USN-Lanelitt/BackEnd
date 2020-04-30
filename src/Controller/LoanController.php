@@ -55,8 +55,6 @@ class LoanController extends AbstractController
 
         $this->logger->info("iUserid: " .$iUserId. "assetid: " .$iAssetId. "start: " .$dStart. "end: " .$dEnd);
 
-        /*$dStart = "2018-09-09";
-        $dEnd = "2018-10-09";*/
         $iStatusSent = 0;
 
         $oUser = $this->getDoctrine()->getRepository(Users::class)->find($iUserId);
@@ -64,16 +62,6 @@ class LoanController extends AbstractController
         $oStatusSent = $this->getDoctrine()->getRepository(RequestStatus::class)->find($iStatusSent);
 
         $entityManager = $this->getDoctrine()->getManager();
-
-        //Sjekker om låneforholdet finnes fra før
-/*        $conn = $this->getDoctrine()->getConnection();
-        $sql = "SELECT id FROM loans
-                WHERE users_id= $iUserId
-                  AND assets_id = $iAssetId
-                  AND status_loan_id not like 3";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $oConnectionId = $stmt->fetchAll();*/
 
 
             //Oppretter lånefohold
@@ -103,15 +91,11 @@ class LoanController extends AbstractController
 
 
     public function getLoanRequest($iUserId){ //Henter alle mottatte forespørsler
-        //Sjekker $iUserId
+        //Sjekker $iUserId for innhold
         if(empty($iUserId)){
             return new JsonResponse();
         }
-        /*if (!$events) {
-            throw $this->createNotFoundException(
-                'No event found'
-            );
-        }*/
+
 
         $iStatusSent = 0;
 
@@ -152,7 +136,7 @@ class LoanController extends AbstractController
 
 
     public function replyLoanRequest($iUserId, $iLoanId, $iStatus) {
-        //Sjekker $iUserId
+        //Sjekker $iUserId for innhold
         if(empty($iUserId)){
             return new JsonResponse();
         }
@@ -194,7 +178,7 @@ class LoanController extends AbstractController
 
 
     public function getAcceptedRequests($iUserId) { //Henter alle godkjente forespørsler brukeren har sendt
-        //Sjekker $iUserId
+        //Sjekker $iUserId for innhold
         if(empty($iUserId)){
             return new JsonResponse();
         }
@@ -224,7 +208,7 @@ class LoanController extends AbstractController
     }
 
     public function getSentRequests($iUserId) { //Henter alle forespørsler brukeren har sendt som ikke har blitt behandlet
-        //Sjekker $iUserId
+        //Sjekker $iUserId for innhold
         if(empty($iUserId)){
             return new JsonResponse();
         }
@@ -263,7 +247,7 @@ class LoanController extends AbstractController
         ]);
     }
     public function getLoans($iUserId){ //Henter alle lån bruker har godkjent
-        //Sjekker $iUserId
+        //Sjekker $iUserId innhold
         if(empty($iUserId)){
             return new JsonResponse();
         }
@@ -313,15 +297,9 @@ class LoanController extends AbstractController
         $teller = 0;
         foreach($aUnavailableDates as $id) {
             $teller += 1;
-            //$dates = array($id->getDateStart(), $id->getDateEnd());
+
             $aUnavailableDate[$teller]  = $aUnavailableDates[0]['dateStart'];
             $aUnavailableDate[$teller+1]  = $aUnavailableDates[0]['dateEnd'];
-            //for ($i = $dUNIXStart; $i <= $dUNIXEnd; $i+=86400) {
-                // $teller += 1;
-
-                //$aUnavailableDate[$teller] = date("Y-m-d", $i);
-                //}
-           // }
         }
 
         //Logging funksjon
@@ -362,13 +340,7 @@ class LoanController extends AbstractController
                     $teller += 1;
                     $ikkeLedig[$teller] = $dt->format("Y-m-d");
                 }
-                /*
-                $dStart = strtotime($assetLoan->getDateStart()->format('Y-m-d'));
-                $dEnd = strtotime($assetLoan->getDateEnd()->format('Y-m-d'));
-                for ($i = $dStart; $i <= $dEnd; $i += 86400) {
-                    $teller += 1;
-                    $ikkeLedig[$teller] = date("Y-m-d", $i);
-                }*/
+
             }
 
         }

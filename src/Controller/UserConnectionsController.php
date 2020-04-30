@@ -32,11 +32,6 @@ class UserConnectionsController extends AbstractController
 
 
     public function getFriend($iUserId, $iFriendId){
-        //Sjekker om requesten har innehold
-        //$content=json_decode($request->getContent());
-
-        //$iUserId = $request->headers->get('x-userid');
-        //$this->logger->info("iUserid:" .$iUserId);
 
         if(empty($iUserId)){
             return new JsonResponse();
@@ -169,12 +164,11 @@ class UserConnectionsController extends AbstractController
     }
 
     public function replyFriendRequest($iUserId, $iFriendId, $iStatus){
-
+        //Sjekker om $iUserId har innhold
         if(empty($iUserId)){
             return new JsonResponse();
         }
-
-
+        //Sjekker om $iFriendId har innhold
         if(empty($iFriendId)){
             return new JsonResponse();
         }
@@ -236,6 +230,7 @@ class UserConnectionsController extends AbstractController
     }
 
     public function deleteFriendship($iUserId, $iFriendId){
+        //Sjekker om $iUserId har innhold
         if(empty($iUserId)){
             return new JsonResponse();
         }
@@ -280,7 +275,7 @@ class UserConnectionsController extends AbstractController
     }
 
     public function getUserSearch($iUserId, $sSearch){
-
+        //Sjekker om $iUserId har innhold
         if(empty($iUserId)){
             return new JsonResponse();
         }
