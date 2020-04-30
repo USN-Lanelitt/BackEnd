@@ -192,6 +192,7 @@ class AssetController extends AbstractController{
 
     public function getAsset($assetId){
 
+        /*henter en asset fra databasen*/
         $asset=$this->getDoctrine()->getRepository(Assets::class)->find($assetId);
         if(empty($asset)){
             return new JsonResponse($asset);
@@ -229,7 +230,11 @@ class AssetController extends AbstractController{
         $tDescription = $request->request->get('description');
         $iCondition = $request->request->get('condition');
         $bPublic = $request->request->get('public');
+        //Henter ut all informasjonen om asseten fra requst
+
         if(!$request->files->get('file')){
+            //Sjekk om at bildet eksisterer
+            $ut="\n\n*******************d*******************************************************\n\n";
             return new JsonResponse(false);
         }
         $this->logger->info("*****LALALALAL2*******".$iUserId." - ".$sAssetName." - ".$bPublic);
@@ -238,6 +243,7 @@ class AssetController extends AbstractController{
         $user=$this->getDoctrine()->getRepository(Users::class)->find($iUserId);
         $oAssetType=$this->getDoctrine()->getRepository(AssetTypes::class)->find($iTypeId);
 
+        //oppreter ett database objekt
         $asset=new Assets();
         $asset->setUsers($user);
         $asset->setAssetType($oAssetType);
@@ -247,7 +253,7 @@ class AssetController extends AbstractController{
         $asset->setPublic($bPublic);
         $asset->setPublished(false);
 
-
+        //kjører objektet opp mot databasen
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($asset);
         $entityManager->flush();
@@ -263,6 +269,7 @@ class AssetController extends AbstractController{
             'change'=>1
             ]);
 
+        //Setter bilde på asseten
         $this->forward('App\Controller\AssetImageController::addImage',[
             'userId'=>$iUserId,
             'assetId'=>$id,
@@ -274,6 +281,7 @@ class AssetController extends AbstractController{
         $asset=$this->getDoctrine()->getRepository(Assets::class)->findOneBy(array('id'=>$assetId, 'users'=>$userId));
 
         if(empty($asset)){
+            //sjekker at asseten eksisterer
             return new JsonResponse($asset);
         }
 
@@ -284,6 +292,7 @@ class AssetController extends AbstractController{
         $tDescription = $content->description;
         $iCondition = $content->assetCondition;
         $bPublic=$content->public;
+        //henter data ut fra request
 
         //*
         $oUser=$this->getDoctrine()->getRepository(Users::class)->find($iUserId);
@@ -324,12 +333,15 @@ class AssetController extends AbstractController{
     public function setPublished($userId, $assetId, $published){
 
         $asset=$this->getDoctrine()->getRepository(Assets::class)->find($assetId);
+        //henter asseten fra databasen
+
         $user=$asset->getUsers();
         if(!($user->getId()==$userId)){
+            //Sjekker att brukeren eiger asseten
             return new JsonResponse("Not correct user");
         }
         $asset->setPublished($published);
-
+        //Setter asseten til published/unpublished og pusher det til databasen
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($asset);
         $entityManager->flush();
@@ -342,6 +354,7 @@ class AssetController extends AbstractController{
     public function removeAsset($assetId){
 
         $oAsset=$this->getDoctrine()->getRepository(Assets::class)->find($assetId);
+        //henter asseten
 
         $user=$oAsset->getUsers();
         $userId=$user->getId();
@@ -362,7 +375,7 @@ class AssetController extends AbstractController{
 
         return new JsonResponse("Eiendel slettet");
     }
-    public function getIndividAssetAmount($userId){
+    public function getIndividAssetAmount($userId){//henter hvor mange assets en enkelt person har
 
         $assets=$this->getDoctrine()->getRepository(Assets::class)->findBy(array('users'=>$userId));
         $assetAmount=count($assets);
@@ -379,7 +392,7 @@ class AssetController extends AbstractController{
 
         return new JsonResponse($assetAmount);
     }
-    public function getAssetAmount(){
+    public function getAssetAmount(){//Henter mengden assets som eksisterer
 
         $assets=$this->getDoctrine()->getRepository(Assets::class)->findAll();
         $assetAmount=count($assets);

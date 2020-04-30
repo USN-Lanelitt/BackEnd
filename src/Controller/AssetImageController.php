@@ -28,7 +28,7 @@ class AssetImageController extends AbstractController{
         $this->logger = $logger;
     }
 
-    public function getMainImage($assetId){
+    public function getMainImage($assetId){//henter hoved bildet
         $assetImage=$this->getDoctrine()->getRepository(AssetImages::class)->findOneBy(array('assets'=>$assetId, 'mainImage'=>true));
         if(empty($assetImage)){
             return new JsonResponse($assetImage);
@@ -52,26 +52,18 @@ class AssetImageController extends AbstractController{
             }
         ]);
     }
-    public function addImage(Request $oRequest, $userId, $assetId){
+    public function addImage(Request $oRequest, $userId, $assetId){//legger til et pilde på en asset
         $this->logger->info($oRequest);
         $this->logger->info($userId);
         $this->logger->info($assetId);
         $oAsset = $this->getDoctrine()->getRepository(Assets::class)->findOneBy(array('id'=>$assetId, 'users'=>$userId));
-        /*$imageAnt = $this->getDoctrine()->getRepository(AssetImages::class)->findBy(array('assets'=>$assetId))->count();
-        $imageAnt++;
-        if(empty($asset)){
-            return new JsonResponse($asset);
-        }*/
+
 
         $sImage     = $oRequest->files->get('file');
         $bMainImage = boolval($oRequest->request->get('mainImage;'));
         $this->logger->info($bMainImage);
 
-       /* if(empty($sImage)){
-            $this->logger->info("KEKEKEKEKEKEKE");
-            $sImage     =fopen("Default.jpg", "r");
-            $this->logger->info("KEKEKEKEKEKEKE");
-        }*/
+
 
 
         $aReturn['code']  = 400;
@@ -81,7 +73,6 @@ class AssetImageController extends AbstractController{
         $sImageNameRandom = UtilController::randomString($iLength);
 
         $ImageOriginalName = $sImage->getClientOriginalName();
-        //$this->logger->info($sImage->getClientOriginalExtension());
 
         // lage nytt bildenavn
         $aTemp = explode(".", $ImageOriginalName);
@@ -106,6 +97,7 @@ class AssetImageController extends AbstractController{
             $bMainImage = true;
         }
 
+        // lagre bidlefilen
         if (move_uploaded_file($sImage, $sTargetFile)) {
             $this->logger->info("The file ". basename($ImageOriginalName). " has been uploaded.");
 

@@ -21,7 +21,7 @@ class AssetImages
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"loanStatus", "asset","assetImage"})
+     * @Groups({"loanStatus", "asset","assetImage", "loanRequest"})
      */
     private $imageUrl;
 
