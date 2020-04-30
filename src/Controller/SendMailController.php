@@ -24,22 +24,8 @@ class SendMailController extends AbstractController
 
     public static function sendEmail($sSubject, $sBody, $sEmailTo, $sEmailToName)
     {
-        //$this->logger->info($sSubject);
 
-        // her skal brukernavn og passord
-
-        // Create the Mailer using your created Transport
-        /*$mailer = new \Swift_Mailer($transport);
-
-        // Create a message
-        $message = (new \Swift_Message($sSubject))
-            ->setFrom(['kontakt@lanelitt.no' => 'Lånelitt'])
-            ->setTo([$sEmailTo => $sEmailToName])
-            //->setTo(['finn@altermulig.no', 'post@altermulig.no => 'A name'])
-            ->setBody($sBody, 'text/html')
-        ;
-
-        // Send the message
-        $result = $mailer->send($message);*/
+        // Denne koden er tatt bort fra tet på grunn av brukernavn og passord til mailgun. Dette ligger på server og virker
+        //Dette på grunn av gitreository er public og da vil brukernavn og passord være synlig for alle.
     }
 }
