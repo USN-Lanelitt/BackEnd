@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+/*John har lagt til groups og endret getTimestamp*/
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UnwantedBehaviorReportsRepository")
  */
@@ -77,6 +78,7 @@ class UnwantedBehaviorReports
         return $this;
     }
 
+    /*getTimestamp er blit endret av John-Berge*/
     public function getTimestamp(): string
     {
         $temp=$this->timestamp;

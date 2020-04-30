@@ -289,7 +289,7 @@ getLoans:
   controller: App\Controller\LoanController::getLoans
   methods: GET
 
-#---------------------------------------------------Report--Nicole Bendu-------------------------------------------------
+#---------------------------------------------------Report--Nicole Bendu og John-Berge Grimaas--------------------------
 
 makeReport:
   path: /user/{iUserId}/report/{iUserId2}

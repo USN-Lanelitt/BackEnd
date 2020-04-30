@@ -54,7 +54,7 @@ class Assets
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\AssetImages", mappedBy="assets", cascade={"remove"})
-     * @Groups({"asset"})
+     * @Groups({"asset", "loanRequest"})
      */
     private $assetImages;
 
