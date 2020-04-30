@@ -98,6 +98,7 @@ class UserController extends AbstractController
             $sPhone = "";
         }
 
+            // legge inn data i databsen
         if ($bRegistreUser) {
             // lagre brukerinfo
             $oUser = new Users();
@@ -165,6 +166,7 @@ class UserController extends AbstractController
         $sHashPassword = "";
         $loggId=""; //til logging
 
+        // legge info om brukeren inn i array for å sende tilfrontend
         foreach($oUser as $oU) {
             // hente ut zipcode object og gjøre om til 4 siffret string
             $oZipcode = $oU->getZipCode();
@@ -213,8 +215,8 @@ class UserController extends AbstractController
         }
         else
         {
-            // Generere en 20 char string som lagres på bruker. Brukes for å sjekke om det er riktig logginn ved hver api spørring.
             // BRUKES IKKE; MEN KAN BRUKES HVIS SKAL LEGGE INN VALIDERING PÅ INNLOGGING DIREKTE FRA SYMFONY
+            // Generere en 20 char string som lagres på bruker. Brukes for å sjekke om det er riktig logginn ved hver api spørring.
             //$sAuthCode = UtilController::RandomString();
             //$arrayCollection[0]['authCode'] = $sAuthCode;
 
@@ -247,6 +249,9 @@ class UserController extends AbstractController
 
     public function updatePassword(Request $request) // Finn - er ikke i bruk
     {
+        // metoden brukes ikke da det er problemer med å få oppdatert passord på Firebase autentisering.
+        // Passor dmå endres begge steder for å få logget inn.
+
         $this->logger->info($request);
         $aCode['code'] = 400;
 
@@ -302,6 +307,7 @@ class UserController extends AbstractController
         $aReturn['code'] = 400;
         $aReturn['image'] = "";
 
+
         $iLength = 5; // antall tegn i navnet på filnanvet på bilde
         $sImageNameRandom = UtilController::randomString($iLength);
 
@@ -327,6 +333,7 @@ class UserController extends AbstractController
             return new JsonResponse($aReturn);
         }
 
+        // lagre bildefilen
         if (move_uploaded_file($sImage, $sTargetFile)) {
             $this->logger->info("The file ". basename($ImageOriginalName). " has been uploaded.");
             $oUser = $this->getDoctrine()->getRepository(Users::class)->find($iUserId);

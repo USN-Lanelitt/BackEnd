@@ -106,6 +106,7 @@ class AssetImageController extends AbstractController{
             $bMainImage = true;
         }
 
+        // lagre bidlefilen
         if (move_uploaded_file($sImage, $sTargetFile)) {
             $this->logger->info("The file ". basename($ImageOriginalName). " has been uploaded.");
 
